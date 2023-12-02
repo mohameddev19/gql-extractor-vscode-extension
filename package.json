@@ -1,0 +1,55 @@
+{
+  "name": "gql-extractor",
+  "displayName": "GraphQL Extractor",
+  "description": "extract GraphQL queries from files and generate client-side queries and TypeScript types code for them.",
+  "publisher": "libanna",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.84.0"
+  },
+  "categories": [
+    "Snippets", "Formatters", "Programming Languages", "Other"
+  ],
+  "extensionKind": [
+    "workspace"
+  ],
+  "pricing": "Free",
+  "icon": "images/icon.png",
+  "galleryBanner": {
+    "color": "#C80000",
+    "theme": "dark"
+  },
+  "activationEvents": [],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "gql-extract.extractGraphQLQueries",
+        "title": "gql extract"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/test/runTest.js"
+  },
+  "devDependencies": {
+    "@types/mocha": "^10.0.3",
+    "@types/node": "18.x",
+    "@types/vscode": "^1.84.0",
+    "@typescript-eslint/eslint-plugin": "^6.9.0",
+    "@typescript-eslint/parser": "^6.9.0",
+    "@vscode/test-electron": "^2.3.6",
+    "eslint": "^8.52.0",
+    "glob": "^10.3.10",
+    "mocha": "^10.2.0"
+  },
+  "dependencies": {
+    "graphql": "^16.8.1",
+    "graphql-tag": "^2.12.6"
+  }
+}
