@@ -9,9 +9,12 @@ VS Code extension to extract GraphQL queries from files and generate client-side
 
 ## Usage
 
-- Step One: Open your folder in `workspace` then type `CTRL+Shift+P`
-- Step Two: Type `gql extract` and press `Enter`.
-- Step Thre: Wait while your queries files and types files to be generated.
+Open your `workspace folder` and follow the steps:
+
+- First step: Type `CTRL+Shift+P`.
+- Second step: Type `gql extract` and press `Enter`.
+- Third step: Wait while your queries files and types files to be generated.
+
 The extension wil create two folders:
 
 1. `queries folder`: for all client queries files.
