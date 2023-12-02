@@ -39,7 +39,7 @@ const graphql_tag_1 = __importDefault(require("graphql-tag"));
 // A function to generate typescript types
 async function astToTsTypesConvertor(astDefinitions, typesFolderUri) {
     // maping throw definitions
-    let defTypes = astDefinitions.filter((def) => def.kind === 'ObjectTypeDefinition' &&
+    let defTypes = astDefinitions.filter((def) => (def.kind === 'ObjectTypeDefinition' || def.kind === "InputObjectTypeDefinition") &&
         def.name &&
         (def.name.value !== 'Query' && def.name.value !== 'Mutation'));
     for (let defType of defTypes) {

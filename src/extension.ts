@@ -14,7 +14,7 @@ import gql from 'graphql-tag';
 async function astToTsTypesConvertor(astDefinitions: any, typesFolderUri: any){
 	// maping throw definitions
 	let defTypes = astDefinitions.filter((def: any) => 
-      def.kind === 'ObjectTypeDefinition' && 
+      (def.kind === 'ObjectTypeDefinition' || def.kind === "InputObjectTypeDefinition") && 
       def.name && 
       (def.name.value !== 'Query' && def.name.value !== 'Mutation')
 	);

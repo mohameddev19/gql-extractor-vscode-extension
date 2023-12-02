@@ -17,7 +17,7 @@
   "pricing": "Free",
   "icon": "images/icon.png",
   "galleryBanner": {
-    "color": "#ccc",
+    "color": "#111",
     "theme": "dark"
   },
   "activationEvents": [],
