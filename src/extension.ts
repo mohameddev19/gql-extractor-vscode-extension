@@ -64,7 +64,7 @@ async function astToApisConvertor(
 			code += `import { client } from "../config/apollo"; \n`;
 			code += `import { ${query.name.value} } from `;
 			code += `"../${queriesFolderUri}/${query.name.value}.ts"; \n`;
-			code += ` \n`
+			code += ` \n`;
 			code += `import { ${typeNameToTsTypesExtractor(fieldTypeNameExtractor(query))} } from `;
 			code += `"../${typesFolderUri}/${fieldTypeNameExtractor(query)}.ts"; \n`;
 			const DuplicateIdentifiers: Array<string> = [];
@@ -272,7 +272,11 @@ async function astToTsQueriesConvertor(astDefinitions: any, queriesFolderUri: an
 async function astToTsTypesConvertor(astDefinitions: any, typesFolderUri: any){
 	// maping throw definitions
 	let defTypes = astDefinitions.filter((def: any) => 
-      (def.kind === 'ObjectTypeDefinition' || def.kind === "InputObjectTypeDefinition") && 
+      (
+				def.kind === 'ObjectTypeDefinition' || 
+				def.kind === "InputObjectTypeDefinition" ||
+				def.kind === "EnumTypeDefinition"
+			) && 
       def.name && 
       (def.name.value !== 'Query' && def.name.value !== 'Mutation')
 	);
@@ -298,43 +302,55 @@ async function astToTsTypesConvertor(astDefinitions: any, typesFolderUri: any){
 			let code = "";
 			// exit importing lines:
 			const DuplicateIdentifiers: Array<string> = [];
-			// through each field to check if this type have a sub-types and write an importing line
-			for(let filed of defType.fields){
+			// check if the deftype isn't enum
+			// if it's type loop through each field to check if this type have a sub-types and write an importing line
+			if(defType.fields){
+				for(let filed of defType.fields){
 
-				let isTypeScriptType = false;
-				// check if field type name equal to any of main typescript types
-				for(let minType of mainTypes){
-					if(minType == typeNameToTsTypesExtractor(fieldTypeNameExtractor(filed))){
-						isTypeScriptType = isTypeScriptType || true;
-					}
-				}
-				let isIdentifier = false;
-				// check if field type is not identifier before
-				if( ! isTypeScriptType ){
-					for(let DuplicateIdentifier of DuplicateIdentifiers){
-						if(DuplicateIdentifier == typeNameToTsTypesExtractor(fieldTypeNameExtractor(filed))){
-							isIdentifier = isIdentifier || true;
+					let isTypeScriptType = false;
+					// check if field type name equal to any of main typescript types
+					for(let minType of mainTypes){
+						if(minType == typeNameToTsTypesExtractor(fieldTypeNameExtractor(filed))){
+							isTypeScriptType = isTypeScriptType || true;
 						}
 					}
-				}
-				// if the type is not typescript type and is not identifier before Append import line to code content
-				if( ( ! isTypeScriptType ) && ( ! isIdentifier ) ){
-					// write import line to the code
-					code += `import { `
-					code += `${typeNameToTsTypesExtractor(fieldTypeNameExtractor(filed))}`;
-					code += ` } from "./${typeNameToTsTypesExtractor(fieldTypeNameExtractor(filed)).slice(0, -3)}.ts"\n`;
-					// add type name to DuplicateIdentifiers
-					DuplicateIdentifiers.push(
-						typeNameToTsTypesExtractor(fieldTypeNameExtractor(filed))
-					);
-
+					let isIdentifier = false;
+					// check if field type is not identifier before
+					if( ! isTypeScriptType ){
+						for(let DuplicateIdentifier of DuplicateIdentifiers){
+							if(DuplicateIdentifier == typeNameToTsTypesExtractor(fieldTypeNameExtractor(filed))){
+								isIdentifier = isIdentifier || true;
+							}
+						}
+					}
+					// if the type is not typescript type and is not identifier before Append import line to code content
+					if( ( ! isTypeScriptType ) && ( ! isIdentifier ) ){
+						// write import line to the code
+						code += `import { `
+						code += `${typeNameToTsTypesExtractor(fieldTypeNameExtractor(filed))}`;
+						code += ` } from "./${typeNameToTsTypesExtractor(fieldTypeNameExtractor(filed)).slice(0, -3)}.ts"\n`;
+						// add type name to DuplicateIdentifiers
+						DuplicateIdentifiers.push(
+							typeNameToTsTypesExtractor(fieldTypeNameExtractor(filed))
+						);
+	
+					}
 				}
 			}
-			code += `export type ${defType.name.value}Dto = { \n`;
-			code += defType.fields.map((filed: any)=>(
-				`	${filed.name.value}: ${typeNameToTsTypesExtractor(fieldTypeNameExtractor(filed))}` +
-				`${isArrayType(filed) ? "[]" : ''} \n`
-			)).join("");
+			// check if it's enum
+			code += defType.kind === "EnumTypeDefinition"
+				? `export enum ${defType.name.value}Dto { \n`
+				: `export type ${defType.name.value}Dto = { \n`;
+			// check if it's enum
+			code += defType.kind === "EnumTypeDefinition"
+				? defType.values.map((value: any)=>(
+						`${value.name.value} = "${value.name.value}", \n`
+					)).join("")
+				: defType.fields.map((filed: any)=>(
+						`	${filed.name.value}: ${typeNameToTsTypesExtractor(fieldTypeNameExtractor(filed))}` +
+						`${isArrayType(filed) ? "[]" : ''} \n`
+					)).join("")
+			// Append the closing curly brace
 			code +=	`};`;
 			// Write the code to the new queries file
 			await vscode.workspace.fs.writeFile(newFileUri, Buffer.from(code, 'utf8'));
@@ -556,7 +572,10 @@ function capitalizeFirstLetter(word: string): string {
 // A function to extract the query sub-fields names for fields that have sub-fields
 function subFieldsExtractor(astDefinitions: any, field: any){
   const mainTypes = ["Int", "Boolean", "DateTime", "String", "Float"]; 
-  if(mainTypes.find(type => type === fieldTypeNameExtractor(field)) !== undefined){
+  if(
+		field.kind === "EnumTypeDefinition" ||
+		(mainTypes.find(type => type === fieldTypeNameExtractor(field)) !== undefined)
+	){
     return {
 			...field,
       fieldName: field.name.value,
@@ -564,13 +583,26 @@ function subFieldsExtractor(astDefinitions: any, field: any){
     }
   }
   else {
-    return {
-			...field,
-      fieldName: field.name.value,
-      subFields: astDefinitions.find((definition: any)=>(
-        definition.name.value === fieldTypeNameExtractor(field)
-      )).fields.map((subField: any)=> subFieldsExtractor(astDefinitions, subField))
-    }
+		let def = astDefinitions.find((definition: any)=>(
+			definition.name.value === fieldTypeNameExtractor(field)
+		));
+
+		if(def && def.fields){
+
+			return {
+				...field,
+				fieldName: field.name.value,
+				subFields: def.fields.map((subField: any)=> subFieldsExtractor(astDefinitions, subField))
+			}
+		} else {
+
+			return {
+				...field,
+				fieldName: field.name.value,
+				subFields: []
+			}
+		}
+
   }
 }
 
