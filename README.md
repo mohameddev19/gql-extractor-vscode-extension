@@ -36,8 +36,9 @@ Example for config file:
 
 ```json
 {
-  "queriesFolderName": "FOLDER_NAME or remove this line",
-  "typesFolderName": "FOLDER_NAME or remove this line",
+  "queriesFolderName": "FOLDER_NAME",
+  "typesFolderName": "FOLDER_NAME",
+  "apisFolderName": "FOLDER_NAME if you set the apis option",
   "apis": "apollo"
 }
 ```
