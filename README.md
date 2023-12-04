@@ -28,6 +28,7 @@ You can create `gql-extract.config.json` file in the root of your project to:
 
 - choose where the types must be saved.
 - choose where the queries must be saved.
+- choose where the apis function must be saved.
 - set the apis option `"apollo"` to create apis functions.
 
 I'll add other apis option soon, inshallah.
