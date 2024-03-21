@@ -77,23 +77,23 @@ async function astToApisConvertor(astDefinitions, apisFolderUri, queriesFolderUr
             let fieldName = fieldTypeNameExtractor(query);
             let isArray = isArrayType(query);
             // main typescript types
-            const mainTypes = ["number", "Boolean", "Date", "string"];
+            const mainTypes = ["number", "boolean", "Date", "string"];
             // Generate the code of the type using AST def
             let code = "";
             // exit importing lines:
             code += `import { client } from "../config/apollo"; \n`;
             code += `import { ${query.name.value} } from `;
-            code += `"../${queriesFolderUri}/${query.name.value}.ts"; \n`;
+            code += `"../${queriesFolderUri}/${query.name.value}"; \n`;
             code += ` \n`;
             code += `import { ${typeNameToTsTypesExtractor(fieldTypeNameExtractor(query))} } from `;
-            code += `"../${typesFolderUri}/${fieldTypeNameExtractor(query)}.ts"; \n`;
+            code += `"../${typesFolderUri}/${fieldTypeNameExtractor(query)}"; \n`;
             const DuplicateIdentifiers = [];
             // through each field to check if this type have a sub-types and write an importing line
-            for (let filed of query.queryFields.subFields) {
+            for (let argument of query.arguments) {
                 let isTypeScriptType = false;
                 // check if field type name equal to any of main typescript types
                 for (let minType of mainTypes) {
-                    if (minType == typeNameToTsTypesExtractor(fieldTypeNameExtractor(filed))) {
+                    if (minType == typeNameToTsTypesExtractor(fieldTypeNameExtractor(argument))) {
                         isTypeScriptType = isTypeScriptType || true;
                     }
                 }
@@ -101,7 +101,7 @@ async function astToApisConvertor(astDefinitions, apisFolderUri, queriesFolderUr
                 // check if field type is not identifier before
                 if (!isTypeScriptType) {
                     for (let DuplicateIdentifier of DuplicateIdentifiers) {
-                        if (DuplicateIdentifier == typeNameToTsTypesExtractor(fieldTypeNameExtractor(filed))) {
+                        if (DuplicateIdentifier == typeNameToTsTypesExtractor(fieldTypeNameExtractor(argument))) {
                             isIdentifier = isIdentifier || true;
                         }
                     }
@@ -110,17 +110,23 @@ async function astToApisConvertor(astDefinitions, apisFolderUri, queriesFolderUr
                 if ((!isTypeScriptType) && (!isIdentifier)) {
                     // write import line to the code
                     code += `import { `;
-                    code += `${typeNameToTsTypesExtractor(fieldTypeNameExtractor(filed))}`;
-                    code += ` } from "../${typesFolderUri}/${typeNameToTsTypesExtractor(fieldTypeNameExtractor(filed)).slice(0, -3)}.ts"\n`;
+                    code += `${typeNameToTsTypesExtractor(fieldTypeNameExtractor(argument))}`;
+                    code += ` } from "../${typesFolderUri}/${typeNameToTsTypesExtractor(fieldTypeNameExtractor(argument)).slice(0, -3)}"\n`;
                     // add type name to DuplicateIdentifiers
-                    DuplicateIdentifiers.push(typeNameToTsTypesExtractor(fieldTypeNameExtractor(filed)));
+                    DuplicateIdentifiers.push(typeNameToTsTypesExtractor(fieldTypeNameExtractor(argument)));
                 }
             }
             code += ` \n`;
             // api function:
             code += `export async function handel_${capitalizeFirstLetter(query.name.value)}( \n`;
             // function argument
-            code += query.queryFields.subFields.map((filed) => (`	${filed.name.value}: ${typeNameToTsTypesExtractor(fieldTypeNameExtractor(filed))}, \n`)).join("");
+            let functionArgument = query.arguments.map((argument) => (`	${argument.name.value}Input` +
+                ((argument.type && argument.type.type && argument.type.type.kind && argument.type.type.kind === "NonNullType") ||
+                    (argument.type && argument.type.type && argument.type.type.type && argument.type.type.type.kind &&
+                        argument.type.type.type.kind === "NonNullType")
+                    ? `?` : ``) +
+                `: ${typeNameToTsTypesExtractor(fieldTypeNameExtractor(argument))}, \n`));
+            code += rankTypescriptFunctionArgguments(functionArgument).join("");
             code += `	functionToImplementation?: Function \n`;
             code += `) : Promise<${typeNameToTsTypesExtractor(fieldTypeNameExtractor(query))} | null> { \n`;
             // returned data variable
@@ -135,7 +141,7 @@ async function astToApisConvertor(astDefinitions, apisFolderUri, queriesFolderUr
                 : `			query: ${query.name.value}, \n`;
             code += `			variables: { \n`;
             // query inputs
-            code += query.queryFields.subFields.map((filed) => (`				${filed.name.value}Input: ${filed.name.value}, \n`)).join("");
+            code += query.arguments.map((argument) => (`				${argument.name.value}Input: ${argument.name.value}Input, \n`)).join("");
             code += `			}, \n`;
             code += `		}); \n`;
             code += query.defType == "Mutaion"
@@ -290,7 +296,7 @@ async function astToTsTypesConvertor(astDefinitions, typesFolderUri) {
         // A function to generate file with new content
         async function generateFile() {
             // main typescript types
-            const mainTypes = ["number", "Boolean", "Date", "string"];
+            const mainTypes = ["number", "boolean", "Date", "string"];
             // Generate the code of the type using AST def
             let code = "";
             // exit importing lines:
@@ -320,7 +326,7 @@ async function astToTsTypesConvertor(astDefinitions, typesFolderUri) {
                         // write import line to the code
                         code += `import { `;
                         code += `${typeNameToTsTypesExtractor(fieldTypeNameExtractor(filed))}`;
-                        code += ` } from "./${typeNameToTsTypesExtractor(fieldTypeNameExtractor(filed)).slice(0, -3)}.ts"\n`;
+                        code += ` } from "./${typeNameToTsTypesExtractor(fieldTypeNameExtractor(filed)).slice(0, -3)}"\n`;
                         // add type name to DuplicateIdentifiers
                         DuplicateIdentifiers.push(typeNameToTsTypesExtractor(fieldTypeNameExtractor(filed)));
                     }
@@ -456,7 +462,7 @@ function typeNameToTsTypesExtractor(fieldTypeName) {
         return "number";
     }
     if (fieldTypeName === "Boolean") {
-        return "Boolean";
+        return "boolean";
     }
     if (fieldTypeName === "DateTime" ||
         fieldTypeName === "LocalDate" ||
@@ -580,6 +586,22 @@ function definitionsFiledsExtractor(astDefinitions) {
             queryFields: subFieldsExtractor(astDefinitions, field)
         }));
     }).flat());
+}
+// to rank an array of strings, placing those with "?" at the end
+function rankTypescriptFunctionArgguments(stringArray) {
+    // Sort the array with strings containing "?" higher in the order
+    const rankedArray = stringArray.sort((a, b) => {
+        if (a.includes("?") && !b.includes("?")) {
+            return 1; // Move string with "?" higher
+        }
+        else if (!a.includes("?") && b.includes("?")) {
+            return -1; // Move string without "?" lower
+        }
+        else {
+            return 0; // Keep order the same if both have "?" or neither do
+        }
+    });
+    return rankedArray;
 }
 // A function to define a query from a graphql AST object
 function defineQuery(astField, operationType) {
