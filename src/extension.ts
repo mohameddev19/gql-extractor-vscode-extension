@@ -61,7 +61,7 @@ async function astToApisConvertor(
 			// Generate the code of the type using AST def
 			let code = "";
 			// exit importing lines:
-			code += `import { client } from "../config/apollo"; \n`;
+			code += `import { client } from "@/config/apollo"; \n`;
 			code += `import { ${query.name.value} } from `;
 			code += `"../${queriesFolderUri}/${query.name.value}"; \n`;
 			code += ` \n`;
@@ -121,10 +121,10 @@ async function astToApisConvertor(
 			code += `	let ${query.name.value}Data : ${typeNameToTsTypesExtractor(fieldTypeNameExtractor(query))}; \n`;
 			code += `	try { \n`;
 			// use apollo clint
-			code += query.defType == "Mutaion"
+			code += query.defType == "Mutation"
 				? `		const { data, errors } = await client.mutate({ \n`
 				: `		const { data, error } = await client.query({ \n`;
-			code += query.defType == "Mutaion"
+			code += query.defType == "Mutation"
 			? `			mutation: ${query.name.value}, \n`
 			: `			query: ${query.name.value}, \n`;
 			code += `			variables: { \n`;
@@ -134,7 +134,7 @@ async function astToApisConvertor(
 			)).join("");
 			code += `			}, \n`;
 			code += `		}); \n`;
-			code += query.defType == "Mutaion"
+			code += query.defType == "Mutation"
 				? `		if( ! errors ){ \n`
 				: `		if( ! error ){ \n`;
 			code += `			${query.name.value}Data = data.${query.name.value}; \n`;
@@ -199,7 +199,7 @@ async function astToApisConvertor(
 }
 
 // A function to generate client queries
-async function astToTsQueriesConvertor(astDefinitions: any, queriesFolderUri: any){
+async function astToTsQueriesConvertor(astDefinitions: any, queriesFolderUri: any, library: "apollo"){
 	// Extract the definitions fileds from the AST to create client-queries
 	let astDefinitionsFileds = definitionsFiledsExtractor(astDefinitions);
 	if (astDefinitionsFileds.length === 0) {
@@ -224,7 +224,21 @@ async function astToTsQueriesConvertor(astDefinitions: any, queriesFolderUri: an
 		// A function to generate file with new content
 		async function generateFile(){
 			// Generate the code of the queries using AST field
-			let queryCode = "export const " + queryField.name.value + " = `";
+			// Import the graphgl client side library
+			let queryCode = "";
+			if(library){
+				if(library === "apollo"){
+					queryCode += `import { gql } from "@apollo/client";`;
+				}
+			}
+			queryCode += ` \n`;
+			queryCode += "export const " + queryField.name.value + " = ";
+			// using the graphgl client side library function
+			if(library){
+				if(library === "apollo"){
+					queryCode += "gql`";
+				}
+			}
 			queryCode += defineQuery(queryField, queryField.defType);
 			queryCode += "`";
 			// Write the code to the new queries file
@@ -813,7 +827,7 @@ export function activate(context: vscode.ExtensionContext) {
 					await astToTsTypesConvertor(ast.definitions, typesFolderUri);
 
 					// get client queries from AST and create queries files
-					await astToTsQueriesConvertor(ast.definitions, queriesFolderUri);
+					await astToTsQueriesConvertor(ast.definitions, queriesFolderUri, config && config.apis);
 
 					// Show a message to the user
 					vscode.window.showInformationMessage(`Created queries and types from ${file.fsPath}`);
