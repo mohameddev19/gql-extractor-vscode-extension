@@ -65,8 +65,8 @@ async function astToApisConvertor(
 			code += `import { ${query.name.value} } from `;
 			code += `"../${queriesFolderUri}/${query.name.value}"; \n`;
 			code += ` \n`;
-			code += `import { ${typeNameToTsTypesExtractor(fieldName)} } from `;
-			code += `"../${typesFolderUri}/${fieldName}"; \n`;
+			code += `import { ${typeNameToTsTypesExtractor(fieldTypeNameExtractor(query))} } from `;
+			code += `"../${typesFolderUri}/${fieldTypeNameExtractor(query)}"; \n`;
 			const DuplicateIdentifiers: Array<string> = [];
 			// through each field to check if this type have a sub-types and write an importing line
 			for(let argument of query.arguments){
@@ -112,7 +112,10 @@ async function astToApisConvertor(
 						argument.type.type.type.kind === "NonNullType")
 					? `?` : ``
 				) + 
-				`: ${typeNameToTsTypesExtractor(fieldTypeNameExtractor(argument))}, \n`
+				`${argument.type.kind === "NonNullType" 
+					? ":" 
+					: "?"
+				} ${typeNameToTsTypesExtractor(fieldTypeNameExtractor(argument))}, \n`
 			))
 			code += rankTypescriptFunctionArgguments(functionArgument).join("");
 			code += `	functionToImplementation?: Function \n`;
