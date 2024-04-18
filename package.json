@@ -3,7 +3,7 @@
   "displayName": "GraphQL Extractor",
   "description": "extract GraphQL queries from files and generate client-side queries and TypeScript types code for them.",
   "publisher": "libanna",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "repository": "https://github.com/mohameddev19/gql-extractor-vscode-extension",
   "engines": {
     "vscode": "^1.84.0"

@@ -528,6 +528,7 @@ function typeNameToTsTypesExtractor(fieldTypeName: any){
 		fieldTypeName === "Currency" || 
 		fieldTypeName === "DeweyDecimal" || 
 		fieldTypeName === "DID" || 
+		fieldTypeName === "ID" || 
 		fieldTypeName === "Duration" || 
 		fieldTypeName === "EmailAddress" || 
 		fieldTypeName === "HexColorCode" || 
