@@ -85,8 +85,11 @@ async function astToApisConvertor(astDefinitions, apisFolderUri, queriesFolderUr
             code += `import { ${query.name.value} } from `;
             code += `"../${queriesFolderUri}/${query.name.value}"; \n`;
             code += ` \n`;
-            code += `import { ${typeNameToTsTypesExtractor(fieldTypeNameExtractor(query))} } from `;
-            code += `"../${typesFolderUri}/${fieldTypeNameExtractor(query)}"; \n`;
+            let type = typeNameToTsTypesExtractor(fieldTypeNameExtractor(query));
+            if (type !== "number" && type !== "boolean" && type !== "Date" && type !== "string") {
+                code += `import { ${typeNameToTsTypesExtractor(fieldTypeNameExtractor(query))} } from `;
+                code += `"../${typesFolderUri}/${fieldTypeNameExtractor(query)}"; \n`;
+            }
             const DuplicateIdentifiers = [];
             // through each field to check if this type have a sub-types and write an importing line
             for (let argument of query.arguments) {
