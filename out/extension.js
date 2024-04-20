@@ -129,7 +129,7 @@ async function astToApisConvertor(astDefinitions, apisFolderUri, queriesFolderUr
                     (argument.type && argument.type.type && argument.type.type.type && argument.type.type.type.kind &&
                         argument.type.type.type.kind === "NonNullType")
                     ? `?:` : `:`) +
-                `${typeNameToTsTypesExtractor(fieldTypeNameExtractor(argument))}, \n`));
+                ` ${typeNameToTsTypesExtractor(fieldTypeNameExtractor(argument))}, \n`));
             code += rankTypescriptFunctionArgguments(functionArgument).join("");
             code += `	functionToImplementation?: Function \n`;
             code += `) : Promise<${typeNameToTsTypesExtractor(fieldName)}${isArray ? "[] | []" : " | null"}> { \n`;

@@ -116,7 +116,7 @@ async function astToApisConvertor(
 						argument.type.type.type.kind === "NonNullType")
 					? `?:` : `:`
 				) + 
-				`${typeNameToTsTypesExtractor(fieldTypeNameExtractor(argument))}, \n`
+				` ${typeNameToTsTypesExtractor(fieldTypeNameExtractor(argument))}, \n`
 			))
 			code += rankTypescriptFunctionArgguments(functionArgument).join("");
 			code += `	functionToImplementation?: Function \n`;
