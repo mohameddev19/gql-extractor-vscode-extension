@@ -124,13 +124,12 @@ async function astToApisConvertor(astDefinitions, apisFolderUri, queriesFolderUr
             code += `export async function handel_${capitalizeFirstLetter(query.name.value)}( \n`;
             // function argument
             let functionArgument = query.arguments.map((argument) => (`	${argument.name.value}Input` +
-                ((argument.type && argument.type.type && argument.type.type.kind && argument.type.type.kind === "NonNullType") ||
+                ((argument.type.kind === "NonNullType") ||
+                    (argument.type && argument.type.type && argument.type.type.kind && argument.type.type.kind === "NonNullType") ||
                     (argument.type && argument.type.type && argument.type.type.type && argument.type.type.type.kind &&
                         argument.type.type.type.kind === "NonNullType")
-                    ? `?` : ``) +
-                `${argument.type.kind === "NonNullType"
-                    ? ":"
-                    : "?:"} ${typeNameToTsTypesExtractor(fieldTypeNameExtractor(argument))}, \n`));
+                    ? `?:` : `:`) +
+                `${typeNameToTsTypesExtractor(fieldTypeNameExtractor(argument))}, \n`));
             code += rankTypescriptFunctionArgguments(functionArgument).join("");
             code += `	functionToImplementation?: Function \n`;
             code += `) : Promise<${typeNameToTsTypesExtractor(fieldName)}${isArray ? "[] | []" : " | null"}> { \n`;

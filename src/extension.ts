@@ -110,15 +110,13 @@ async function astToApisConvertor(
 			let functionArgument = query.arguments.map((argument: any)=>(
 				`	${argument.name.value}Input` +
 				(
+					(argument.type.kind === "NonNullType") ||
 					(argument.type && argument.type.type && argument.type.type.kind && argument.type.type.kind === "NonNullType") ||
 					(argument.type && argument.type.type && argument.type.type.type && argument.type.type.type.kind && 
 						argument.type.type.type.kind === "NonNullType")
-					? `?` : ``
+					? `?:` : `:`
 				) + 
-				`${argument.type.kind === "NonNullType" 
-					? ":" 
-					: "?:"
-				} ${typeNameToTsTypesExtractor(fieldTypeNameExtractor(argument))}, \n`
+				`${typeNameToTsTypesExtractor(fieldTypeNameExtractor(argument))}, \n`
 			))
 			code += rankTypescriptFunctionArgguments(functionArgument).join("");
 			code += `	functionToImplementation?: Function \n`;
