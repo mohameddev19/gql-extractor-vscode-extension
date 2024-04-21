@@ -128,7 +128,7 @@ async function astToApisConvertor(astDefinitions, apisFolderUri, queriesFolderUr
                     (argument.type && argument.type.type && argument.type.type.kind && argument.type.type.kind === "NonNullType") ||
                     (argument.type && argument.type.type && argument.type.type.type && argument.type.type.type.kind &&
                         argument.type.type.type.kind === "NonNullType")
-                    ? `?:` : `:`) +
+                    ? `:` : `?:`) +
                 ` ${typeNameToTsTypesExtractor(fieldTypeNameExtractor(argument))}, \n`));
             code += rankTypescriptFunctionArgguments(functionArgument).join("");
             code += `	functionToImplementation?: Function \n`;
@@ -357,7 +357,12 @@ async function astToTsTypesConvertor(astDefinitions, typesFolderUri) {
             // check if it's enum
             code += defType.kind === "EnumTypeDefinition"
                 ? defType.values.map((value) => (`${value.name.value} = "${value.name.value}", \n`)).join("")
-                : defType.fields.map((filed) => (`	${filed.name.value}: ${typeNameToTsTypesExtractor(fieldTypeNameExtractor(filed))}` +
+                : defType.fields.map((filed) => (`	${filed.name.value}${defType.kind === "InputObjectTypeDefinition" && ((filed.type.kind === "NonNullType") ||
+                    (filed.type && filed.type.type && filed.type.type.kind && filed.type.type.kind === "NonNullType") ||
+                    (filed.type && filed.type.type && filed.type.type.type && filed.type.type.type.kind &&
+                        filed.type.type.type.kind === "NonNullType"))
+                    ? ":"
+                    : defType.kind === "InputObjectTypeDefinition" ? "?:" : ":"} ${typeNameToTsTypesExtractor(fieldTypeNameExtractor(filed))}` +
                     `${isArrayType(filed) ? "[]" : ''} \n`)).join("");
             // Append the closing curly brace
             code += `};`;
