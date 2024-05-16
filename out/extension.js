@@ -129,7 +129,9 @@ async function astToApisConvertor(astDefinitions, apisFolderUri, queriesFolderUr
                     (argument.type && argument.type.type && argument.type.type.type && argument.type.type.type.kind &&
                         argument.type.type.type.kind === "NonNullType")
                     ? `:` : `?:`) +
-                ` ${typeNameToTsTypesExtractor(fieldTypeNameExtractor(argument))}, \n`));
+                ` ${typeNameToTsTypesExtractor(fieldTypeNameExtractor(argument))}` +
+                (isArrayType(argument)
+                    ? `[], \n` : `, \n`)));
             code += rankTypescriptFunctionArgguments(functionArgument).join("");
             code += `	functionToImplementation?: Function \n`;
             code += `) : Promise<${typeNameToTsTypesExtractor(fieldName)}${isArray ? "[] | []" : " | null"}> { \n`;
@@ -291,7 +293,7 @@ async function astToTsQueriesConvertor(astDefinitions, queriesFolderUri, library
     }
 }
 // A function to generate typescript types
-async function astToTsTypesConvertor(astDefinitions, typesFolderUri) {
+async function astToTsTypesConvertor(astDefinitions, typesFolderUri, optional) {
     // maping throw definitions
     let defTypes = astDefinitions.filter((def) => (def.kind === 'ObjectTypeDefinition' ||
         def.kind === "InputObjectTypeDefinition" ||
@@ -362,7 +364,7 @@ async function astToTsTypesConvertor(astDefinitions, typesFolderUri) {
                     (filed.type && filed.type.type && filed.type.type.type && filed.type.type.type.kind &&
                         filed.type.type.type.kind === "NonNullType"))
                     ? ":"
-                    : defType.kind === "InputObjectTypeDefinition" ? "?:" : ":"} ${typeNameToTsTypesExtractor(fieldTypeNameExtractor(filed))}` +
+                    : defType.kind === "InputObjectTypeDefinition" || optional ? "?:" : ":"} ${typeNameToTsTypesExtractor(fieldTypeNameExtractor(filed))}` +
                     `${isArrayType(filed) ? "[]" : ''} \n`)).join("");
             // Append the closing curly brace
             code += `};`;
@@ -733,6 +735,9 @@ function activate(context) {
             // extract config
             let config = await configExtractor(workspaceFolder.uri);
             // Create the apis folder in the root of the workspace folder
+            let optional = (config && config.optionalType && config.optionalType.length > 0 && config.optionalType == "true"
+                ? true : false);
+            // Create the apis folder in the root of the workspace folder
             let apisFolderUri = vscode.Uri.joinPath(workspaceFolder.uri, config && config.apisFolderName && config.apisFolderName.length > 0
                 ? config.apisFolderName : 'apis');
             await vscode.workspace.fs.createDirectory(apisFolderUri);
@@ -764,7 +769,7 @@ function activate(context) {
                         ? config.queriesFolderName : 'queries', config && config.typesFolderName && config.typesFolderName.length > 0
                         ? config.typesFolderName : 'types');
                     // get typescript types from AST and create types files
-                    await astToTsTypesConvertor(ast.definitions, typesFolderUri);
+                    await astToTsTypesConvertor(ast.definitions, typesFolderUri, optional);
                     // get client queries from AST and create queries files
                     await astToTsQueriesConvertor(ast.definitions, queriesFolderUri, config && config.apis);
                     // Show a message to the user

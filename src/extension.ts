@@ -116,8 +116,11 @@ async function astToApisConvertor(
 						argument.type.type.type.kind === "NonNullType")
 					? `:` : `?:`
 				) + 
-				` ${typeNameToTsTypesExtractor(fieldTypeNameExtractor(argument))}, \n` +
-				isArrayType(argument) ? `[]` : ``
+				` ${typeNameToTsTypesExtractor(fieldTypeNameExtractor(argument))}` +
+				(
+					isArrayType(argument) 
+					? `[], \n` : `, \n`
+				)
 			))
 			code += rankTypescriptFunctionArgguments(functionArgument).join("");
 			code += `	functionToImplementation?: Function \n`;
@@ -296,7 +299,7 @@ async function astToTsQueriesConvertor(astDefinitions: any, queriesFolderUri: an
 }
 
 // A function to generate typescript types
-async function astToTsTypesConvertor(astDefinitions: any, typesFolderUri: any){
+async function astToTsTypesConvertor(astDefinitions: any, typesFolderUri: any, optional: boolean){
 	// maping throw definitions
 	let defTypes = astDefinitions.filter((def: any) => 
       (
@@ -383,7 +386,7 @@ async function astToTsTypesConvertor(astDefinitions: any, typesFolderUri: any){
 									)
 								) 
 								? ":" 
-								: defType.kind === "InputObjectTypeDefinition" ? "?:" : ":"
+								: defType.kind === "InputObjectTypeDefinition" || optional ? "?:" : ":"
 							} ${typeNameToTsTypesExtractor(fieldTypeNameExtractor(filed))}` +
 						`${isArrayType(filed) ? "[]" : ''} \n`
 					)).join("")
@@ -793,6 +796,11 @@ export function activate(context: vscode.ExtensionContext) {
 			// extract config
 			let config = await configExtractor(workspaceFolder.uri);
 			// Create the apis folder in the root of the workspace folder
+			let optional = (
+				config && config.optionalType && config.optionalType.length > 0  && config.optionalType == "true"
+				? true: false
+			);
+			// Create the apis folder in the root of the workspace folder
 			let apisFolderUri = vscode.Uri.joinPath(
 				workspaceFolder.uri, 
 				config && config.apisFolderName && config.apisFolderName.length > 0 
@@ -840,7 +848,7 @@ export function activate(context: vscode.ExtensionContext) {
 					);
 
 					// get typescript types from AST and create types files
-					await astToTsTypesConvertor(ast.definitions, typesFolderUri);
+					await astToTsTypesConvertor(ast.definitions, typesFolderUri, optional);
 
 					// get client queries from AST and create queries files
 					await astToTsQueriesConvertor(ast.definitions, queriesFolderUri, config && config.apis);
