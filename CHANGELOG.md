@@ -4,15 +4,11 @@
 
 **New Features:**
 
-* Added `optionalType` option to the extension configuration file. This allows you to specify whether properties should be optional by adding a question mark after the colon in your configuration.
+* Remove `optionalType` option from the extension configuration file.
+* Add `fetchPolicy` option to the extension configuration file. You can set apollo fetchPolicy value as field of this value.
 
-**Example:**
+**Fix Error:**
 
-```json
-{
-  "name": "Mohammed Hamdi",
-  "profile": "[https://github.com/mohameddev19](github profile)",
-  "age": "number", 
-  "isActive": "boolean"
-}
-,,,
+* Fix optional field extraction.
+* Fix type and api function arguments of array.
+* Fix detect query of subscription.

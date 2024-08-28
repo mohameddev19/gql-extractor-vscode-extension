@@ -30,6 +30,7 @@ async function astToApisConvertor(
 	apisFolderUri: any,
 	queriesFolderUri: any,
 	typesFolderUri: any,
+	fetchPolicy: string,
 ){
 	// Extract the definitions fileds from the AST to create client-queries
 	let astDefinitionsFileds = definitionsFiledsExtractor(astDefinitions);
@@ -57,7 +58,7 @@ async function astToApisConvertor(
 			let fieldName = fieldTypeNameExtractor(query);
 			let isArray = isArrayType(query);
 			// main typescript types
-			const mainTypes = ["number", "boolean", "Date", "string"];
+			const mainTypes = ["any", "number", "boolean", "Date", "string"];
 			// Generate the code of the type using AST def
 			let code = "";
 			// exit importing lines:
@@ -66,7 +67,7 @@ async function astToApisConvertor(
 			code += `"../${queriesFolderUri}/${query.name.value}"; \n`;
 			code += ` \n`;
 			let type = typeNameToTsTypesExtractor(fieldTypeNameExtractor(query));
-			if(type !== "number" && type !== "boolean" && type !== "Date" && type !== "string"){
+			if(type !== "any" && type !== "number" && type !== "boolean" && type !== "Date" && type !== "string"){
 				code += `import { ${typeNameToTsTypesExtractor(fieldTypeNameExtractor(query))} } from `;
 				code += `"../${typesFolderUri}/${fieldTypeNameExtractor(query)}"; \n`;
 			}
@@ -110,10 +111,10 @@ async function astToApisConvertor(
 			let functionArgument = query.arguments.map((argument: any)=>(
 				`	${argument.name.value}Input` +
 				(
-					(argument.type.kind === "NonNullType") ||
-					(argument.type && argument.type.type && argument.type.type.kind && argument.type.type.kind === "NonNullType") ||
-					(argument.type && argument.type.type && argument.type.type.type && argument.type.type.type.kind && 
-						argument.type.type.type.kind === "NonNullType")
+					(argument.type.kind === "NonNullType")
+					// || (argument.type && argument.type.type && argument.type.type.kind && argument.type.type.kind === "NonNullType")
+					// || (argument.type && argument.type.type && argument.type.type.type && argument.type.type.type.kind && 
+					// 	argument.type.type.type.kind === "NonNullType")
 					? `:` : `?:`
 				) + 
 				` ${typeNameToTsTypesExtractor(fieldTypeNameExtractor(argument))}` +
@@ -141,6 +142,7 @@ async function astToApisConvertor(
 				`				${argument.name.value}Input: ${argument.name.value}Input, \n`
 			)).join("");
 			code += `			}, \n`;
+			code += `			fetchPolicy: "${fetchPolicy}" \n`;
 			code += `		}); \n`;
 			code += query.defType == "Mutation"
 				? `		if( ! errors ){ \n`
@@ -299,7 +301,7 @@ async function astToTsQueriesConvertor(astDefinitions: any, queriesFolderUri: an
 }
 
 // A function to generate typescript types
-async function astToTsTypesConvertor(astDefinitions: any, typesFolderUri: any, optional: boolean){
+async function astToTsTypesConvertor(astDefinitions: any, typesFolderUri: any){
 	// maping throw definitions
 	let defTypes = astDefinitions.filter((def: any) => 
       (
@@ -327,7 +329,7 @@ async function astToTsTypesConvertor(astDefinitions: any, typesFolderUri: any, o
 		// A function to generate file with new content
 		async function generateFile(){
 			// main typescript types
-			const mainTypes = ["number", "boolean", "Date", "string"];
+			const mainTypes = ["any", "number", "boolean", "Date", "string"];
 			// Generate the code of the type using AST def
 			let code = "";
 			// exit importing lines:
@@ -379,14 +381,14 @@ async function astToTsTypesConvertor(astDefinitions: any, typesFolderUri: any, o
 				: defType.fields.map((filed: any)=>(
 						`	${filed.name.value}${
 								defType.kind === "InputObjectTypeDefinition" && (
-									(filed.type.kind === "NonNullType") ||
-									(filed.type && filed.type.type && filed.type.type.kind && filed.type.type.kind === "NonNullType") ||
-									(filed.type && filed.type.type && filed.type.type.type && filed.type.type.type.kind && 
-										filed.type.type.type.kind === "NonNullType"
-									)
+									(filed.type.kind === "NonNullType")
+									// || (filed.type && filed.type.type && filed.type.type.kind && filed.type.type.kind === "NonNullType")
+									// || (filed.type && filed.type.type && filed.type.type.type && filed.type.type.type.kind && 
+									// 	filed.type.type.type.kind === "NonNullType"
+									// )
 								) 
 								? ":" 
-								: defType.kind === "InputObjectTypeDefinition" || optional ? "?:" : ":"
+								: defType.kind === "InputObjectTypeDefinition" ? "?:" : ":"
 							} ${typeNameToTsTypesExtractor(fieldTypeNameExtractor(filed))}` +
 						`${isArrayType(filed) ? "[]" : ''} \n`
 					)).join("")
@@ -504,6 +506,9 @@ function fieldTypeNameExtractor(field: any){
 }
 // A function to extract the field type name as typescript type
 function typeNameToTsTypesExtractor(fieldTypeName: any){
+	if(fieldTypeName === "any" || fieldTypeName === "Any"){
+		return "any"
+	}
 	if(
 		fieldTypeName === "Int" || 
 		fieldTypeName === "Float" || 
@@ -653,7 +658,7 @@ function definitionsFiledsExtractor(astDefinitions: any){
     astDefinitions.filter((def: any) => 
       def.kind === 'ObjectTypeDefinition' && 
       def.name && 
-      (def.name.value === 'Query' || def.name.value === 'Mutation')
+      (def.name.value === 'Query' || def.name.value === 'Mutation' || def.name.value === 'Subscription')
     )
     .map((def: any) => {
       return def.fields.map((field: any) => (
@@ -694,7 +699,12 @@ function defineQuery(astField: any, operationType: "Mutation" | "Query" ): strin
   let query = "";
   // Check if the astField has arguments
   // Append this line to the query
-  query += operationType === "Query" ? "query items" : "mutation myMutation";
+  query += 
+	operationType === "Query" 
+	? "query items" 
+	: operationType === "Mutation"
+	? "mutation myMutation"
+	: "subscription items";
   if (astField.arguments && astField.arguments.length > 0) {
     // Append the opening parenthesis to the start
     query += "(";
@@ -795,26 +805,27 @@ export function activate(context: vscode.ExtensionContext) {
 			vscode.window.showInformationMessage('Found workspace folder');
 			// extract config
 			let config = await configExtractor(workspaceFolder.uri);
-			// Create the apis folder in the root of the workspace folder
-			let optional = (
-				config && config.optionalType && config.optionalType.length > 0  && config.optionalType == "true"
-				? true: false
+			// config field
+			let fetchPolicy = (
+				config && config.fetchPolicy && config.fetchPolicy.length > 0
+				? config.fetchPolicy
+				: "no-cache"
 			);
-			// Create the apis folder in the root of the workspace folder
+			// config field
 			let apisFolderUri = vscode.Uri.joinPath(
 				workspaceFolder.uri, 
 				config && config.apisFolderName && config.apisFolderName.length > 0 
 				? config.apisFolderName : 'apis'
 			);
 			await vscode.workspace.fs.createDirectory(apisFolderUri);
-			// Create the queries folder in the root of the workspace folder
+			// config field
 			let queriesFolderUri = vscode.Uri.joinPath(
 				workspaceFolder.uri, 
 				config && config.queriesFolderName && config.queriesFolderName.length > 0 
 				? config.queriesFolderName : 'queries'
 			);
 			await vscode.workspace.fs.createDirectory(queriesFolderUri);
-			// Create the types folder in the root of the workspace folder
+			// config field
 			let typesFolderUri = vscode.Uri.joinPath(
 				workspaceFolder.uri, 
 				config && config.typesFolderName && config.typesFolderName.length > 0 
@@ -844,11 +855,12 @@ export function activate(context: vscode.ExtensionContext) {
 						config && config.queriesFolderName && config.queriesFolderName.length > 0 
 						? config.queriesFolderName : 'queries',
 						config && config.typesFolderName && config.typesFolderName.length > 0 
-						? config.typesFolderName : 'types'
+						? config.typesFolderName : 'types',
+						fetchPolicy
 					);
 
 					// get typescript types from AST and create types files
-					await astToTsTypesConvertor(ast.definitions, typesFolderUri, optional);
+					await astToTsTypesConvertor(ast.definitions, typesFolderUri);
 
 					// get client queries from AST and create queries files
 					await astToTsQueriesConvertor(ast.definitions, queriesFolderUri, config && config.apis);
@@ -875,3 +887,6 @@ export function activate(context: vscode.ExtensionContext) {
 
 // This function is called when the extension is deactivated
 export function deactivate() { }
+
+// TODO: generate for specific queries and mutations names 
+// TODO: generate from url 
