@@ -380,15 +380,17 @@ async function astToTsTypesConvertor(astDefinitions: any, typesFolderUri: any){
 					)).join("")
 				: defType.fields.map((filed: any)=>(
 						`	${filed.name.value}${
-								defType.kind === "InputObjectTypeDefinition" && (
-									(filed.type.kind === "NonNullType")
-									// || (filed.type && filed.type.type && filed.type.type.kind && filed.type.type.kind === "NonNullType")
-									// || (filed.type && filed.type.type && filed.type.type.type && filed.type.type.type.kind && 
-									// 	filed.type.type.type.kind === "NonNullType"
-									// )
-								) 
+								filed.type.kind === "NonNullType"
+									// && (
+										// (filed.type.kind === "NonNullType")
+										// || (filed.type && filed.type.type && filed.type.type.kind && filed.type.type.kind === "NonNullType")
+										// || (filed.type && filed.type.type && filed.type.type.type && filed.type.type.type.kind && 
+										// 	filed.type.type.type.kind === "NonNullType"
+										// )
+									// ) 
 								? ":" 
-								: defType.kind === "InputObjectTypeDefinition" ? "?:" : ":"
+								// : defType.kind === "InputObjectTypeDefinition" ? "?:" : ":"
+								: "?:"
 							} ${typeNameToTsTypesExtractor(fieldTypeNameExtractor(filed))}` +
 						`${isArrayType(filed) ? "[]" : ''} \n`
 					)).join("")

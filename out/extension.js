@@ -360,14 +360,17 @@ async function astToTsTypesConvertor(astDefinitions, typesFolderUri) {
             // check if it's enum
             code += defType.kind === "EnumTypeDefinition"
                 ? defType.values.map((value) => (`${value.name.value} = "${value.name.value}", \n`)).join("")
-                : defType.fields.map((filed) => (`	${filed.name.value}${defType.kind === "InputObjectTypeDefinition" && ((filed.type.kind === "NonNullType")
-                // || (filed.type && filed.type.type && filed.type.type.kind && filed.type.type.kind === "NonNullType")
-                // || (filed.type && filed.type.type && filed.type.type.type && filed.type.type.type.kind && 
-                // 	filed.type.type.type.kind === "NonNullType"
-                // )
-                )
+                : defType.fields.map((filed) => (`	${filed.name.value}${filed.type.kind === "NonNullType"
+                    // && (
+                    // (filed.type.kind === "NonNullType")
+                    // || (filed.type && filed.type.type && filed.type.type.kind && filed.type.type.kind === "NonNullType")
+                    // || (filed.type && filed.type.type && filed.type.type.type && filed.type.type.type.kind && 
+                    // 	filed.type.type.type.kind === "NonNullType"
+                    // )
+                    // ) 
                     ? ":"
-                    : defType.kind === "InputObjectTypeDefinition" ? "?:" : ":"} ${typeNameToTsTypesExtractor(fieldTypeNameExtractor(filed))}` +
+                    // : defType.kind === "InputObjectTypeDefinition" ? "?:" : ":"
+                    : "?:"} ${typeNameToTsTypesExtractor(fieldTypeNameExtractor(filed))}` +
                     `${isArrayType(filed) ? "[]" : ''} \n`)).join("");
             // Append the closing curly brace
             code += `};`;
