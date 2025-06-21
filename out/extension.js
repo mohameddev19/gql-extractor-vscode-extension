@@ -43,7 +43,15 @@ async function configExtractor(rootFolderUri) {
         // Open the config file and read its content
         let document = await vscode.workspace.openTextDocument(configUri);
         let content = document.getText();
-        return JSON.parse(content);
+        const config = JSON.parse(content);
+        // Set default values for recursion settings if not provided
+        if (!config.recursionDepth) {
+            config.recursionDepth = 5; // Default recursion depth
+        }
+        if (!config.typeRecursionMap) {
+            config.typeRecursionMap = {}; // Default empty map for specific type recursion depths
+        }
+        return config;
     }
     catch {
         vscode.window.showInformationMessage('No config file found');
@@ -51,9 +59,9 @@ async function configExtractor(rootFolderUri) {
     }
 }
 // A function to generate typescript types
-async function astToApisConvertor(astDefinitions, apisFolderUri, queriesFolderUri, typesFolderUri, fetchPolicy) {
+async function astToApisConvertor(astDefinitions, apisFolderUri, queriesFolderUri, typesFolderUri, fetchPolicy, recursionConfig) {
     // Extract the definitions fileds from the AST to create client-queries
-    let astDefinitionsFileds = definitionsFiledsExtractor(astDefinitions);
+    let astDefinitionsFileds = definitionsFiledsExtractor(astDefinitions, recursionConfig);
     if (astDefinitionsFileds.length === 0) {
         vscode.window.showInformationMessage('No GraphQL AST definitions fileds files found');
         return;
@@ -209,9 +217,9 @@ async function astToApisConvertor(astDefinitions, apisFolderUri, queriesFolderUr
     }
 }
 // A function to generate client queries
-async function astToTsQueriesConvertor(astDefinitions, queriesFolderUri, library) {
+async function astToTsQueriesConvertor(astDefinitions, queriesFolderUri, library, recursionConfig) {
     // Extract the definitions fileds from the AST to create client-queries
-    let astDefinitionsFileds = definitionsFiledsExtractor(astDefinitions);
+    let astDefinitionsFileds = definitionsFiledsExtractor(astDefinitions, recursionConfig);
     if (astDefinitionsFileds.length === 0) {
         vscode.window.showInformationMessage('No GraphQL AST definitions fileds files found');
         return;
@@ -465,16 +473,32 @@ function astToQueryConvertor(subField) {
     return query;
 }
 // A function to extract the field type name
-function fieldTypeNameExtractor(field) {
+function fieldTypeNameExtractor(field, astDefinitions = []) {
     // field type name could be in form first subkey type (field.type.name.value) 
     // to fourth subkey type (field.type.type.type.type.name.value)
+    const recursionName = () => {
+        if (astDefinitions.length > 0) {
+            const def = astDefinitions.find((definition) => (definition.name.value === field.type.name.value));
+            if (def) {
+                // return fieldTypeNameExtractor(def);
+                console.log("def", def);
+                // console.log("fieldTypeNameExtractor(def)", fieldTypeNameExtractor(def));
+            }
+            return "any";
+        }
+        return "any";
+    };
     return (field.type && field.type.name ? (field.type.name.value)
         : field.type && field.type.type && field.type.type.name ? (field.type.type.name.value)
             : field.type && field.type.type && field.type.type.type &&
                 field.type.type.type.name ? (field.type.type.type.name.value)
                 : field.type && field.type.type && field.type.type.type && field.type.type.type.type &&
                     field.type.type.type.type.name ? (field.type.type.type.type.name.value)
-                    : "any");
+                    : field.type && field.type.type && field.type.type.type && field.type.type.type.type && field.type.type.type.type.type &&
+                        field.type.type.type.type.type && field.type.type.type.type.type.name ? (field.type.type.type.type.type.name.value)
+                        : field.type && field.type.type && field.type.type.type && field.type.type.type.type && field.type.type.type.type.type.type &&
+                            field.type.type.type.type.type.type && field.type.type.type.type.type.type.name ? (field.type.type.type.type.type.type.name.value)
+                            : recursionName());
 }
 // A function to extract the field type name as typescript type
 function typeNameToTsTypesExtractor(fieldTypeName) {
@@ -576,7 +600,7 @@ function capitalizeFirstLetter(word) {
     return word[0].toUpperCase() + word.slice(1);
 }
 // A function to extract the query sub-fields names for fields that have sub-fields
-function subFieldsExtractor(astDefinitions, field) {
+function subFieldsExtractor(astDefinitions, field, recursionConfig = { depth: 5, typeMap: {} }, currentPath = []) {
     const mainTypes = ["Int", "Boolean", "DateTime", "String", "Float"];
     if (field.kind === "EnumTypeDefinition" ||
         (mainTypes.find(type => type === fieldTypeNameExtractor(field)) !== undefined)) {
@@ -587,12 +611,28 @@ function subFieldsExtractor(astDefinitions, field) {
         };
     }
     else {
-        let def = astDefinitions.find((definition) => (definition.name.value === fieldTypeNameExtractor(field)));
+        const fieldTypeName = fieldTypeNameExtractor(field, astDefinitions);
+        const newPath = [...currentPath, field.name.value];
+        const pathKey = newPath.join('.');
+        // Get the recursion depth for this type (either from type-specific config or global)
+        let maxDepth = recursionConfig.depth;
+        if (recursionConfig.typeMap && recursionConfig.typeMap[fieldTypeName]) {
+            maxDepth = recursionConfig.typeMap[fieldTypeName];
+        }
+        // Check if we've reached the maximum recursion depth for this path
+        if (newPath.filter((path) => path === field.name.value).length >= maxDepth) {
+            return {
+                ...field,
+                fieldName: field.name.value,
+                subFields: []
+            };
+        }
+        let def = astDefinitions.find((definition) => (definition.name.value === fieldTypeName));
         if (def && def.fields) {
             return {
                 ...field,
                 fieldName: field.name.value,
-                subFields: def.fields.map((subField) => subFieldsExtractor(astDefinitions, subField))
+                subFields: def.fields.map((subField) => subFieldsExtractor(astDefinitions, subField, recursionConfig, newPath))
             };
         }
         else {
@@ -605,7 +645,12 @@ function subFieldsExtractor(astDefinitions, field) {
     }
 }
 // A function to extract the Query and Mutation definitions fileds from the AST
-function definitionsFiledsExtractor(astDefinitions) {
+function definitionsFiledsExtractor(astDefinitions, recursionConfig) {
+    const defaultRecursionConfig = {
+        depth: 5,
+        typeMap: {}
+    };
+    const config = recursionConfig || defaultRecursionConfig;
     return (astDefinitions.filter((def) => def.kind === 'ObjectTypeDefinition' &&
         def.name &&
         (def.name.value === 'Query' || def.name.value === 'Mutation' || def.name.value === 'Subscription'))
@@ -618,7 +663,7 @@ function definitionsFiledsExtractor(astDefinitions) {
             // find the definition of field type by type name value 
             // if type definition have subfields get it
             // then we can use the result to generate query fields
-            queryFields: subFieldsExtractor(astDefinitions, field)
+            queryFields: subFieldsExtractor(astDefinitions, field, config)
         }));
     }).flat());
 }
@@ -779,14 +824,24 @@ function activate(context) {
                     let schema = document.getText();
                     // Parse the schema using graphql-tag library
                     let ast = (0, graphql_tag_1.default)(schema);
+                    // [ ] for test only extract the ast.definitions to json file
+                    // Write the code to the new queries file
+                    // await vscode.workspace.fs.writeFile(vscode.Uri.joinPath(workspaceFolder.uri, 'ast.json'), Buffer.from(JSON.stringify(ast.definitions, null, 2), 'utf8'));
+                    // Set the language of the new queries file to TypeScript
+                    // await vscode.languages.setTextDocumentLanguage(await vscode.workspace.openTextDocument(vscode.Uri.joinPath(workspaceFolder.uri, 'ast.json')), 'typescript');
+                    // Configure recursion settings
+                    const recursionConfig = {
+                        depth: config && config.recursionDepth ? config.recursionDepth : 5,
+                        typeMap: config && config.typeRecursionMap ? config.typeRecursionMap : {}
+                    };
                     // get apis files from AST
                     config && config.apis === "apollo" && await astToApisConvertor(ast.definitions, apisFolderUri, config && config.queriesFolderName && config.queriesFolderName.length > 0
                         ? config.queriesFolderName : 'queries', config && config.typesFolderName && config.typesFolderName.length > 0
-                        ? config.typesFolderName : 'types', fetchPolicy);
+                        ? config.typesFolderName : 'types', fetchPolicy, recursionConfig);
                     // get typescript types from AST and create types files
                     await astToTsTypesConvertor(ast.definitions, typesFolderUri);
                     // get client queries from AST and create queries files
-                    await astToTsQueriesConvertor(ast.definitions, queriesFolderUri, config && config.apis);
+                    await astToTsQueriesConvertor(ast.definitions, queriesFolderUri, config && config.apis, recursionConfig);
                     // Show a message to the user
                     vscode.window.showInformationMessage(`Created queries and types from ${file.fsPath}`);
                 }

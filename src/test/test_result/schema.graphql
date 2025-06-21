@@ -1,0 +1,7014 @@
+type Name {
+  lang: String!
+  lang2: String!
+}
+
+type IdNameType {
+  id: String!
+  name: Name!
+}
+
+type IdSingleNameType {
+  id: String!
+  name: String!
+}
+
+type PatientData {
+  id: String!
+  firstName: Name!
+  secondName: Name
+  thirdName: Name
+  lastName: Name
+  dob: String
+  gender: Gender!
+  mrn: String
+}
+
+enum Gender {
+  MALE
+  FEMALE
+  BOTH
+}
+
+type IdDualNameType {
+  id: String!
+  firstName: Name!
+  lastName: Name!
+}
+
+type SuccessResult {
+  success: Boolean!
+}
+
+type LangValue {
+  lang: String!
+  value: String!
+}
+
+type RolePermissionModule {
+  id: String!
+  permissions: [String!]!
+}
+
+type Role {
+  _id: String!
+  name: Name!
+  description: Name!
+  permissionModules: [RolePermissionModule!]!
+  tenantId: String!
+  isDeleted: Boolean!
+  createdAt: String!
+  updatedAt: String!
+}
+
+type UserAccountingMetadata {
+  accountId: String
+  costCenterId: String
+}
+
+type UserMetadata {
+  accounting: UserAccountingMetadata
+}
+
+type UserRole {
+  _id: String!
+  name: Name!
+  description: Name!
+  permissionModules: [RolePermissionModule!]!
+}
+
+type UserOrganization {
+  organizationId: String!
+  organizationName: Name!
+  roles: [UserRole!]!
+  branches: [String!]!
+  defaultBranch: String!
+  platforms: [UserPlatform!]!
+}
+
+type UserWorkingWeekDays {
+  sat: [Boolean!]!
+  sun: [Boolean!]!
+  mon: [Boolean!]!
+  tue: [Boolean!]!
+  wed: [Boolean!]!
+  thu: [Boolean!]!
+  fri: [Boolean!]!
+}
+
+type UserWorkingHours {
+  slotMinutes: Float!
+  weekDays: UserWorkingWeekDays!
+}
+
+type UserPlatform {
+  id: String!
+  name: String!
+  price: Float!
+  insuranceCompanyId: String
+  insuranceClassId: String
+  workingHours: UserWorkingHours
+}
+
+type UserSpeciality {
+  id: String!
+  name: Name!
+  subspecialities: [IdNameType!]!
+}
+
+type UserLicense {
+  standardName: String!
+  value: String!
+  attachments: [String!]!
+}
+
+type UserPhone {
+  primary: String!
+  secondary: String!
+}
+
+type UserEducation {
+  level: IdNameType!
+  sublevel: IdNameType
+}
+
+type User {
+  _id: String!
+  firstName: Name!
+  lastName: Name!
+  fullName: Name!
+  prefix: NamePrefix
+  type: UserType
+  profileImg: String
+  education: UserEducation
+  bio: String
+  email: String!
+  phone: UserPhone
+  nationality: Countries
+  saudiCommissionNumber: String
+  local: String
+  activationCode: String
+  active: Boolean!
+  specialities: [UserSpeciality!]!
+  profession: IdNameType
+  branchId: String
+  organizations: [UserOrganization!]!
+  approvedPlatforms: [String!]
+  licenses: [UserLicense!]
+  metadata: UserMetadata
+  userAccessToken: String
+  orgAccessToken: String
+  tenantId: String
+  createdBy: String
+  status: ModelStatus!
+  isDeleted: Boolean!
+  createdAt: String!
+  updatedAt: String!
+}
+
+enum NamePrefix {
+  DR
+  PROF
+  MR
+  MS
+}
+
+enum UserType {
+  MEDICAL
+  NONMEDICAL
+}
+
+enum Countries {
+  AD
+  AE
+  AF
+  AG
+  AI
+  AL
+  AM
+  AO
+  AQ
+  AR
+  AS
+  AT
+  AU
+  AW
+  AX
+  AZ
+  BA
+  BB
+  BD
+  BE
+  BF
+  BG
+  BH
+  BI
+  BJ
+  BL
+  BM
+  BN
+  BO
+  BQ
+  BR
+  BS
+  BT
+  BV
+  BW
+  BY
+  BZ
+  CA
+  CC
+  CD
+  CF
+  CG
+  CH
+  CI
+  CK
+  CL
+  CM
+  CN
+  CO
+  CR
+  CU
+  CV
+  CW
+  CX
+  CY
+  CZ
+  DE
+  DJ
+  DK
+  DM
+  DO
+  DZ
+  EC
+  EE
+  EG
+  EH
+  ER
+  ES
+  ET
+  FI
+  FJ
+  FK
+  FM
+  FO
+  FR
+  GA
+  GB
+  GD
+  GE
+  GF
+  GG
+  GH
+  GI
+  GL
+  GM
+  GN
+  GP
+  GQ
+  GR
+  GS
+  GT
+  GU
+  GW
+  GY
+  HK
+  HM
+  HN
+  HR
+  HT
+  HU
+  ID
+  IE
+  IM
+  IN
+  IO
+  IQ
+  IR
+  IS
+  IT
+  JE
+  JM
+  JO
+  JP
+  KE
+  KG
+  KH
+  KI
+  KM
+  KN
+  KP
+  KR
+  KW
+  KY
+  KZ
+  LA
+  LB
+  LC
+  LI
+  LK
+  LR
+  LS
+  LT
+  LU
+  LV
+  LY
+  MA
+  MC
+  MD
+  ME
+  MF
+  MG
+  MH
+  MK
+  ML
+  MM
+  MN
+  MO
+  MP
+  MQ
+  MR
+  MS
+  MT
+  MU
+  MV
+  MW
+  MX
+  MY
+  MZ
+  NA
+  NC
+  NE
+  NF
+  NG
+  NI
+  NL
+  NO
+  NP
+  NR
+  NU
+  NZ
+  OM
+  PA
+  PE
+  PF
+  PG
+  PH
+  PK
+  PL
+  PM
+  PN
+  PR
+  PS
+  PT
+  PW
+  PY
+  QA
+  RE
+  RO
+  RS
+  RU
+  RW
+  SA
+  SB
+  SC
+  SD
+  SE
+  SG
+  SH
+  SI
+  SJ
+  SK
+  SL
+  SM
+  SN
+  SO
+  SR
+  SS
+  ST
+  SV
+  SX
+  SY
+  SZ
+  TC
+  TD
+  TF
+  TG
+  TH
+  TJ
+  TK
+  TL
+  TM
+  TN
+  TO
+  TR
+  TT
+  TV
+  TW
+  TZ
+  UA
+  UG
+  UM
+  US
+  UY
+  UZ
+  VA
+  VC
+  VE
+  VG
+  VI
+  VN
+  VU
+  WF
+  WS
+  YE
+  YT
+  ZA
+  ZM
+  ZW
+  ALL
+}
+
+enum ModelStatus {
+  ENABLED
+  DISABLED
+}
+
+type CreateNewUserResult {
+  access_token: String
+  userId: String
+}
+
+type SignInResult {
+  firstName: Name
+  lastName: Name
+  email: String
+  access_token: String
+  orgAccessToken: String
+  userId: String
+  organizations: [UserOrganization!]
+}
+
+type Relationship {
+  id: String!
+  name: Name!
+}
+
+type VisitSummary {
+  visitSummary: String!
+  createdBy: String
+  createdDate: String
+  isDeleted: Boolean!
+}
+
+type InsuranceCompanyData {
+  id: String!
+  name: Name!
+}
+
+type InsuranceCompanyClass {
+  id: String!
+  name: Name!
+}
+
+type PatientMedicalSummary {
+  medicalHistorySummary: String!
+  visitSummary: VisitSummary
+  allergies: [Allergy!]
+  activeMedications: [ActiveMedication!]
+  chronicIllnesses: [ChronicIllness!]
+  medicalImages: [MedicalImage!]
+}
+
+type Allergy {
+  allergyId: String
+  allergyName: String
+  allergyType: String
+  reaction: String
+  severity: AllergySeverity
+  allergyDate: String
+  notes: String
+}
+
+enum AllergySeverity {
+  MILD
+  MODERATE
+  SEVERE
+}
+
+type ActiveMedication {
+  procedureId: String
+  imageUrl: String
+  medicationName: String
+  dosage: String
+  frequency: String
+  notes: String
+  for: String
+  quantity: Float
+  medicationForm: String
+}
+
+type ChronicIllness {
+  diagnosisId: String
+  diagnosisName: String
+  diagnosisDate: String
+}
+
+type MedicalImage {
+  imageUrl: String!
+  notes: String
+  type: MedicalImageType!
+}
+
+enum MedicalImageType {
+  LAB_RESULT
+  OTHER
+}
+
+type PatientCard {
+  _id: String!
+  cardNumber: String
+  insuranceCompany: InsuranceCompanyData
+  insuranceCompanyClass: InsuranceCompanyClass
+  relationship: Relationship
+  status: ModelStatus!
+  expiryDate: String
+  createdBy: String
+}
+
+type PatientName {
+  lang: String
+  lang2: String
+}
+
+type PersonalId {
+  type: IdType!
+  issuingCountry: Countries!
+  number: String!
+}
+
+enum IdType {
+  PASSPORT
+  CIVIL_ID
+  DRIVING_LICENSE
+  RESIDENCE
+  TOURISM_VISA
+  UMRAH_VISA
+  OTHER_VISA
+  OTHER
+}
+
+type Patient {
+  _id: String!
+  globalId: String
+  firstName: PatientName!
+  secondName: PatientName
+  thirdName: PatientName
+  lastName: PatientName
+  fullName: PatientName!
+  dob: String
+  gender: Gender!
+  personalId: [PersonalId!]
+  mrn: String
+  address: String
+  state: String
+  cellPhone: String
+  workPhoneExt: String
+  nationality: String
+  email: String
+  profileImg: String
+  preferredLanguage: Language
+  workPhone: String
+  homePhone: String
+  cards: [PatientCard!]!
+  patientMedicalSummary: PatientMedicalSummary
+  hairType: String
+  skinType: String
+  weight: Float
+  height: Float
+  createdFrom: PatientCreationSource
+  entryCount: Float!
+  loyaltyProgramPoints: Float
+  creditBalance: Float
+  lastEntryDate: String
+  branchId: String
+  createdBy: String
+  status: ActivityStatus!
+  tenantId: String
+  isDeleted: Boolean
+  createdAt: String
+  updatedAt: String
+}
+
+enum Language {
+  EN
+  AR
+  FR
+  AM
+}
+
+enum PatientCreationSource {
+  ORGANIZATION
+  PATIENT_PORTAL
+}
+
+enum ActivityStatus {
+  ACTIVE
+  INACTIVE
+}
+
+type VitalsBloodPressure {
+  systolic: Float!
+  diastolic: Float!
+}
+
+type Vitals {
+  _id: String!
+  patientId: String!
+  temperature: Float
+  weight: Float
+  bloodPressure: VitalsBloodPressure
+  respiratoryRate: Float
+  pulseRate: Float
+  oxygenLevel: Float
+  preauthStatus: VitalsPreauthStatus
+  tenantId: String!
+  createdBy: String!
+  isDeleted: Boolean!
+  createdAt: String!
+  updatedAt: String!
+}
+
+enum VitalsPreauthStatus {
+  NEW
+  SUBMITTED
+  UDPATED
+}
+
+type ColumnInnerAssociatedProcedureProcedureData {
+  id: String!
+  name: Name!
+  section: ProcedureSection!
+  receptionStoreId: String
+}
+
+enum ProcedureSection {
+  DIAGNOSIS
+  MEDICAL_SERVICE
+  DENTAL_SERVICE
+  MEDICATION
+  LAB_TEST
+  VISION
+  CONSULTATION
+  RADIOLOGY
+}
+
+type ColumnInnerAssociatedProcedure {
+  procedure: ColumnInnerAssociatedProcedureProcedureData
+  quantity: Float!
+  defaultStoreId: String
+  receptionStoreId: String
+}
+
+type ColumnAssociatedProcedureData {
+  id: String!
+  name: Name!
+  section: String!
+  receptionStoreId: String
+  associatedProcedures: [ColumnInnerAssociatedProcedure!]
+}
+
+type ColumnAssociatedProcedure {
+  _id: String!
+  procedure: ColumnAssociatedProcedureData
+  quantity: Int!
+  knowledgeBase: Name!
+}
+
+type ColumnName {
+  lang: String
+  lang2: String
+}
+
+type Provider {
+  id: String!
+  firstName: Name!
+  lastName: Name!
+}
+
+type Facility {
+  id: String!
+  name: Name!
+}
+
+type FacilityOutput {
+  _id: String!
+  facilityName: Name!
+  branchId: String
+  createdBy: String
+  status: String
+  tenantId: String!
+  isDeleted: Boolean
+}
+
+type Branch {
+  id: String!
+  name: Name!
+}
+
+type SchedulerColumn {
+  _id: String!
+  columnName: ColumnName!
+  associatedProcedure: [ColumnAssociatedProcedure!]!
+  teamId: String
+  teamIds: [String!]
+  procedureTypeIds: [String!]
+  provider: Provider
+  facility: Facility
+  timeInterval: Int!
+  satDay: Boolean!
+  sunDay: Boolean!
+  monDay: Boolean!
+  tueDay: Boolean!
+  wedDay: Boolean!
+  thuDay: Boolean!
+  friDay: Boolean!
+  defaultOrder: Int!
+  branch: Branch
+  createdBy: String
+  status: String!
+  tenantId: String!
+  isDeleted: Boolean!
+  createdAt: String!
+  updatedAt: String!
+}
+
+type VisitTypeName {
+  lang: String
+  lang2: String
+}
+
+type VisitType {
+  _id: String!
+  visitTypeName: VisitTypeName!
+  globalId: String
+  timeslot: Float!
+  tenantId: String!
+  branchId: String!
+  createdBy: String
+  status: ModelStatus!
+  isDeleted: Boolean!
+  createdAt: String!
+  updatedAt: String!
+}
+
+type SubSpeciality {
+  _id: String!
+  name: Name!
+  status: ModelStatus!
+  isDeleted: Boolean!
+  createdBy: String
+  createdAt: String!
+  updatedAt: String!
+}
+
+type Speciality {
+  _id: String!
+  name: Name!
+  subspecialities: [IdNameType!]!
+  status: ModelStatus!
+  isDeleted: Boolean!
+  createdBy: String
+  createdAt: String!
+  updatedAt: String!
+}
+
+type ProviderData {
+  id: String!
+  firstName: Name!
+  lastName: Name!
+}
+
+type BranchData {
+  id: String!
+  name: Name!
+}
+
+type SchedulerColumnData {
+  id: String!
+  name: Name!
+}
+
+type VisitTypeData {
+  id: String!
+  name: Name!
+}
+
+type ProcedureRefData {
+  id: String!
+  name: Name!
+}
+
+type DoctorRequestRef {
+  healthRecordId: String!
+  diagnosisId: String!
+  diagnosisProcedureId: String!
+  attachmentId: String
+  procedureType: ProcedureSection
+}
+
+type EntryProcedureRequirement {
+  requirementId: String!
+  name: String!
+  machineResponseStatus: EntryProcedureMachineResponseStatus!
+  attachmentIds: [String!]
+  hasNewMachineResponse: Boolean!
+  isDeleted: Boolean!
+}
+
+enum EntryProcedureMachineResponseStatus {
+  PENDING_COLLECTION
+  PENDING_MACHINE_RESULT
+  COMPLETED
+}
+
+type EntryRequirement {
+  requirementId: String!
+  name: String!
+  machineResponseStatus: EntryProcedureMachineResponseStatus!
+  attachmentIds: [String!]
+  hasNewMachineResponse: Boolean!
+  isDeleted: Boolean!
+}
+
+type TeamMemberAssignment {
+  teamMemberId: String!
+  userId: String!
+  incentiveAmount: Float
+}
+
+type TeamAssignment {
+  teamId: String!
+  memberAssignment: [TeamMemberAssignment!]!
+}
+
+type EntryProcedureUnit {
+  id: String!
+  name: String!
+}
+
+type EntryProductQuantity {
+  batchNumber: String!
+  quantity: Float!
+  expiryDate: String!
+}
+
+type PatientProcedureData {
+  patientProcedureId: String!
+  healthRecordId: String
+  diagnosisGroupId: String
+}
+
+type EntryAssociatedProcedure {
+  procedureId: String!
+  quantity: String!
+  storeId: String!
+}
+
+type EntryProcedureAssociatedOffer {
+  offerId: String!
+  procedureQuantity: Int!
+}
+
+type EntryProcedure {
+  _id: String
+  parentEntryProcedureId: String
+  parentProcedureId: String
+  patientProcedureData: PatientProcedureData
+  requestedFromEntryId: String
+  procedure: ProcedureRefData
+  procedureType: ProcedureRefData
+  procedureSection: ProcedureSection
+  storeId: String
+  requirements: [EntryProcedureRequirement!]
+  associatedProcedures: [EntryAssociatedProcedure!]
+  associatedOffers: [EntryProcedureAssociatedOffer!]
+  requirementIds: [String!]
+  parentHealthRecordId: String
+  attachmentId: String
+  requirementId: String
+  insuranceCompany: IdNameType
+  insuranceCompanyClass: IdNameType
+  attachedMedicalNotes: [String!]!
+  patientAmount: Float!
+  patientVat: Float!
+  companyAmount: Float!
+  companyVat: Float!
+  discount: Float!
+  quantity: Float!
+  returnedQuantity: Float!
+  productQuantities: [EntryProductQuantity!]
+  unit: EntryProcedureUnit
+  orthancAccessionNumber: String
+  signed: Boolean
+  assignedTo: TeamAssignment
+  branchId: String!
+  createdBy: String
+  status: String!
+  tenantId: String
+  isDeleted: Boolean!
+  createdAt: String!
+  updatedAt: String!
+}
+
+type EntryAttachments {
+  notes: String
+  urls: [String!]
+}
+
+type EntryAssociatedOffer {
+  offerId: String!
+  offerQuantity: Int!
+}
+
+type EntryTelemedicineSessionData {
+  roomId: String
+  accessToken: String
+}
+
+type Entry {
+  _id: String!
+  entryNumber: String
+  clientEntryNumber: String
+  procedures: [EntryProcedure!]!
+  totalPatientAmount: Float!
+  totalPatientVat: Float!
+  totalCompanyAmount: Float!
+  totalCompanyVat: Float!
+  discount: Float!
+  paidAmount: Float!
+  facility: IdNameType
+  patient: PatientData
+  provider: ProviderData
+  branch: BranchData
+  schedulerColumn: SchedulerColumnData
+  storeId: String
+  scheduledDate: String!
+  checkInDate: String
+  closedDate: String
+  visitType: VisitTypeData
+  visitMinutes: Float!
+  teleMedicineLink: String!
+  telemedicineSession: EntryTelemedicineSessionData
+  issuedFrom: EntryIssuePoint!
+  paymentMethodId: String
+  currency: Currency!
+
+  # automatically add credit transaction when set to true
+  markAsPaid: Boolean!
+  requirements: [EntryRequirement!]
+  attachments: EntryAttachments
+  associatedOffers: [EntryAssociatedOffer!]
+  confirmed: Boolean
+  labResultPrinted: Boolean
+  callStatus: EntryCallStatus!
+  creator: IdDualNameType
+  createdBy: String
+  status: String!
+  tenantId: String!
+  isDeleted: Boolean!
+  createdAt: String!
+  updatedAt: String!
+}
+
+enum EntryIssuePoint {
+  POS
+  APPOINTMENT
+  PLATFORM
+}
+
+enum Currency {
+  USD
+  SDG
+  SAR
+}
+
+enum EntryCallStatus {
+  NEW
+  PENDING
+  READY
+  CALLED
+  RE_CALL
+  ARRIVED
+  STARTED
+  CLOSED
+  NO_SHOW
+  CANCELLED
+  RECALL
+}
+
+type PaymentMethodMetadata {
+  accountId: String
+}
+
+type PaymentMethod {
+  _id: String!
+  globalId: String
+  paymentMethodName: Name!
+  paymentMethodType: String!
+  branchId: String!
+  logoUrl: String!
+  metadata: PaymentMethodMetadata
+  createdBy: String!
+  status: ModelStatus!
+  tenantId: String!
+  isDeleted: Boolean!
+  createdAt: String!
+  updatedAt: String!
+}
+
+type RequestDiagnosisCode {
+  standardName: String!
+  code: String!
+}
+
+type RequestApproval {
+  approvalSource: RequestApprovalSource!
+  approvalRefId: String
+  approvalStatus: RequestApprovalStatus!
+  rejectionReason: String
+}
+
+enum RequestApprovalSource {
+  NPHIES
+  MANUAL
+}
+
+enum RequestApprovalStatus {
+  PENDING_READ
+  SENT
+  PENDING_APPROVAL
+  APPROVED
+}
+
+type RequestDiagnosis {
+  diagnosisId: String!
+  diagnosisName: Name!
+  diagnosisCode: RequestDiagnosisCode!
+}
+
+type RequestAssociatedProcedureProcedureData {
+  id: String!
+  name: Name!
+  section: ProcedureSection!
+  receptionStoreId: String
+}
+
+type RequestAssociatedProcedure {
+  procedure: RequestAssociatedProcedureProcedureData
+  quantity: Float!
+  defaultStoreId: String
+}
+
+type RequestProcedure {
+  patientProcedureId: String
+  patientProcedureData: PatientProcedureData
+  doctorRequestRef: DoctorRequestRef @deprecated(reason: "No longer needed")
+  requestedFromEntryId: String @deprecated(reason: "What is this used for?")
+  destination: RequestDestination!
+  procedure: IdNameType
+  procedureType: IdNameType
+  procedureSection: ProcedureSection
+  associatedProcedures: [RequestAssociatedProcedure!]
+  quantity: Float!
+  patientAmount: Float
+  approval: RequestApproval
+  diagnosis: RequestDiagnosis
+  createdBy: String!
+  status: ModelStatus!
+  isDeleted: Boolean!
+  createdAt: String!
+  updatedAt: String!
+}
+
+enum RequestDestination {
+  PHARMACY
+  MEDICAL_SERVICE
+  DOCTOR_APPOINTMENT
+}
+
+type RequestPatient {
+  id: String!
+  firstName: Name!
+  secondName: Name!
+  thirdName: Name!
+  lastName: Name!
+}
+
+type RequestProvider {
+  id: String!
+  firstName: Name!
+  lastName: Name!
+}
+
+type Request {
+  _id: String!
+  sourceId: String!
+  sourceType: RequestSourceType!
+  procedures: [RequestProcedure!]!
+  patient: RequestPatient
+  provider: RequestProvider
+  branch: IdNameType
+  visitTypeId: String @deprecated(reason: "No longer needed")
+  visitType: IdNameType
+  checkInDate: String @deprecated(reason: "No longer needed")
+  visitMinutes: Float @deprecated(reason: "No longer needed")
+  teleMedicineLink: String @deprecated(reason: "No longer needed")
+  approvalStatus: RequestApprovalStatus!
+  status: RequestStatus!
+  tenantId: String!
+  createdBy: String!
+  isDeleted: Boolean!
+  createdAt: String!
+  updatedAt: String!
+}
+
+enum RequestSourceType {
+  PLATFORM
+  ORGANIZATION
+}
+
+enum RequestStatus {
+  PENDING
+  REQUESTED
+  DECLINED
+}
+
+type ExpenseCategory {
+  _id: String!
+  globalId: String
+  icon: String!
+  expenseCategory: Name!
+  tenantId: String!
+  status: ModelStatus!
+  isDeleted: Boolean!
+  createdAt: String!
+  updatedAt: String!
+}
+
+type TransactionIssuer {
+  issuerId: String!
+  amount: Float!
+}
+
+type Transaction {
+  _id: String!
+  transactionNumber: String!
+  source: TransactionSource!
+  referenceId: String
+  expenseCategory: IdNameType
+  transactionAmount: Float!
+  currency: Currency!
+  merchantId: String
+  transactionDate: String!
+  tax: Float!
+  comments: String!
+  paymentMethod: IdNameType
+  transactionType: TransactionType!
+  attachments: [String!]
+  issuers: [TransactionIssuer!]!
+  issuedFrom: TransactionIssuerType!
+  createdFrom: TransactionCreationSource
+  isVerified: Boolean
+  creator: IdDualNameType
+  tenantId: String!
+  branchId: String!
+
+  # Nullable because Stripe transactions have no createdBy field
+  createdBy: String
+  status: TransactionStatus!
+  isDeleted: Boolean!
+  createdAt: String!
+  updatedAt: String!
+}
+
+enum TransactionSource {
+  STRIPE
+  OTHER
+}
+
+enum TransactionType {
+  DEBIT
+  CREDIT
+}
+
+enum TransactionIssuerType {
+  ENTRY
+  INCENTIVE
+  EXPENSES
+  PURCHASE_ORDER
+}
+
+enum TransactionCreationSource {
+  PLATFORM
+  ORGANIZATION
+}
+
+enum TransactionStatus {
+  ENABLED
+  NEW
+  VERIFIED
+  APPROVED
+  TRANSFERRED
+}
+
+type Merchant {
+  _id: String!
+  name: Name!
+  tenantId: String!
+  status: ModelStatus!
+  isDeleted: Boolean!
+  createdAt: String!
+  updatedAt: String!
+}
+
+type Profession {
+  _id: String!
+  globalId: String
+  name: Name!
+  tenantId: String!
+  status: ModelStatus!
+  isDeleted: Boolean!
+  createdAt: String!
+  updatedAt: String!
+}
+
+type TeamMemberUser {
+  id: String!
+  firstName: Name!
+  lastName: Name!
+  profileImg: String
+}
+
+type TeamMember {
+  _id: String!
+  user: TeamMemberUser
+  profession: IdNameType!
+  mainProvider: Boolean
+}
+
+type Team {
+  _id: String!
+  name: Name!
+  members: [TeamMember!]!
+  tenantId: String!
+  status: ModelStatus!
+  isDeleted: Boolean!
+  createdAt: String!
+  updatedAt: String!
+}
+
+type ProcedureIncentiveItem {
+  procedureId: String!
+  procedureName: Name
+  value: Float!
+  calculationBasis: IncentiveCalculationBasis!
+}
+
+enum IncentiveCalculationBasis {
+  PERCENTAGE
+  FIXED_AMOUNT
+}
+
+type ProcedureIncentive {
+  _id: String!
+  teamId: String!
+  teamMemberId: String!
+  procedures: [ProcedureIncentiveItem!]!
+  tenantId: String!
+  status: ModelStatus!
+  isDeleted: Boolean!
+  createdAt: String!
+  updatedAt: String!
+}
+
+type TeamMemberIncentive {
+  _id: String!
+  entryId: String!
+  teamId: String!
+  memberId: String!
+  userId: String!
+  patient: PatientData
+  procedureId: String!
+  procedure: IdNameType
+  incentiveAmount: Float!
+  paidAmount: Float!
+  currency: Currency!
+  tenantId: String!
+  createdBy: String!
+  isDeleted: Boolean!
+  createdAt: String!
+  updatedAt: String!
+}
+
+type RequirementCounter {
+  requirementId: String!
+}
+
+type EntryStats {
+  totalPatientAmount: Float!
+  totalCompanyAmount: Float!
+  totalPaidAmount: Float!
+}
+
+type TeamMemberIncentiveStats {
+  totalAmount: Float!
+  totalPaidAmount: Float!
+}
+
+type EntrySafeDeleteResult {
+  entriesDeleted: Float!
+  transactionsDeleted: Float!
+  teamMemberIncentivesDeleted: Float!
+}
+
+type UserTransactionStats {
+  user: IdDualNameType
+  paymentMethod: IdNameType
+  transactionType: TransactionType!
+  totalAmount: Float!
+}
+
+type AccountData {
+  accountNumber: String!
+  name: String!
+}
+
+type CostCenterData {
+  id: String!
+  name: String!
+}
+
+type AccountingTransactionApproval {
+  approvedBy: String!
+  approvedAt: String!
+}
+
+type AccountingTransaction {
+  amount: Float!
+  tax: Float!
+  description: String!
+  debitAccount: AccountData!
+  creditAccount: AccountData!
+  costCenter: CostCenterData
+}
+
+type AccountingEntryIssuer {
+  id: String!
+  type: String!
+}
+
+type AccountingEntry {
+  _id: String!
+  transactions: [AccountingTransaction!]!
+  issuer: AccountingEntryIssuer!
+  date: String!
+  approval: AccountingTransactionApproval
+  transferredAt: String
+  tenantId: String!
+  isDeleted: Boolean!
+}
+
+type ProviderEntryStats {
+  provider: IdDualNameType
+  totalPatientAmount: Float!
+  totalPatientVat: Float!
+  totalCompanyAmount: Float!
+  totalCompanyVat: Float!
+  totalDiscount: Float!
+}
+
+type ExternalCostCenter {
+  _id: String!
+  externalId: String!
+  name: String!
+  tenantId: String!
+  createdBy: String!
+  isDeleted: Boolean!
+  createdAt: String!
+  updatedAt: String!
+}
+
+type ExternalAccount {
+  _id: String!
+  accountNumber: String!
+  name: String!
+  tenantId: String!
+  createdBy: String!
+  isDeleted: Boolean!
+  createdAt: String!
+  updatedAt: String!
+}
+
+type OfferProduct {
+  id: String!
+  name: Name
+  image: String
+  sellPrice: Float!
+}
+
+type OfferVariables {
+  title: String
+  description: String
+  buyProduct: OfferProduct
+  buyQuantity: Float
+  getFreeProduct: OfferProduct
+  getFreeQuantity: Float
+  startDate: String
+  endDate: String
+  product: OfferProduct
+  discountPercentage: Float
+  minPurchaseAmount: Float
+  categoryIds: [String!]
+  discountAmount: Float
+  currency: String
+  bundleProducts: [OfferProduct!]
+  originalTotalPrice: Float
+  bundlePrice: Float
+  pointsPerAmount: Float
+  amountPerPoint: Float
+  minPointsToRedeem: Float
+  redemptionRatio: Float
+  productIds: [String!]
+  giftProducts: [OfferProduct!]
+  comboProducts: [OfferProduct!]
+  isLimitedTime: Boolean
+}
+
+type OfferBackground {
+  type: OfferBackgroundType!
+  value: String!
+}
+
+enum OfferBackgroundType {
+  IMAGE
+  COLOR
+}
+
+type OfferElementPosition {
+  x: Float!
+  y: Float!
+}
+
+type OfferElementStyle {
+  fontSize: Float
+  fontWeight: String
+  fontColor: String
+  fontFamily: String
+  textAlign: OfferElementTextAlignment
+}
+
+enum OfferElementTextAlignment {
+  LEFT
+  CENTER
+  RIGHT
+}
+
+type OfferElement {
+  type: OfferElementType!
+  content: String!
+  position: OfferElementPosition!
+  style: OfferElementStyle
+  height: Float
+  width: Float
+}
+
+enum OfferElementType {
+  PRODUCT_NAME
+  DISCOUNT_VALUE
+  PROMO_TEXT
+  DESCRIPTION
+  PRODUCT_IMAGE
+  ORIGINAL_PRICE
+  FINAL_PRICE
+}
+
+type Offer {
+  _id: String!
+  title: String!
+  offerType: OfferType!
+  background: OfferBackground!
+  elements: [OfferElement!]!
+  variables: OfferVariables!
+  associatedProductIds: [String!]!
+  loyaltyProgramPoints: Float
+  isActive: Boolean!
+  tenantId: String!
+  createdBy: String!
+  isDeleted: String!
+  createdAt: String!
+  updatedAt: String!
+}
+
+enum OfferType {
+  BUY_X_GET_Y_FREE
+  PERCENTAGE_DISCOUNT
+  FLAT_DISCOUNT
+  BUNDLE_OFFER
+  LOYALTY_PROGRAM
+  SEASONAL_OFFER
+  REFERRAL_PROGRAM
+  CLEARANCE_SALE
+  MEMBERSHIP_DISCOUNT
+  FREE_DELIVERY
+  FLASH_SALE
+  BUY_ONE_GET_ONE_HALF_PRICE
+  PRESCRIPTION_DISCOUNT
+  GIFT_WITH_PURCHASE
+  CASHBACK_OFFER
+  TIME_SENSITIVE_DISCOUNT
+  PRICE_MATCH_GUARANTEE
+  FIRST_TIME_CUSTOMER_DISCOUNT
+  PRODUCT_OF_THE_MONTH_DISCOUNT
+  COMBO_OFFER
+  BOGO
+}
+
+type PaitentLoyaltyBalances {
+  loyaltyProgramPoints: Float!
+  creditBalance: Float!
+}
+
+type Organization {
+  _id: String!
+  organizationName: Name!
+  countryCode: String!
+  email: String
+  logoUrl: String
+  phone: String
+  organizationOwner: String
+  organizationType: IdNameType
+  subDomain: String
+  referralCode: String
+  dbInstance: String
+  dbName: String
+  tenantType: String!
+  createdBy: String
+  status: String!
+  tenantId: String
+  isDeleted: Boolean!
+  createdAt: String!
+  updatedAt: String!
+}
+
+type OrganizationTypeObjectType {
+  _id: String!
+  id: String!
+  name: Name!
+  createdBy: String
+  status: String!
+  isDeleted: Boolean!
+  createdAt: String!
+  updatedAt: String!
+}
+
+type Location {
+  latitude: String!
+  longitude: String!
+}
+
+type OrganizationBranch {
+  _id: String!
+  branchName: Name!
+  organizationType: IdNameType!
+  location: Location!
+  address: String!
+  firstPhone: String!
+  secondPhone: String!
+  email: String!
+  countryCode: Countries!
+  currencyCode: String!
+  currencyCode2: String!
+  lang: String!
+  lang2: String!
+  createdBy: String
+  tenantId: String!
+  status: ModelStatus!
+  isDeleted: Boolean!
+  createdAt: String!
+  updatedAt: String!
+}
+
+type Feature {
+  name: String!
+  value: String!
+}
+
+type Package {
+  _id: String!
+  packageName: String!
+  slogan: String!
+  price: Float!
+  features: [Feature!]!
+  additionalFeatures: [Feature!]!
+  isDeleted: Boolean!
+  createdAt: String!
+  updatedAt: String!
+}
+
+type BranchQuickbooksSettings {
+  companyId: String!
+}
+
+type BranchSettings {
+  branchId: String!
+  accountingSystem: AccountingSystem
+  quickbooks: BranchQuickbooksSettings
+  pointsPerUnitCurrency: Float
+  monetaryDecimalPlaces: Float
+  tenantId: String!
+  createdAt: String!
+  updatedAt: String!
+}
+
+enum AccountingSystem {
+  QUICKBOOKS
+}
+
+type CompanyPolicyTag {
+  tagName: String!
+  value: String!
+}
+
+type CompanyPolicy {
+  _id: String!
+  insuranceCompanyId: String!
+  insuranceClassId: String!
+  procedureId: String!
+  procedureName: Name!
+  patientAmount: Float!
+  companyAmount: Float!
+  tags: [CompanyPolicyTag!]
+  approvalNeeded: Boolean!
+  createdBy: String!
+  status: ModelStatus!
+  isDeleted: Boolean!
+  createdAt: String!
+  updatedAt: String!
+}
+
+type InsuranceCompanyMetadata {
+  accountId: String
+}
+
+type InsuranceCompanyClassObject {
+  _id: String!
+  companyClassName: Name!
+  branchId: String!
+  isDeleted: Boolean!
+  createdBy: String!
+  status: String!
+}
+
+type InsuranceCompany {
+  _id: String!
+  globalId: String
+  name: Name!
+  email: String!
+  phone1: String!
+  phone2: String!
+  website: String!
+  branchId: String!
+  logoUrl: String!
+  tenantId: String!
+  createdBy: String!
+  status: String!
+  isDeleted: Boolean!
+  insuranceCompanyClasses: [InsuranceCompanyClassObject!]!
+  cash: Boolean
+    @deprecated(reason: "Replaced with a globalId for 'Cash' company")
+  metadata: InsuranceCompanyMetadata
+  createdAt: String!
+  updatedAt: String!
+}
+
+type DurationValue {
+  startDate: String!
+  value: String!
+}
+
+type PropsObject {
+  description: String
+  defaultValue: String
+  colspan: Float
+  data: [String!]
+  fixedDecimalScale: Boolean
+  precision: Float
+  required: Boolean
+  decimalScale: Boolean
+  value: String
+  placeholder: String
+  durationValues: [DurationValue!]
+  rows: [[TemplateObject!]!]
+}
+
+type NormalRange {
+  gender: Gender
+  ageMin: Float
+  ageMax: Float
+  normalRange: [Float!]
+  normalValues: [String!]
+}
+
+type TemplateObjectFormula {
+  equation: String
+  variables: [String!]
+}
+
+type TemplateInputUnit {
+  id: String!
+  abbreviation: String!
+}
+
+type TemplateObject {
+  globalInput: String
+  id: String
+  type: TemplateInpType!
+  label: String!
+  unit: TemplateInputUnit
+  props: PropsObject!
+  formula: TemplateObjectFormula
+  criticalEnd: Float
+  criticalContinue: Float
+  normalRange: [NormalRange!]
+}
+
+enum TemplateInpType {
+  TEXT
+  SWITCH
+  TEXTAREA
+  SELECT
+  NUMBER
+  MULTI_SELECT
+  MULTI_SELECT_WITH_DURATION
+  TABLE
+  LABEL
+}
+
+type TemplateSection {
+  name: String
+  inputs: [TemplateObject!]
+}
+
+type Template {
+  _id: String!
+  title: String!
+  type: TemplateType!
+  requirements: [String!]
+  container: String
+  price: Float
+  description: String!
+  privacy: TemplatePrivacyType!
+  parents: [String!]
+  patientId: String
+  specialties: [String!]
+  sections: [TemplateSection!]!
+  filledBy: String
+  createdBy: String!
+  tenantId: String
+  isDeleted: Boolean!
+}
+
+enum TemplateType {
+  LAB
+  PATIENT_FORM
+}
+
+enum TemplatePrivacyType {
+  ONLY_ME
+  ORGANIZATION
+  PUBLIC
+}
+
+type Attachment {
+  _id: String!
+  procedureId: String
+  entryProcedureId: String
+  orderId: String
+  objectResult: Template
+  attachmentSource: String
+  objectType: AttachmentObjectType
+  parentId: String
+  parentName: String
+  note: String!
+  signed: Boolean!
+  createdAt: String
+  updatedAt: String
+}
+
+enum AttachmentObjectType {
+  TEMPLATE_RESULT
+  LAB_TEMPLATE_RESULT
+  STRING
+}
+
+type HealthRecordSummary {
+  chiefComplaint: String!
+  historyOfPresentIllness: String!
+  medicalHistory: String!
+  familyHistory: String!
+  drugHistory: String!
+  allergies: String!
+  surgeryHistory: String!
+  examinations: String!
+  caseSummary: String!
+  planAndAssessment: String!
+  caseDiagnosis: String!
+}
+
+type HealthRecord {
+  _id: String
+  patientId: String!
+  providerId: String!
+  entryId: String!
+  attachments: [Attachment!]!
+  visitData: HealthRecordSummary
+  diagnosisGroupIds: [String!]
+  tenantId: String!
+  status: String!
+  isDeleted: Boolean!
+  createdBy: String!
+  createdAt: String!
+  updatedAt: String!
+}
+
+type PreAuthItemApprovedAmount {
+  patientAmount: Float!
+  companyAmount: Float!
+}
+
+type PreAuthItemEntryRef {
+  entryId: String!
+  entryProcedureId: String!
+}
+
+type PreAuthItemHealthRecordRef {
+  healthRecordId: String!
+  patientProcedureId: String!
+}
+
+type PreAuthItemRef {
+  entry: PreAuthItemEntryRef!
+  healthRecord: PreAuthItemHealthRecordRef!
+}
+
+type PreAuthItem {
+  _id: String!
+  procedureId: String!
+  procedureName: Name!
+  quantity: Float!
+  unitPrice: Float!
+  unitTax: Float!
+  refs: [PreAuthItemRef!]!
+  approvedAmount: PreAuthItemApprovedAmount
+}
+
+type PreauthProcedureAttachment {
+  result: Template!
+  urls: [String!]!
+}
+
+type PreauthProcedureNphiesData {
+  code: String!
+}
+
+type PreauthProcedure {
+  patientProcedureId: String!
+  procedureId: String!
+  procedureSection: String!
+  attachments: [PreauthProcedureAttachment!]!
+  nphies: PreauthProcedureNphiesData!
+}
+
+type PreauthDiangosisNphiesData {
+  code: String!
+}
+
+type PreAuthDiagnosis {
+  patientDiagnosisId: String!
+  diagnosisId: String!
+  description: String!
+  nphies: PreauthDiangosisNphiesData!
+}
+
+type PreAuthVitalsBloodPressure {
+  diastolic: Float!
+  systolic: Float!
+}
+
+type PreAuthVitals {
+  vitalsId: String!
+  weight: Float
+  height: Float
+  temperature: Float
+  pulseRate: Float
+  oxygenLevel: Float
+  respiratoryRate: Float
+  bloodPressure: PreAuthVitalsBloodPressure
+}
+
+type PreAuthSupportingInfo {
+  primaryDiagnosis: PreAuthDiagnosis!
+  secondaryDiagnoses: [PreAuthDiagnosis!]!
+  patientProcedures: [PreauthProcedure!]!
+  vitals: PreAuthVitals!
+}
+
+type PreAuthRequest {
+  _id: String!
+  patientId: String!
+  patientCardId: String!
+  items: [PreAuthItem!]!
+  supportingInfo: PreAuthSupportingInfo!
+  approvalStatus: PreAuthApprovalStatus!
+  tenantId: String!
+  createdBy: String!
+  isDeleted: Boolean!
+  createdAt: String!
+  updatedAt: String!
+}
+
+enum PreAuthApprovalStatus {
+  PENDING
+  QUEUED
+  RETURNED
+  APPROVED
+  PARTIALLY_APPROVED
+  REJECTED
+}
+
+type CommunicationRequestAttachment {
+  title: String!
+  url: String!
+}
+
+type CommunicationRequestRef {
+  refId: String!
+  refType: CommunicationRequestRefType!
+}
+
+enum CommunicationRequestRefType {
+  PREAUTH
+  CLAIM
+}
+
+type CommunicationRequest {
+  _id: String!
+  message: String!
+  attachments: [CommunicationRequestAttachment!]
+  ref: CommunicationRequestRef!
+  previousCommunicationId: String
+  tenantId: String!
+  createdBy: String!
+  isDeleted: String!
+  createdAt: String!
+  updatedAt: String!
+}
+
+type NphiesBenefitUsage {
+  total: Float!
+  used: Float!
+}
+
+type NphiesTreatmentLimits {
+  limit: NphiesBenefitUsage
+  copayPercent: NphiesBenefitUsage
+}
+
+type NphiesConsultationLimits {
+  generalPractitioner: NphiesBenefitUsage
+  registrarPhysician: NphiesBenefitUsage
+  seniorRegistrar: NphiesBenefitUsage
+  consultant: NphiesBenefitUsage
+  rareSpecialities: NphiesBenefitUsage
+}
+
+type NphiesAdmissionLimits {
+  patientRoom: NphiesBenefitUsage
+  hospitalSitterRoom: NphiesBenefitUsage
+}
+
+type NphiesMaternityLimits {
+  delivery: NphiesBenefitUsage
+}
+
+type NphiesDentalLimits {
+  limit: NphiesBenefitUsage
+  approvalLimit: NphiesBenefitUsage
+}
+
+type NphiesVisionLimits {
+  spectacles: NphiesBenefitUsage
+}
+
+type NphiesRenalLimits {
+  dialysis: NphiesBenefitUsage
+}
+
+type NphiesMedicalTransportLimits {
+  corpseRepatriation: NphiesBenefitUsage
+}
+
+type NphiesMentalLimits {
+  psychoDisorderAnnualLimit: NphiesBenefitUsage
+}
+
+type NphiesHearingLimits {
+  hearing: NphiesBenefitUsage
+  hearingAids: NphiesBenefitUsage
+}
+
+type NphiesSurgeryLimits {
+  valvularHeartDisease: NphiesBenefitUsage
+  gastricSleeveAbove45BMI: NphiesBenefitUsage
+  circumcision: NphiesBenefitUsage
+}
+
+type NphiesDonorProcedureLimits {
+  organHarvestingAnnualLimit: NphiesBenefitUsage
+}
+
+type NphiesMedicalCareLimits {
+  alzheimer: NphiesBenefitUsage
+  autism: NphiesBenefitUsage
+  diabilities: NphiesBenefitUsage
+}
+
+type NphiesMedicalCoverageLimits {
+  newbornEarlyScreening: NphiesBenefitUsage
+}
+
+type NphiesPatientCoverage {
+  annualLimit: NphiesBenefitUsage
+  approvalLimit: NphiesBenefitUsage
+
+  # Annual limit
+  inNetworkOPTreatment: NphiesTreatmentLimits
+
+  # Annual limit
+  offNetworkOPTreatment: NphiesTreatmentLimits
+
+  # Annual limit
+  otherHcpOPTreatment: NphiesTreatmentLimits
+
+  # Daily limits
+  consultation: NphiesConsultationLimits
+
+  # Daily limits
+  admission: NphiesAdmissionLimits
+
+  # Annual limits
+  maternity: NphiesMaternityLimits
+
+  # Annual limits
+  dental: NphiesDentalLimits
+
+  # Annual limits
+  vision: NphiesVisionLimits
+
+  # Annual limits
+  renal: NphiesRenalLimits
+
+  # Annual limits
+  mental: NphiesMentalLimits
+
+  # Lifetime limits
+  medicalTransport: NphiesMedicalTransportLimits
+
+  # Annual limits
+  hearing: NphiesHearingLimits
+
+  # Annual limits
+  surgery: NphiesSurgeryLimits
+
+  # Annual limits
+  donorProcedures: NphiesDonorProcedureLimits
+
+  # Annual limits
+  medicalCare: NphiesMedicalCareLimits
+
+  # Annual limits
+  medicalCoverage: NphiesMedicalCoverageLimits
+}
+
+type PatientCoverage {
+  nphies: NphiesPatientCoverage
+}
+
+type CompanyPolicyStreamChunk {
+  start: Int!
+  end: Int!
+  data: [CompanyPolicy!]!
+}
+
+type Religion {
+  _id: String!
+  religionName: Name!
+  religionCode: String!
+  createdBy: String
+  status: String!
+  isDeleted: Boolean!
+  createdAt: String!
+  updatedAt: String!
+}
+
+type Nationalities {
+  _id: String!
+  nationalityName: Name!
+  nationalityCode: String!
+  languages: [String!]!
+  createdBy: String!
+  status: String!
+  isDeleted: Boolean!
+  createdAt: String!
+  updatedAt: String!
+}
+
+type PermissionDependency {
+  module: String!
+  permission: String!
+}
+
+type Permission {
+  id: String!
+  name: Name!
+  description: Name!
+  section: String!
+  dependencies: [PermissionDependency!]!
+}
+
+type PermissionModule {
+  _id: String!
+  name: Name!
+  description: Name!
+  permissions: [Permission!]!
+}
+
+type DiscountLimit {
+  limitAmount: Float
+  limitPercentage: Float
+}
+
+type ProcedureDiscountLimit {
+  procedureId: String!
+  limit: DiscountLimit!
+}
+
+type UserNphiesSettings {
+  license: String!
+  qualificationCode: String!
+}
+
+type UserFollowUpFee {
+  daysAfter: Float!
+  percentage: Float!
+}
+
+type UserSettings {
+  _id: String!
+  userId: String!
+  professionId: String
+  freeFollowUpDays: Int
+  appointmentMaxDaysInAdvance: Int
+  followUpFees: [UserFollowUpFee!]
+  discountLimit: Float
+  procedureDiscountLimits: [ProcedureDiscountLimit!]
+  invoiceDiscountLimit: DiscountLimit
+  allowedProcedures: [String!]
+  nphies: UserNphiesSettings
+  tenantId: String!
+  isDeleted: Boolean!
+  createdAt: String!
+  updatedAt: String!
+}
+
+type Platform {
+  _id: String!
+  name: Name!
+  countries: [String!]!
+  organizationTypes: [String!]!
+  profileImg: String!
+  isDeleted: Boolean!
+  createdAt: String!
+  updatedAt: String!
+}
+
+type EducationSublevel {
+  _id: String!
+  name: [LangValue!]!
+}
+
+type EducationLevel {
+  _id: String!
+  name: [LangValue!]!
+  sublevels: [EducationSublevel!]!
+}
+
+type ProcedureCode {
+  standardName: String!
+  code: String!
+}
+
+type SuggestedPrice {
+  countryCode: String!
+  currency: String!
+  price: Float!
+}
+
+type Unit {
+  unitId: String!
+  name: Name!
+  quantity: Float!
+  defaultQuantity: Float!
+  isBaseUnit: Boolean!
+  discountPercentage: Float!
+  unitPrice: Float!
+  weight: Float!
+}
+
+type AssociatedProcedureProcedureData {
+  id: String!
+  name: Name!
+  section: ProcedureSection!
+  receptionStoreId: String
+}
+
+type AssociatedProcedure {
+  procedure: AssociatedProcedureProcedureData
+  procedureId: String!
+  quantity: Float!
+  defaultStoreId: String
+}
+
+type ProcedureAccountingMetadata {
+  accountId: String!
+  costCenterId: String
+}
+
+type ProcedureMetadata {
+  accounting: ProcedureAccountingMetadata
+}
+
+type Procedure {
+  _id: String!
+  globalId: String
+  serviceOrProduct: ServiceOrProduct!
+  procedureName: Name!
+  procedureNameDescription: Name!
+  code: [ProcedureCode!]!
+  associatedProcedures: [AssociatedProcedure!]
+  requirements: [String!]
+  procedureCategory: IdNameType
+  procedureType: IdNameType
+  procedureSection: ProcedureSection!
+  procedureSubsection: ProcedureSubsection
+  isGeneric: Boolean
+  shortListChronicMedication: Boolean
+  branchId: String!
+  beforeProcedureKnowledgebase: String!
+  procedureKnowledgebase: String!
+  afterProcedureKnowledgebase: String!
+  teamRequired: Boolean
+  reportTemplateId: String
+  suggestedPrice: SuggestedPrice!
+  manufacturer: IdSingleNameType
+  labels: [IdSingleNameType!]
+  suppliers: [IdNameType!]
+  genericName: IdNameType
+  units: [Unit!]
+  sellPrice: Float
+  costPrice: Float
+  barcode: String
+  refillLimitAlarm: Float
+  expiryAlarmDays: Float
+  productImage: String
+  loyaltyProgramPoints: Float
+  receptionStoreId: String
+
+  # Number of times used in an entry
+  usageCount: Int
+  metadata: ProcedureMetadata
+  tenantId: String!
+  createdBy: String!
+  status: ModelStatus!
+  isDeleted: Boolean!
+  createdAt: String!
+  updatedAt: String!
+}
+
+enum ServiceOrProduct {
+  SERVICE
+  PRODUCT
+}
+
+enum ProcedureSubsection {
+  DENTAL
+  ENDODONTIC
+  PERIODONTAL
+}
+
+type ProcedureType {
+  _id: String!
+  globalId: String
+  procedureTypeName: Name!
+  tenantId: String!
+  createdBy: String!
+  status: ModelStatus!
+  isDeleted: Boolean!
+  createdAt: String!
+  updatedAt: String!
+}
+
+type LangNameObject {
+  lang: String!
+  name: String!
+}
+
+type IdMultiNameType {
+  id: String!
+  name: [LangNameObject!]!
+}
+
+type LangDescriptionObject {
+  lang: String!
+  description: String!
+}
+
+type LangContentObject {
+  lang: String!
+  content: String!
+}
+
+type GlobalProcedure {
+  _id: String!
+  code: [ProcedureCode!]!
+  procedureName: [LangNameObject!]!
+  procedureNameDescription: [LangDescriptionObject!]!
+  procedureCategory: IdMultiNameType
+  procedureType: IdMultiNameType!
+  procedureSubtype: IdMultiNameType!
+  procedureDefinition: [LangNameObject!]!
+  countries: [String!]!
+  includes: [LangContentObject!]!
+  excludes: [LangContentObject!]!
+  guidelines: [LangContentObject!]!
+  suggestedPricePerCountry: [SuggestedPrice!]!
+  organizationTypes: [String!]!
+  beforeProcedureKnowledgebase: String!
+  procedureKnowledgebase: String!
+  afterProcedureKnowledgebase: String!
+  teamRequired: Boolean
+  status: String!
+  isDeleted: Boolean!
+  createdAt: String!
+  updatedAt: String!
+}
+
+type GlobalDiagnosis {
+  _id: String!
+  diagnosisName: [LangNameObject!]!
+  diagnosisNameDescription: [LangDescriptionObject!]!
+  code: [ProcedureCode!]!
+  diagnosisCategoryId: String!
+  diagnosisCategory: [LangNameObject!]!
+  diagnosisTypeId: String!
+  diagnosisType: [LangNameObject!]!
+  status: String!
+}
+
+type Requirement {
+  _id: String!
+  name: Name!
+  type: RequirementType!
+  tenantId: String!
+  status: ModelStatus!
+  isDeleted: Boolean!
+  createdAt: String!
+  updatedAt: String!
+}
+
+enum RequirementType {
+  LAB_CONTAINER
+  IMAGING_REQUIREMENT
+  SURGERY_REQUIREMENT
+}
+
+type ReportTemplateTable {
+  _id: String!
+  name: String!
+  columns: [String!]!
+  rows: [[String!]!]!
+  flexGrow: String!
+}
+
+type ReportTemplateSection {
+  _id: String!
+  title: String!
+  display: ReportTemplateSectionLayout!
+  tables: [ReportTemplateTable!]!
+}
+
+enum ReportTemplateSectionLayout {
+  FLEX
+  BLOCK
+}
+
+type ReportTemplate {
+  _id: String!
+  name: Name!
+  sections: [ReportTemplateSection!]!
+  tenantId: String!
+  createdBy: String!
+  status: ModelStatus!
+  isDeleted: Boolean!
+}
+
+type DiagnosisCode {
+  standardName: String!
+  code: String!
+}
+
+type Diagnosis {
+  _id: String!
+  name: Name!
+  description: Name!
+  code: [DiagnosisCode!]!
+  diagnosisSection: DiagnosisSection!
+  diagnosisSubsection: DiagnosisSubsection
+  tenantId: String!
+  createdBy: String!
+  status: ModelStatus!
+  isDeleted: Boolean!
+  createdAt: String!
+  updatedAt: String!
+}
+
+enum DiagnosisSection {
+  DENTAL
+  OTHER
+}
+
+enum DiagnosisSubsection {
+  DENTAL
+  ENDODONTIC
+  PERIODONTAL
+}
+
+type DoctorInfo {
+  doctorId: String!
+  doctorName: String!
+}
+
+type Pharmacy {
+  organizationId: String!
+  organizationName: Name!
+}
+
+type Sig {
+  quantity: Float!
+  form: String!
+  frequency: Float
+  timeUnit: String!
+  time: String!
+  days: Float!
+}
+
+type TotalQuantity {
+  quantity: Float!
+  form: String!
+  refills: Float!
+}
+
+type PeriodontalScoreValue {
+  score: Float!
+  furcationInvolvement: Boolean!
+}
+
+type PeriodontalScore {
+  incisal: PeriodontalScoreValue!
+  buccal: PeriodontalScoreValue!
+  palatal: PeriodontalScoreValue!
+  lingual: PeriodontalScoreValue!
+  cervicalLingual: PeriodontalScoreValue!
+  mesioBuccalCusp: PeriodontalScoreValue!
+  distoBuccalCusp: PeriodontalScoreValue!
+  mesioPalatalCusp: PeriodontalScoreValue!
+  distoPalatalCusp: PeriodontalScoreValue!
+  buccalCusp: PeriodontalScoreValue!
+  palatalCusp: PeriodontalScoreValue!
+  lingualCusp: PeriodontalScoreValue!
+  buccalSurface: PeriodontalScoreValue!
+  palatalSurface: PeriodontalScoreValue!
+  lingualSurface: PeriodontalScoreValue!
+  mesioLingualCusp: PeriodontalScoreValue!
+  distoLingualCusp: PeriodontalScoreValue!
+  class4Mesial: PeriodontalScoreValue!
+  class4Distal: PeriodontalScoreValue!
+}
+
+type SoftTissue {
+  position: SoftTissuePosition!
+  description: String!
+}
+
+enum SoftTissuePosition {
+  UPPER_LIP
+  LOWER_LIP
+  R_COMMISSURE
+  L_COMMISSURE
+  UPPER_LABIAL_MUCOSA
+  UPPER_SULCUS
+  UPPER_GINGIVAE
+  HARD_PALATE
+  SOFT_PALATE
+  PHARYNX_AND_TONSILLAR_AREA
+  TONGUE_DORSUM
+  TONGUE_R_LATERAL_BORDER
+  TONGUE_L_LATERAL_BORDER
+  TONGUE_VENTRAL
+  FLOOR_OF_MOUTH
+  R_BUCCAL_MUCOSA
+  L_BUCCAL_MUCOSA
+  LOWER_GINGIVAE
+  LOWER_SULCI
+  LOWER_LABIAL_MUCOSA
+  TONGUE
+}
+
+type MedicalIssue {
+  diagnosis: IdNameType!
+  note: String
+}
+
+type ToothFractureDetails {
+  position: FracturePosition!
+  direction: FractureDirection!
+}
+
+enum FracturePosition {
+  CROWN
+  ROOT
+}
+
+enum FractureDirection {
+  VERTICAL
+  HORIZONTAL
+}
+
+type ToothEndodonticAssessment {
+  cold: String
+  percussion: String
+  palpation: String
+  heat: String
+  electricity: String
+}
+
+type ToothProbingDepth {
+  position: ToothPosition!
+  depth: Float!
+}
+
+enum ToothPosition {
+  OCCLUSAL
+  INCISAL
+  BUCCAL
+  MESIAL
+  DISTAL
+  PALATAL
+  LINGUAL
+  CERVICAL_BUCCAL
+  CERVICAL_PALATAL
+  CERVICAL_LINGUAL
+  MESIO_BUCCAL_CUSP
+  DISTO_BUCCAL_CUSP
+  MESIO_PALATAL_CUSP
+  DISTO_PALATAL_CUSP
+  BUCCAL_CUSP
+  PALATAL_CUSP
+  LINGUAL_CUSP
+  BUCCAL_SURFACE
+  PALATAL_SURFACE
+  LINGUAL_SURFACE
+  MESIO_LINGUAL_CUSP
+  DISTO_LINGUAL_CUSP
+  CLASS4_MESIAL
+  CLASS4_DISTAL
+}
+
+type ToothGingivalMargin {
+  position: ToothPosition!
+  margin: Float!
+}
+
+type CrownDetails {
+  crownType: ToothCrownType
+  base: ToothBase
+  implant: ToothImplant
+}
+
+enum ToothCrownType {
+  SINGLE_CROWN
+  ABUTMENT
+  PONTIC
+}
+
+enum ToothBase {
+  NATURAL
+  IMPLANT
+}
+
+enum ToothImplant {
+  BONE_LEVEL
+  TISSUE_LEVEL
+}
+
+type ToothDetails {
+  toothNumber: Int!
+  diagnosisId: String!
+  date: String!
+  inClinic: Boolean!
+  missing: Boolean
+  issues: [ToothIssue!]
+  positions: [ToothPosition!]
+  color: String
+  apical: Boolean
+  probingDepth: [ToothProbingDepth!]
+  gingivalMargin: [ToothGingivalMargin!]
+  furcation: Float
+  mobility: Float
+  fracture: ToothFractureDetails
+  crown: CrownDetails
+  material: String
+  quality: String
+  detail: String
+  endodontic: ToothEndodonticAssessment
+}
+
+enum ToothIssue {
+  BLEEDING
+  PLAQUE
+  PUS
+  TARTAR
+}
+
+type LabTestOperationMetadata {
+  by: String!
+  at: String!
+}
+
+type LabTestMetadata {
+  sampleCollected: LabTestOperationMetadata
+  resultEntered: LabTestOperationMetadata
+  resultConfirmed: LabTestOperationMetadata
+  printed: LabTestOperationMetadata
+}
+
+type PatientLabTest {
+  sendDate: String
+  serviceProviders: [String!]
+  diagnosisId: String
+  metadata: LabTestMetadata
+}
+
+type PatientMedicalService {
+  sendDate: String
+  serviceProviders: [String!]
+  diagnosisId: String
+  patientAgreed: Boolean
+}
+
+type PatientDentalService {
+  toothDetails: ToothDetails
+  softTissue: [SoftTissue!]
+  medicalIssue: [MedicalIssue!]
+  periodontalScore: PeriodontalScore
+  patientAgreed: Boolean
+}
+
+type PatientMedication {
+  sig: Sig!
+  totalQuantity: TotalQuantity!
+  pharmacies: [Pharmacy!]!
+  sendDate: String
+  dosage: String
+  frequency: String
+  startDate: String
+  endDate: String
+  discontinueWhen: String
+  isItStopped: Boolean
+  doctorPrescribed: DoctorInfo
+  doctorTimeSuggestions: String
+  documentationOnly: Boolean
+  noteToPharmacy: String
+  sendToPharmacyAt: String
+  noteToPatient: String
+  patientId: String!
+  parentName: String
+  diagnosisId: String!
+}
+
+type PatientProcedureAttachment {
+  _id: String!
+  containerIds: [String!]
+  result: Template
+  urls: [String!]
+  notes: String
+  signed: Boolean
+  seen: Boolean
+}
+
+type PatientProcedure {
+  _id: String!
+  patientId: String!
+  procedureId: String!
+  name: Name!
+  procedureSection: ProcedureSection!
+  note: String
+  code: [ProcedureCode!]!
+  labTest: PatientLabTest
+  medicalService: PatientMedicalService
+  dentalService: PatientDentalService
+  medication: PatientMedication
+  requestGroupId: String
+  patientAmount: Float
+  companyAmount: Float
+  healthRecordId: String
+  diagnosisGroupId: String
+  attachments: [PatientProcedureAttachment!]
+  tenantId: String!
+  branchId: String!
+  createdBy: String!
+  preauthStatus: PatientProcedurePreauthStatus
+  status: PatientProcedureStatus!
+  isDeleted: Boolean!
+  createdAt: String!
+  updatedAt: String!
+}
+
+enum PatientProcedurePreauthStatus {
+  NEW
+  SUBMITTED
+  UDPATED
+}
+
+enum PatientProcedureStatus {
+  PENDING_PAYMENT
+  READY
+}
+
+type PatientDiagnosisDentalDetails {
+  toothDetails: ToothDetails
+  softTissue: [SoftTissue!]
+  medicalIssue: [MedicalIssue!]
+  periodontalScore: PeriodontalScore
+}
+
+type PatientDiagnosis {
+  _id: String!
+  diagnosisGroupId: String!
+  patientId: String!
+  healthRecordId: String!
+  diagnosisId: String!
+  name: Name!
+  dentalDetails: PatientDiagnosisDentalDetails
+  code: [DiagnosisCode!]
+  diagnosisDescription: String
+  diagnosisDate: String
+  enteredBy: String
+  enteredDate: String
+  providerId: String
+  providerName: Name
+  note: String
+  providerTimeSuggestion: String
+  tenantId: String!
+  branchId: String!
+  createdBy: String!
+  preauthStatus: PatientProcedurePreauthStatus
+  status: ModelStatus!
+  isDeleted: Boolean!
+  createdAt: String!
+  updatedAt: String!
+}
+
+type TreatmentProcedure {
+  _id: String!
+  patientProcedureId: String!
+  agreed: Boolean!
+}
+
+type TreatmentPhase {
+  _id: String!
+  title: String!
+  startDate: String
+  agreed: Boolean!
+  procedures: [TreatmentProcedure!]!
+}
+
+type TreatmentPlan {
+  _id: String!
+  patientId: String!
+  healthRecordId: String!
+  title: String!
+  description: String
+  agreed: Boolean!
+  phases: [TreatmentPhase!]!
+  tenantId: String!
+  createdBy: String!
+  status: ModelStatus!
+  isDeleted: Boolean!
+  createdAt: String!
+  updatedAt: String!
+}
+
+type PatientOfferItem {
+  type: PatientOfferType!
+  text: String!
+  discount: Float!
+  reason: String!
+  loyaltyProgram: String!
+  sendAt: String!
+  status: PatientOfferStatus!
+  createdAt: String!
+  updatedAt: String!
+}
+
+enum PatientOfferType {
+  NORMAL
+  CHURN
+}
+
+enum PatientOfferStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  SENT
+  RESPONDED
+}
+
+type PatientOfferPatientData {
+  id: String!
+  firstName: Name!
+  secondName: Name
+  thirdName: Name
+  lastName: Name
+}
+
+type PatientChurnReport {
+  patient: PatientOfferPatientData!
+  offers: [PatientOfferItem!]!
+  churnDate: String!
+  churn: Boolean!
+  tenantId: String!
+}
+
+type VisionMetrics {
+  sph: String!
+  cyl: String!
+  axis: String!
+  va: String!
+}
+
+type EyePrescription {
+  dis: VisionMetrics!
+  near: VisionMetrics!
+}
+
+type VisionPrescription {
+  _id: String!
+  patientId: String!
+  healthRecordId: String!
+  od: EyePrescription!
+  os: EyePrescription!
+  lensType: String!
+  tenantId: String!
+  createdBy: String!
+  isDeleted: Boolean!
+  createdAt: String!
+  updatedAt: String!
+}
+
+type UserInvitation {
+  _id: String!
+  email: String!
+  branchIds: [String!]!
+  defaultBranch: String!
+  invitationSecret: String!
+  isValid: Boolean!
+  tenantId: String!
+  createdBy: String!
+  isDeleted: Boolean!
+  createdAt: String!
+  updatedAt: String!
+}
+
+type WhatsappMessageResponse {
+  ok: Boolean!
+}
+
+type Label {
+  _id: String!
+  name: String!
+  color: String!
+  urgencyLevel: LabelUrgencyLevel!
+  description: String!
+  tenantId: String!
+  createdBy: String!
+  isDeleted: Boolean!
+  createdAt: String!
+  updatedAt: String!
+}
+
+enum LabelUrgencyLevel {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+type ManufacturerContact {
+  name: String!
+  email: String!
+  phone: String!
+}
+
+type Manufacturer {
+  _id: String!
+  name: String!
+  contact: ManufacturerContact!
+  address: String!
+  productsManufactured: [String!]!
+  tenantId: String!
+  createdBy: String!
+  isDeleted: Boolean!
+  createdAt: String!
+  updatedAt: String!
+}
+
+type MeasurementUnit {
+  _id: String!
+  name: String!
+  abbreviation: String!
+  description: String!
+  type: MeasurementUnitType!
+  tenantId: String!
+  createdBy: String!
+  isDeleted: Boolean!
+  createdAt: String!
+  updatedAt: String!
+}
+
+enum MeasurementUnitType {
+  VOLUME
+  WEIGHT
+  QUANTITY
+}
+
+type PurchaseOrderItem {
+  product: IdNameType
+  quantity: Float!
+  unitPrice: Float!
+  totalPrice: Float!
+  bonusQuantity: Float!
+  discount: Float!
+  sellPrice: Float!
+  batchNumber: String
+  expiryDate: String
+  updatePrice: Boolean!
+  isDeleted: Boolean!
+}
+
+type PurchaseOrder {
+  _id: String!
+  purchaseOrderNumber: String!
+  storeId: String!
+  orderDate: String!
+  expectedDeliveryDate: String
+  supplier: IdNameType
+  items: [PurchaseOrderItem!]!
+  subTotal: Float!
+  totalDiscount: Float!
+  paidAmount: Float!
+  totalPrice: Float!
+  note: String!
+  creator: IdDualNameType
+  tenantId: String!
+  branchId: String!
+  createdBy: String!
+  status: PurchaseOrderStatus!
+  isDeleted: Boolean!
+  createdAt: String!
+  updatedAt: String!
+}
+
+enum PurchaseOrderStatus {
+  ORDERED
+  RECEIVED
+  CANCELLED
+}
+
+type Stock {
+  _id: String!
+  productId: String!
+  storeId: String!
+  batchNumber: String!
+  expiryDate: String!
+  quantity: Float!
+  costPrice: Float!
+  sellPrice: Float!
+  receivedDate: String!
+  purchaseOrderId: String
+  status: StockStatus!
+  tenantId: String!
+  isDeleted: Boolean!
+  createdAt: String!
+  updatedAt: String!
+}
+
+enum StockStatus {
+  AVAILABLE
+  SOLD_OUT
+  EXPIRED
+}
+
+type StoreAddress {
+  street: String!
+  city: String!
+  state: String!
+  country: String!
+  zipCode: String!
+}
+
+type StoreContact {
+  phone: String!
+  email: String!
+}
+
+type TimeInterval {
+  from: String!
+  to: String!
+}
+
+type WeekWorkingHours {
+  sat: TimeInterval!
+  sun: TimeInterval!
+  mon: TimeInterval!
+  tue: TimeInterval!
+  wed: TimeInterval!
+  thu: TimeInterval!
+  fri: TimeInterval!
+}
+
+type Store {
+  _id: String!
+  name: Name!
+  address: StoreAddress!
+  contact: StoreContact!
+  operationalHours: WeekWorkingHours!
+  staff: [String!]!
+  tenantId: String!
+  branchId: String!
+  isDeleted: Boolean!
+  createdAt: String!
+  updatedAt: String!
+}
+
+type SupplierContact {
+  name: Name!
+  email: String!
+  phone: String!
+}
+
+type Supplier {
+  _id: String!
+  name: Name!
+  contact: SupplierContact
+  address: Name
+  proceduresSupplied: [String!]
+  tenantId: String!
+  createdBy: String!
+  status: ModelStatus!
+  isDeleted: Boolean!
+  createdAt: String!
+  updatedAt: String!
+}
+
+type ItemChange {
+  old: Float!
+  new: Float!
+}
+
+type InventoryUpdateOrderItem {
+  productId: String!
+  batchNumber: String!
+  expiryDate: String!
+  quantity: ItemChange!
+  costPrice: ItemChange!
+  sellPrice: ItemChange!
+}
+
+type InventoryUpdateOrder {
+  _id: String!
+  label: String!
+  storeId: String!
+  items: [InventoryUpdateOrderItem!]
+  tenantId: String!
+  createdBy: String!
+  status: InventoryUpdateOrderStatus!
+  isDeleted: Boolean!
+  createdAt: String!
+  updatedAt: String!
+}
+
+enum InventoryUpdateOrderStatus {
+  PENDING
+  APPLIED
+}
+
+type PurchaseOrderStats {
+  totalCostPrice: Float!
+  totalPaidAmount: Float!
+}
+
+type StockUpdate {
+  batchNumber: String!
+  quantityDelta: Float!
+  source: StockUpdateTrigger!
+  sourceId: String!
+}
+
+enum StockUpdateTrigger {
+  ENTRY
+  INVENTORY
+  PURCHASE_ORDER
+  INVENTORY_ISSUE
+  TRANSFER
+}
+
+type ProductStockUpdates {
+  productId: String!
+  updates: [StockUpdate!]!
+}
+
+type StockTransferOrderItem {
+  product: IdNameType
+  batchNumber: String!
+  quantity: Int!
+}
+
+type StockTransferOrder {
+  _id: String!
+  sourceStore: IdNameType
+  destinationStore: IdNameType
+  items: [StockTransferOrderItem!]
+  creator: IdDualNameType
+  approver: IdDualNameType
+  tenantId: String!
+  branchId: String!
+  createdBy: String!
+  approvedBy: String
+  status: StockTransferOrderStatus!
+  isDeleted: Boolean!
+  createdAt: String!
+  updatedAt: String!
+}
+
+enum StockTransferOrderStatus {
+  NEW
+  APPLIED
+}
+
+type InventoryIssueItem {
+  product: IdNameType!
+  batchNumber: String!
+  quantity: Float!
+}
+
+type InventoryIssue {
+  _id: String!
+  store: IdNameType
+  label: String!
+  type: InventoryIssueType!
+  items: [InventoryIssueItem!]
+  creator: IdDualNameType!
+  approver: IdDualNameType
+  tenantId: String!
+  createdBy: String!
+  approvedBy: String
+  status: InventoryIssueStatus!
+  isDeleted: Boolean!
+  createdAt: String!
+  updatedAt: String!
+}
+
+enum InventoryIssueType {
+  DAMAGE
+  CONSUMPTION
+}
+
+enum InventoryIssueStatus {
+  NEW
+  APPLIED
+}
+
+type LostSale {
+  _id: String!
+  productId: String!
+  quantity: Float!
+  unitPrice: Float!
+  totalPrice: Float!
+  entryId: String
+  patientId: String
+  userId: String!
+  isDeleted: Boolean!
+  createdAt: String!
+  updatedAt: String!
+}
+
+type PaymentSessionSource {
+  type: String!
+  id: String!
+}
+
+type PaymentSession {
+  id: String!
+  totalAmount: String!
+  paymentStatus: StripePaymentStatus!
+  url: String
+  source: PaymentSessionSource!
+  tenantId: String!
+  branchId: String
+}
+
+enum StripePaymentStatus {
+  NO_PAYMENT_REQUIRED
+  PAID
+  UNPAID
+}
+
+type SeedingResult {
+  count: Float!
+}
+
+type ChatMessageTokenUsage {
+  prompt: Int
+  response: Int
+  total: Int
+}
+
+type ChatMessage {
+  _id: String!
+  patientId: String!
+  message: String!
+  attachedImages: [String!]!
+  response: String!
+  responseImages: [String!]!
+  tokenUsage: ChatMessageTokenUsage
+  tenantId: String!
+  isDeleted: Boolean!
+  createdAt: String!
+  updatedAt: String!
+}
+
+type ChatResponse {
+  caseId: String
+  response: String!
+  balance: Float!
+}
+
+type MedmindCasePatientData {
+  firstName: Name
+  secondName: Name
+  thirdName: Name
+  lastName: Name
+  gender: String
+  age: String
+  ageUnit: String
+  ethnicity: String
+  country: String
+  weight: String
+  weightUnit: String
+  height: String
+  heightUnit: String
+  chiefComplaints: String
+}
+
+type MedmindCaseEntryInputParam {
+  name: String!
+  value: String!
+}
+
+type MedmindCaseEntry {
+  template: String!
+  input: [MedmindCaseEntryInputParam!]!
+  inputImages: [String!]
+  output: String!
+  regenerateCount: Float!
+}
+
+type MedmindCase {
+  _id: String!
+  patientData: MedmindCasePatientData
+  entries: [MedmindCaseEntry!]!
+}
+
+type MedmindPackageNameLocale {
+  lang: String!
+  value: String!
+}
+
+type MedmindSubscription {
+  packageId: String!
+  packageName: [MedmindPackageNameLocale!]!
+  startDate: String!
+  expiryDate: String!
+  active: Boolean!
+  tenantId: String!
+}
+
+type MedmindStatsSubscription {
+  packageId: String!
+  packageName: [MedmindPackageNameLocale!]!
+  startDate: String!
+  expiryDate: String!
+  active: Boolean!
+}
+
+type MedmindTenantStats {
+  balance: Float!
+  cases: Float!
+  approxCasesLeft: Float!
+  subscriptions: [MedmindStatsSubscription!]!
+}
+
+type MobilePackageFeature {
+  name: [LangValue!]!
+  description: [LangValue!]!
+  icon: String!
+  included: Boolean!
+}
+
+type CountryPrice {
+  countryCode: Countries!
+  currency: Currency!
+  price: Float!
+}
+
+type MobilePackage {
+  _id: String!
+  name: [LangValue!]!
+  description: [LangValue!]!
+  icon: String!
+  features: [MobilePackageFeature!]!
+  price: [CountryPrice!]!
+  billingPeriod: MobilePackageBillingPeriod!
+  createdAt: String!
+  updatedAt: String!
+}
+
+enum MobilePackageBillingPeriod {
+  MONTHLY
+  ANNUALLY
+}
+
+type MedmindPackages {
+  available: [MobilePackage!]!
+  subscribed: [MedmindSubscription!]
+}
+
+type MedmindCaseUserFeedback {
+  _id: String!
+  template: String!
+  caseId: String!
+  isUseful: Boolean!
+  comments: String!
+  tenantId: String!
+  createdBy: String!
+  isDeleted: Boolean!
+  createdAt: String!
+  updatedAt: String!
+}
+
+type InnerResponse {
+  globalInputId: String!
+  value: String!
+}
+
+type MachineResponse {
+  _id: String!
+  containerId: Int!
+  entryId: String
+  responses: [InnerResponse!]!
+  used: Boolean!
+  tenantId: String!
+  branchId: String!
+  createdBy: String!
+  status: String!
+  isDeleted: Boolean!
+  createdAt: String!
+  updatedAt: String!
+}
+
+type PatientLabContainer {
+  _id: String!
+  patientId: String!
+  entryId: String!
+  containerId: Float!
+  tenantId: String!
+  branchId: String!
+  createdBy: String!
+  isDeleted: Boolean!
+  createdAt: String!
+  updatedAt: String!
+}
+
+type MedicalAllergy {
+  _id: String!
+  allergyName: String!
+  allergyType: String!
+  description: String!
+  tenantId: String
+  branchId: String!
+  createdBy: String
+  status: String!
+  isDeleted: Boolean!
+  createdAt: String!
+  updatedAt: String!
+}
+
+type Query {
+  findAllMedicalAllergies(
+    token: String!
+    pageNumber: Int!
+    pageSize: Int!
+  ): [MedicalAllergy!]!
+
+  # Error codes: INVALID_PATIENT_ID
+  findAllPatients(
+    token: String!
+    globalId: String
+    patientIds: [String!]
+    branchIds: [String!]
+    search: String
+    pageNumber: Int!
+    pageSize: Int!
+  ): [Patient!]!
+  findAllVitals(
+    token: String!
+    patientId: String!
+    startDate: String!
+    endDate: String!
+    pageNumber: Int!
+    pageSize: Int!
+  ): [Vitals!]!
+  findAllColumns(
+    token: String!
+    branchesIds: [String!]
+    providersIds: [String!]
+    facilitiesIds: [String!]
+    pageNumber: Int!
+    pageSize: Int!
+  ): [SchedulerColumn!]!
+  findAllPaymentMethods(
+    token: String!
+    tenantId: String!
+    branchIds: [String!]!
+    pageNumber: Int!
+    pageSize: Int!
+  ): [PaymentMethod!]!
+  findAllEntries(
+    token: String!
+    entryIds: [String!]
+    branchesIds: [String!]
+    providersIds: [String!]
+    facilitiesIds: [String!]
+    storeIds: [String!]
+    patientIds: [String!]
+    callStatus: EntryCallStatus
+    startDate: String!
+    endDate: String!
+    isPaid: Boolean
+    issuedFrom: EntryIssuePoint
+    creatorIds: [String!]
+    pageNumber: Int!
+    pageSize: Int!
+    entryNumbers: [String!]
+    labResultPrinted: Boolean
+    procedureSections: [ProcedureSection!]
+    procedureSection: ProcedureSection
+    procedureIds: [String!]
+  ): [Entry!]!
+  findAllVisitTypes(
+    token: String!
+    branchIds: [String!]
+    pageSize: Int!
+    pageNumber: Int!
+  ): [VisitType!]!
+  findAllSpecialities(pageNumber: Int!, pageSize: Int!): [Speciality!]!
+  findAllSubspecialities(pageNumber: Int!, pageSize: Int!): [SubSpeciality!]!
+  findAllfacilities(
+    token: String!
+    pageNumber: Int!
+    pageSize: Int!
+    branchIds: [String!]
+  ): [FacilityOutput!]!
+  findAllRequests(
+    token: String!
+    branchIds: [String!]!
+    destinations: [RequestDestination!]
+    startDate: String!
+    endDate: String!
+    pageNumber: Int!
+    pageSize: Int!
+  ): [Request!]!
+  findAllTransactions(
+    token: String!
+    expenseCategoryId: String
+    paymentMethodId: String
+    branchIds: [String!]
+    creatorIds: [String!]
+    startDate: String
+    endDate: String
+    pageNumber: Int!
+    pageSize: Int!
+    status: TransactionStatus
+  ): [Transaction!]!
+  getUserTransactionStats(
+    token: String!
+    userIds: [String!]
+    startDate: String!
+    endDate: String!
+  ): [UserTransactionStats!]!
+  findAllExpenseCategories(
+    token: String!
+    pageNumber: Int!
+    pageSize: Int!
+  ): [ExpenseCategory!]!
+  findAllMerchants(
+    token: String!
+    pageNumber: Int!
+    pageSize: Int!
+  ): [Merchant!]!
+  findAllProfessions(
+    token: String!
+    pageNumber: Int!
+    pageSize: Int!
+  ): [Profession!]!
+  findAllTeams(token: String!, pageNumber: Int!, pageSize: Int!): [Team!]!
+  findAllProcedureIncentives(
+    token: String!
+    filters: [ProcedureIncentiveFilter!]!
+  ): [ProcedureIncentive!]!
+  findAllTeamMemberIncentives(
+    token: String!
+    userIds: [String!]!
+    creatorIds: [String!]
+    isPaid: Boolean
+    startDate: String!
+    endDate: String!
+    pageNumber: Int!
+    pageSize: Int!
+  ): [TeamMemberIncentive!]!
+  getEntryStats(
+    token: String!
+    entryIds: [String!]
+    entryNumbers: [String!]
+    branchesIds: [String!]
+    providersIds: [String!]
+    facilitiesIds: [String!]
+    storeIds: [String!]
+    patientIds: [String!]
+    callStatus: EntryCallStatus
+    startDate: String!
+    endDate: String!
+    isPaid: Boolean
+    issuedFrom: EntryIssuePoint
+    userIds: [String!]
+    procedureIds: [String!]
+  ): EntryStats!
+  getProviderEntryStats(
+    token: String!
+    startDate: String!
+    endDate: String!
+    providerIds: [String!]
+  ): [ProviderEntryStats!]!
+  getTeamMemberIncentiveStats(
+    token: String!
+    startDate: String!
+    endDate: String!
+  ): TeamMemberIncentiveStats!
+  findAllAccountingEntries(
+    token: String!
+    issuerId: String
+    issuerType: String
+    startDate: String!
+    endDate: String!
+    pageNumber: Int!
+    pageSize: Int!
+  ): [AccountingEntry!]!
+  findAllExternalAccounts(
+    token: String!
+    pageNumber: Int!
+    pageSize: Int!
+  ): [ExternalAccount!]!
+  findAllExternalCostCenters(
+    token: String!
+    pageNumber: Int!
+    pageSize: Int!
+  ): [ExternalCostCenter!]!
+  findAllOffers(
+    token: String!
+    productIds: [String!]
+    pageNumber: Int!
+    pageSize: Int!
+  ): [Offer!]!
+  findAllOrganizations(
+    pageNumber: Int!
+    pageSize: Int!
+    organizationIds: [String!]
+  ): [Organization!]!
+  findAllOrganizationBranches(
+    token: String!
+    pageNumber: Int!
+    pageSize: Int!
+  ): [OrganizationBranch!]!
+  findAllOrganizationTypes: [OrganizationTypeObjectType!]!
+  findAllPackages: [Package!]!
+  getBranchSettings(token: String!, branchId: String!): BranchSettings!
+  findAllCompanyPolicies(
+    tenantId: String
+    insuranceCompanyId: String
+    insuranceClassId: String
+    procedureIds: [String!]
+    tags: [CompanyPolicyTagFilter!]
+    pageNumber: Int!
+    pageSize: Int!
+  ): [CompanyPolicy!]!
+  findAllInsuranceCompanies(
+    tenantId: String!
+    pageNumber: Int!
+    pageSize: Int!
+  ): [InsuranceCompany!]!
+  findAllPreauthRequests(
+    token: String!
+    patientId: String
+    startDate: String!
+    endDate: String!
+    approvalStatus: String
+    pageNumber: Float!
+    pageSize: Float!
+  ): [PreAuthRequest!]!
+  refreshPatientInsuranceData(
+    token: String!
+    patientId: String!
+    patientCardId: String!
+  ): PatientCoverage!
+  cancelPreauth(token: String!, preauthId: String!): SuccessResult!
+  findAllUsers(
+    organizationId: String
+    userIds: [String!]
+    userType: String
+    branchIds: [String!]
+    specialtyIds: [String!]
+    platformIds: [String!]
+    pageNumber: Int!
+    pageSize: Int!
+  ): [User!]!
+  findUsersByProfession(
+    token: String!
+    professionId: String!
+    nameSearch: String
+    pageNumber: Int!
+    pageSize: Int!
+  ): [User!]!
+  findUserByEmail(email: String!): User!
+  findAllUserOrgnizations(userId: String!): [UserOrganization!]!
+  findAllReligions: [Religion!]!
+  findAllNationalities(
+    countryCode: Countries
+    pageNumber: Int!
+    pageSize: Int!
+  ): [Nationalities!]!
+  findAllRoles(
+    token: String!
+    roleIds: [String!]
+    pageNumber: Int!
+    pageSize: Int!
+  ): [Role!]!
+  findAllPermissionModules(
+    pageNumber: Int!
+    pageSize: Int!
+  ): [PermissionModule!]!
+  findAllUserSettings(
+    token: String!
+    userIds: [String!]!
+    pageNumber: Int!
+    pageSize: Int!
+  ): [UserSettings!]!
+  findAllPlatforms(
+    platformIds: [String!]
+    pageNumber: Int!
+    pageSize: Int!
+  ): [Platform!]!
+  findAllEducationLevels: [EducationLevel!]!
+  findAllTelemedicineUsers(
+    pageNumber: Int!
+    pageSize: Int!
+    userIds: [String!]
+  ): [User!]!
+  findAllHealthRecords(
+    authToken: String!
+    entryId: String
+    patientId: String!
+    pageSize: Int!
+    pageNumber: Int!
+  ): [HealthRecord!]!
+  findAllHealthRecordAttachments(
+    token: String!
+    healthRecordId: String!
+    attachmentIds: [String!]
+    procedureIds: [String!]
+  ): [Attachment!]!
+  findAllPatientProcedures(
+    token: String!
+    patientProcedureIds: [String!]
+    patientId: String
+    healthRecordId: String
+    diagnosisId: String
+    procedureSection: ProcedureSection
+    pageNumber: Float!
+    pageSize: Float!
+  ): [PatientProcedure!]!
+  findAllPatientDiagnoses(
+    token: String!
+    patientDiagnosisIds: [String!]
+    patientId: String
+    healthRecordId: String
+    pageNumber: Float!
+    pageSize: Float!
+  ): [PatientDiagnosis!]!
+  findAllTreatmentPlans(
+    token: String!
+    patientId: String
+    healthRecordId: String
+    startDate: String
+    endDate: String
+    pageNumber: Float!
+    pageSize: Float!
+  ): [TreatmentPlan!]!
+  findAllTemplates(
+    pageNumber: Int!
+    pageSize: Int!
+    tenantId: String
+    parents: [String!]
+  ): [Template!]!
+  findAllProcedures(
+    token: String!
+    tenantId: String
+    procedueIds: [String!]
+    procedureName: String
+    procedureTypeId: String
+    procedureCategory: String
+    isGeneric: Boolean
+    serviceOrProduct: ServiceOrProduct
+    barcode: String
+    labelIds: [String!]
+    branchIds: [String!]
+    creatorIds: [String!]
+    pageNumber: Int!
+    pageSize: Int!
+    procedureSections: [ProcedureSection!]
+    procedureSubsections: [ProcedureSubsection!]
+    globalIds: [String!]
+    shortListChronicMedication: Boolean
+  ): [Procedure!]!
+  findAllRequirements(
+    token: String!
+    requirementType: RequirementType
+    pageNumber: Int!
+    pageSize: Int!
+  ): [Requirement!]!
+  findAllReportTemplates(
+    token: String!
+    pageNumber: Int!
+    pageSize: Int!
+  ): [ReportTemplate!]!
+  findAllGlobalProcedures(pageNumber: Int!, pageSize: Int!): [GlobalProcedure!]!
+  findAllProcedureTypes(
+    token: String!
+    pageNumber: Int!
+    pageSize: Int!
+  ): [ProcedureType!]!
+  findAllDiagnoses(
+    token: String!
+    diagnosisIds: [String!]
+    diagnosisSection: String
+    diagnosisSubsection: String
+    search: String
+    pageNumber: Int!
+    pageSize: Int!
+  ): [Diagnosis!]!
+  findAllGlobalDiagnosis(pageNumber: Int!, pageSize: Int!): [GlobalDiagnosis!]!
+  findAllPatientChurnReports(
+    token: String!
+    patientId: String
+    offerStatus: PatientOfferStatus
+    pageNumber: Int!
+    pageSize: Int!
+  ): [PatientChurnReport!]!
+  findAllVisionPrescriptions(
+    token: String!
+    patientId: String
+    healthRecordId: String
+    pageNumber: Int!
+    pageSize: Int!
+  ): [VisionPrescription!]!
+  findAllUserInvitations(
+    token: String!
+    email: String!
+    pageNumber: Int!
+    pageSize: Int!
+  ): [UserInvitation!]!
+  findAllManufacturers(
+    token: String!
+    searchQuery: String
+    pageNumber: Int!
+    pageSize: Int!
+  ): [Manufacturer!]!
+  findAllSuppliers(
+    token: String!
+    searchQuery: String
+    pageNumber: Int!
+    pageSize: Int!
+  ): [Supplier!]!
+  findAllLabels(token: String!, pageNumber: Int!, pageSize: Int!): [Label!]!
+  findAllMeasurementUnits(
+    token: String!
+    pageNumber: Int!
+    pageSize: Int!
+  ): [MeasurementUnit!]!
+  findAllPurchaseOrders(
+    token: String!
+    supplierIds: [String!]
+    creatorIds: [String!]
+    startDate: String
+    endDate: String
+    pageNumber: Int!
+    pageSize: Int!
+  ): [PurchaseOrder!]!
+  findAllStocks(
+    token: String!
+    purchaseOrderId: String
+    productIds: [String!]
+    storeId: String
+    isAvailable: Boolean
+    isExpired: Boolean
+  ): [Stock!]!
+  findAllStores(
+    token: String!
+    pageNumber: Int!
+    pageSize: Int!
+    branchId: String
+  ): [Store!]!
+  findAllInventoryUpdateOrders(
+    token: String!
+    storeIds: [String!]!
+    pageNumber: Int!
+    pageSize: Int!
+    status: InventoryUpdateOrderStatus
+  ): [InventoryUpdateOrder!]!
+  findInventoryUpdateOrderById(
+    token: String!
+    inventoryUpdateOrderId: String!
+    productIds: [String!]!
+    pageNumber: Int!
+    pageSize: Int!
+  ): InventoryUpdateOrder!
+  findAllStockUpdates(
+    token: String!
+    branchId: String!
+    productIds: [String!]!
+    startDate: String!
+    endDate: String!
+
+    # Limits the number of updates returned for each product
+    pageSize: Int!
+    source: StockUpdateTrigger
+    sourceId: String
+  ): [ProductStockUpdates!]!
+  getPurchaseOrderStats(
+    token: String!
+    supplierIds: [String!]
+    userIds: [String!]
+    startDate: String!
+    endDate: String!
+  ): PurchaseOrderStats!
+  findAllStockTransferOrders(
+    token: String!
+    sourceStoreId: String
+    destinationStoreId: String
+    pageNumber: Int!
+    pageSize: Int!
+  ): [StockTransferOrder!]!
+  findStockTransferOrderById(
+    token: String!
+    stockTransferOrderId: String!
+  ): StockTransferOrder!
+  findAllInventoryIssues(
+    token: String!
+    storeId: String
+    pageNumber: Int!
+    pageSize: Int!
+  ): [InventoryIssue!]!
+  findInventoryIssueById(
+    token: String!
+    inventoryIssueId: String!
+  ): InventoryIssue!
+  findAllLostSales(
+    token: String!
+    productIds: [String!]!
+    userId: String!
+    pageNumber: Int!
+    pageSize: Int!
+  ): [LostSale!]!
+  getPaymentSession(token: String!, sessionId: String!): PaymentSession!
+  findAllMedmindCases(
+    token: String!
+    caseId: String
+    pageNumber: Int!
+    pageSize: Int!
+  ): [MedmindCase!]!
+  findAllChatMessages(
+    token: String!
+    patientId: String!
+    pageNumber: Int!
+    pageSize: Int!
+  ): [ChatMessage!]!
+  getMedmindTenantStats(token: String!): MedmindTenantStats!
+  findAllMobilePackages(pageNumber: Int!, pageSize: Int!): [MobilePackage!]!
+  findAllMedmindPackages(
+    token: String
+    pageNumber: Int!
+    pageSize: Int!
+  ): [MedmindPackages!]!
+  findAllPatientLabContainers(
+    token: String!
+    branchId: String!
+    patientId: String
+    containerIds: [Int!]
+    pageNumber: Int!
+    pageSize: Int!
+  ): [PatientLabContainer!]!
+  findAllMachineResponses(
+    token: String!
+    requirementIds: [Int!]!
+    isUsed: Boolean
+  ): [MachineResponse!]!
+}
+
+input ProcedureIncentiveFilter {
+  teamId: String!
+  teamMemberId: String!
+  procedureIds: [String!]!
+}
+
+input CompanyPolicyTagFilter {
+  tagName: String!
+  value: String!
+}
+
+type Mutation {
+  createMedicalAllergy(
+    token: String!
+    createMedicalAllergyInput: CreateMedicalAllergyInput!
+  ): MedicalAllergy!
+  loginWithGoogle(token: String!, organization: CreateOrganizationInput): User!
+  createNewUser(userData: UserInput!): CreateNewUserResult!
+  updateUser(token: String!, userId: String!, data: PartialUserInput!): User!
+  loginUser(email: String!, password: String!): SignInResult!
+  loginUserForOrgnization(orgnizationId: String!, token: String!): SignInResult!
+  createPatient(token: String!, data: PatientInput!): Patient!
+  updatePatient(
+    token: String!
+    patientId: String!
+    data: UpdatePatientInput!
+  ): Patient!
+  recordVitals(token: String!, vitals: VitalsInput!): Vitals!
+  updateVitals(
+    token: String!
+    vitalsId: String!
+    vitals: UpdateVitalsInput!
+  ): Vitals!
+  createSchedulerColumn(
+    createSchedulerColumnDto: CreateSchedulerColumnInput!
+    authToken: String!
+  ): SchedulerColumn!
+
+  # Error codes: INVALID_SCHEDULER_COLUMN, INVALID_FACILITY
+  createEntry(token: String!, data: EntryInput!): Entry!
+
+  # Error codes: ENTRY_NOT_FOUND
+  updateEntry(token: String!, entryId: String!, data: UpdateEntryInput!): Entry!
+
+  # Error codes: ENTRY_NOT_FOUND
+  updateEntryProcedure(
+    token: String!
+    entryId: String!
+    procedureId: String!
+    procedure: PartialEntryProcedureInput!
+  ): EntryProcedure!
+
+  # Error codes: ENTRY_NOT_FOUND, ENTRY_PROCEDURE_NOT_FOUND
+  updateEntryProcedures(
+    token: String!
+    entryId: String!
+    procedures: [UpdateEntryProcedureInput!]!
+  ): SuccessResult!
+  createVisitType(token: String!, visitType: VisitTypeInput!): VisitType!
+  createSpeciality(
+    token: String!
+    specialityInput: SpecialityInput!
+  ): Speciality!
+  createSubspeciality(
+    token: String!
+    subspecialityInput: SubspecialityInput!
+  ): SubSpeciality!
+  createFacility(token: String!, facility: FacilityInput!): FacilityOutput!
+  createRequest(token: String!, requestDto: RequestInput!): Request!
+  notifyRequestCreated(
+    token: String!
+
+    # the request object serialized to string
+    request: String!
+  ): Request!
+  updateRequest(
+    token: String!
+    requestId: String!
+    request: PartialRequestInput!
+  ): Request!
+  createRequestProcedures(
+    token: String!
+    requestId: String!
+    procedures: [RequestProcedureInput!]!
+  ): [RequestProcedure!]!
+  updateRequestProcedures(
+    token: String!
+    requestId: String!
+    procedures: [UpdateRequestProcedureInput!]!
+  ): [RequestProcedure!]!
+  createTransaction(
+    token: String!
+    transaction: TransactionInput!
+  ): Transaction!
+  updateTransaction(
+    token: String!
+    transactionId: String!
+    transaction: UpdateTransactionInput!
+  ): Transaction!
+  createExpenseCategory(
+    token: String!
+    expenseCategory: ExpenseCategoryInput!
+  ): ExpenseCategory!
+  updateExpenseCategory(
+    token: String!
+    expenseCategoryId: String!
+    expenseCategory: UpdateExpenseCategoryInput!
+  ): ExpenseCategory!
+  createMerchant(token: String!, merchant: MerchantInput!): Merchant!
+  updateMerchant(
+    token: String!
+    merchantId: String!
+    merchant: UpdateMerchantInput!
+  ): Merchant!
+  createProfession(token: String!, profession: ProfessionInput!): Profession!
+  updateProfession(
+    token: String!
+    professionId: String!
+    profession: UpdateProfessionInput!
+  ): Profession!
+  createTeam(token: String!, team: TeamInput!): Team!
+  updateTeam(token: String!, teamId: String!, team: UpdateTeamInput!): Team!
+  createProcedureIncentive(
+    token: String!
+    procedureIncentives: [ProcedureIncentiveInput!]!
+  ): [ProcedureIncentive!]!
+
+  # Removes all procedure incentives for a single team and inserts the new incentives
+  updateProcedureIncentives(
+    token: String!
+    procedureIncentives: UpdateProcedureIncentivesInput!
+  ): [ProcedureIncentive!]!
+  generateRequirementId(
+    token: String!
+    branchId: String!
+    entryId: String
+  ): RequirementCounter!
+  approveAccountingEntry(
+    tokem: String!
+    accountingEntryId: String!
+  ): SuccessResult!
+  createExternalAccount(
+    token: String!
+    externalAccount: ExternalAccountInput!
+  ): ExternalAccount!
+  updateExternalAccount(
+    token: String!
+    externalAccountId: String!
+    externalAccount: UpdateExternalAccountInput!
+  ): ExternalAccount!
+  createExternalCostCenter(
+    token: String!
+    externalCostCenter: ExternalCostCenterInput!
+  ): ExternalCostCenter!
+  updateExternalCostCenter(
+    token: String!
+    externalCostCenterId: String!
+    externalCostCenter: UpdateExternalCostCenterInput!
+  ): ExternalCostCenter!
+  createOffer(token: String!, offer: OfferInput!): Offer!
+  updateOffer(
+    token: String!
+    offerId: String!
+    offer: UpdateOfferInput!
+  ): Offer!
+  deleteOffer(token: String!, offerId: String!): Offer!
+  convertPatientLoyaltyPoints(
+    token: String!
+    patientId: String!
+    points: Int!
+  ): PaitentLoyaltyBalances!
+  safeDeleteEntry(
+    secret: String!
+    entryId: String
+    entryNumber: Float
+    clientEntryNumber: Float
+  ): EntrySafeDeleteResult!
+  createOrganization(
+    token: String!
+    createOrganizationInput: CreateOrganizationInput!
+  ): Organization!
+  createOrganizationBranch(
+    token: String!
+    data: CreateOrganizationBranchInput!
+  ): OrganizationBranch!
+  updateBranchSettings(
+    token: String!
+    branchSettings: BranchSettingsInput!
+  ): BranchSettings!
+  createCompanyPolicies(
+    token: String!
+    companyPoliciesInput: [CompanyPolicyInput!]!
+  ): [CompanyPolicy!]!
+  createInsuranceCompany(
+    token: String!
+    insuranceCompany: InsuranceCompanyInput!
+  ): InsuranceCompany!
+  createPreAuthRequest(
+    token: String!
+    preauthId: String
+    preauth: PreAuthRequestInput!
+  ): PreAuthRequest!
+  sendCommunicationRequest(
+    token: String!
+    communicationRequest: CommunicationRequestInput!
+  ): CommunicationRequest!
+  deleteUser(token: String!): User!
+  updateUserWorkingHours(
+    token: String!
+    userId: String!
+    platformId: String!
+    workingHours: UserWorkingHoursInput!
+  ): User!
+  updateUserPlatformData(
+    token: String!
+    userId: String!
+    platformId: String!
+    platformData: UpdateUserPlatformInput!
+  ): User!
+
+  # Error codes: INVALID_INVITATION, INVALID_INVITATION_TOKEN, INVITATION_NOT_FOUND, USER_ALREADY_REGISTERED
+  registerUserWithOrganization(token: String!, invitationToken: String!): User!
+  createRole(token: String!, roleInput: RoleInput!): Role!
+  updateRole(token: String!, roleId: String!, role: UpdateRoleInput!): Role!
+  createPermissionModule(
+    permissionModuleInput: PermissionModuleInput!
+  ): PermissionModule!
+  updatePermissionModule(
+    permissionModuleId: String!
+    permissionModule: PermissionModuleInput!
+  ): PermissionModule!
+  createUserSettings(
+    token: String!
+    userSettings: UserSettingsInput!
+  ): UserSettings!
+  updateUserSettings(
+    token: String!
+    userId: String!
+    userSettings: UpdateUserSettingsInput!
+  ): UserSettings!
+  assignUserRoles(token: String!, userId: String!, roles: [String!]!): User!
+  createHealthRecord(
+    authToken: String!
+    createHealthRecordInput: InputHealthRecord!
+  ): HealthRecord!
+
+  # Error codes: HEALTH_RECORD_NOT_FOUND
+  updateHealthRecord(
+    authToken: String!
+    healthRecordId: String!
+    updateHealthRecordInput: PartialInputHealthRecord!
+  ): HealthRecord!
+  createHealthRecordAttachment(
+    token: String!
+    healthRecordId: String!
+    attachment: AttachmentInput!
+  ): Attachment!
+  createHealthRecordAttachments(
+    token: String!
+    healthRecordId: String!
+    attachments: [AttachmentInput!]!
+  ): [Attachment!]!
+  updateHealthRecordAttachment(
+    token: String!
+    healthRecordId: String!
+    attachmentId: String!
+    attachment: PartialAttachmentInput!
+  ): Attachment!
+  updateHealthRecordAttachments(
+    token: String!
+    healthRecordId: String!
+    attachments: [UpdateHealthRecordAttachmentInput!]!
+  ): SuccessResult!
+  createHealthRecordDiagnosisGroup(
+    token: String!
+    healthRecordId: String!
+  ): HealthRecord!
+  createPatientProcedures(
+    token: String!
+    patientProcedures: [PatientProcedureInput!]!
+  ): [PatientProcedure!]!
+  updatePatientProcedures(
+    token: String!
+    patientProcedures: [UpdatePatientProcedureInput!]!
+  ): [PatientProcedure!]!
+  createOrUpdatePatientProcedure(
+    token: String!
+    patientProcedureId: String
+    patientProcedure: UpdatePatientProcedureDataInput!
+  ): PatientProcedure!
+  createPatientProcedureAttachment(
+    token: String!
+    patientProcedureId: String!
+    attachment: PatientProcedureAttachmentInput!
+  ): PatientProcedure!
+  updatePatientProcedureAttachment(
+    token: String!
+    patientProcedureId: String!
+    attachmentId: String!
+    attachment: PatientProcedureAttachmentInput!
+  ): PatientProcedure!
+  createPatientDiagnoses(
+    token: String!
+    patientDiagnoses: [PatientDiagnosisInput!]!
+  ): [PatientDiagnosis!]!
+  updatePatientDiagnoses(
+    token: String!
+    patientDiagnoses: [UpdatePatientDiagnosisInput!]!
+  ): [PatientDiagnosis!]!
+  createTreatmentPlan(
+    token: String!
+    treatmentPlan: TreatmentPlanInput!
+  ): TreatmentPlan!
+  updateTreatmentPlan(
+    token: String!
+    treatmentPlanId: String!
+    treatmentPlan: UpdateTreatmentPlanInput!
+  ): TreatmentPlan!
+  createTemplate(authToken: String!, templateInput: TemplateInput!): Template!
+  createProcedure(token: String!, procedureInput: ProcedureInput!): Procedure!
+
+  # Error codes: PROCEDURE_NOT_FOUND
+  updateProcedure(
+    token: String!
+    procedureId: String!
+    updateProcedureInput: PartialProcedureInput!
+  ): Procedure!
+  createRequirement(
+    token: String!
+    requirement: RequirementInput!
+  ): Requirement!
+  updateRequirement(
+    token: String!
+    requirementId: String!
+    requirement: UpdateRequirementInput!
+  ): Requirement!
+  createReportTemplate(
+    token: String!
+    reportTemplate: ReportTemplateInput!
+  ): ReportTemplate!
+  updateReportTemplate(
+    token: String!
+    reportTemplateId: String!
+    reportTemplate: UpdateReportTemplateInput!
+  ): ReportTemplate!
+  createProcedureType(
+    token: String!
+    procedureType: ProcedureTypeInput!
+  ): ProcedureType!
+  createDiagnosis(token: String!, diagnosis: DiagnosisInput!): Diagnosis!
+  updateDiagnosis(
+    token: String!
+    diagnosisId: String!
+    diagnosis: DiagnosisInput!
+  ): Diagnosis!
+  generatePatientOffers(token: String!, patientId: String!): SuccessResult!
+  createVisionPrescription(
+    token: String!
+    visionPrescription: VisionPrescriptionInput!
+  ): VisionPrescription!
+  updateVisionPrescription(
+    token: String!
+    visionPrescriptionId: String!
+    visionPrescription: UpdateVisionPrescriptionInput!
+  ): VisionPrescription!
+  sendUserInvitation(
+    token: String!
+    invitation: UserInvitationInput!
+  ): UserInvitation!
+  sendWhatsappMessage(message: WhatsappMessageInput!): WhatsappMessageResponse!
+  createManufacturer(
+    token: String!
+    manufacturer: ManufacturerInput!
+  ): Manufacturer!
+  createSupplier(token: String!, supplier: SupplierInput!): Supplier!
+  createLabel(token: String!, label: LabelInput!): Label!
+  createMeasurementUnit(
+    token: String!
+    measurementUnit: MeasurementUnitInput!
+  ): MeasurementUnit!
+  createPurchaseOrder(
+    token: String!
+    purchaseOrder: PurchaseOrderInput!
+  ): PurchaseOrder!
+  updatePurchaseOrder(
+    token: String!
+    purchaseOrderId: String!
+    purchaseOrder: PartialPurchaseOrderInput!
+  ): PurchaseOrder!
+  updatePurchaseOrderStatus(
+    token: String!
+    purchaseOrderId: String!
+    status: PurchaseOrderStatus!
+  ): PurchaseOrder!
+  updateStocksForPurchase(
+    token: String!
+    productId: String!
+    storeId: String!
+    quantity: Float!
+  ): [Stock!]!
+  createStore(token: String!, store: StoreInput!): Store!
+  createInventoryUpdateOrder(
+    token: String!
+    inventoryUpdateOrder: InventoryUpdateOrderInput!
+  ): InventoryUpdateOrder!
+  updateInventoryUpdateOrder(
+    token: String!
+    inventoryUpdateOrderId: String!
+    items: [InventoryUpdateOrderItemInput!]!
+  ): SuccessResult!
+  applyInventoryUpdateOrder(
+    token: String!
+    inventoryUpdateOrderId: String!
+  ): InventoryUpdateOrder!
+  deleteInventoryUpdateOrder(
+    token: String!
+    inventoryUpdateOrderId: String!
+  ): InventoryUpdateOrder!
+  createStockTransferOrder(
+    token: String!
+    stockTransferOrder: StockTransferOrderInput!
+  ): StockTransferOrder!
+  updateStockTransferOrder(
+    token: String!
+    stockTransferOrderId: String!
+    stockTransferOrder: UpdateStockTransferOrderInput!
+  ): StockTransferOrder!
+  applyStockTransferOrder(
+    token: String!
+    stockTransferOrderId: String!
+  ): StockTransferOrder!
+  createInventoryIssue(
+    token: String!
+    inventoryIssue: InventoryIssueInput!
+  ): InventoryIssue!
+  updateInventoryIssue(
+    token: String!
+    inventoryIssueId: String!
+    inventoryIssue: UpdateInventoryIssueInput!
+  ): InventoryIssue!
+  applyInventoryIssue(
+    token: String!
+    inventoryIssueId: String!
+  ): InventoryIssue!
+  recordLostSales(token: String!, lostSales: [LostSaleInput!]!): [LostSale!]!
+  createPaymentSession(
+    token: String
+    sessionDetails: PaymentSessionInput!
+  ): PaymentSession!
+  chatWithAssistantRest(
+    token: String!
+    patientId: String
+    template: ChatGPTPromptTemplate!
+    messageParameters: [AssistantMessageParameterInput!]!
+    imageUrls: [String!]
+  ): ChatResponse!
+  createMedmindCase(token: String!, caseData: MedmindCaseInput!): ChatResponse!
+  recordMedmindCaseUserFeedback(
+    token: String!
+    userFeedback: MedmindCaseUserFeedbackInput!
+  ): MedmindCaseUserFeedback!
+  seedProcedures(
+    tenantId: String!
+    branchId: String!
+    seedingConfig: SeedingConfigInput!
+  ): SeedingResult!
+  seedProcedureTypes(
+    tenantId: String!
+    branchId: String!
+    seedingConfig: SeedingConfigInput!
+  ): SeedingResult!
+  seedProcedureSubtypes(
+    tenantId: String!
+    branchId: String!
+    seedingConfig: SeedingConfigInput!
+  ): SeedingResult!
+  seedInsuranceCompanies(
+    tenantId: String!
+    branchId: String!
+    seedingConfig: SeedingConfigInput!
+  ): SeedingResult!
+  seedFacilities(
+    tenantId: String!
+    branchId: String!
+    seedingConfig: SeedingConfigInput!
+  ): SeedingResult!
+  seedVisitTypes(
+    tenantId: String!
+    branchId: String!
+    seedingConfig: SeedingConfigInput!
+  ): SeedingResult!
+  seedPaymentMethods(
+    tenantId: String!
+    branchId: String!
+    seedingConfig: SeedingConfigInput!
+  ): SeedingResult!
+  seedExpenseCategories(
+    tenantId: String!
+    branchId: String!
+    seedingConfig: SeedingConfigInput!
+  ): SeedingResult!
+  seedProfessions(
+    tenantId: String!
+    branchId: String!
+    seedingConfig: SeedingConfigInput!
+  ): SeedingResult!
+  seedManufacturers(
+    tenantId: String!
+    branchId: String!
+    seedingConfig: SeedingConfigInput!
+  ): SeedingResult!
+  seedSuppliers(
+    tenantId: String!
+    branchId: String!
+    seedingConfig: SeedingConfigInput!
+  ): SeedingResult!
+  seedPatients(
+    tenantId: String!
+    branchId: String!
+    seedingConfig: SeedingConfigInput!
+  ): SeedingResult!
+  createPatientLabContainer(
+    token: String!
+    patientLabContainer: PatientLabContainerInput!
+  ): PatientLabContainer!
+  recordMachineResponse(
+    token: String!
+    machineResponse: MachineResponseInput!
+  ): MachineResponse!
+  updateMachineResponse(
+    token: String!
+    machineResponseId: String!
+    machineResponse: UpdateMachineResponseInput!
+  ): MachineResponse!
+}
+
+input CreateMedicalAllergyInput {
+  allergyName: String!
+  allergyType: String!
+  description: String!
+  branchId: String!
+  status: ModelStatus! = ENABLED
+  tenantId: String! = ""
+  createdBy: String! = ""
+  isDeleted: Boolean! = false
+}
+
+input CreateOrganizationInput {
+  organizationName: NameInput!
+  email: String!
+  logoUrl: String
+  countryCode: Countries!
+  phone: String!
+  organizationOwner: String! = ""
+  organizationTypeId: String!
+  subDomain: String!
+  referralCode: String!
+  dbCredentials: DatabaseCredentials
+  branches: [CreateOrganizationBranchInput!]!
+  tenantType: TenantType!
+  createdBy: String = ""
+}
+
+input NameInput {
+  lang: String!
+  lang2: String!
+}
+
+input DatabaseCredentials {
+  instance: String!
+  name: String!
+  user: String!
+  password: String!
+  port: Float!
+}
+
+input CreateOrganizationBranchInput {
+  branchName: NameInput!
+  organizationType: IdNameInput!
+  location: LocationInput!
+  address: String!
+  firstPhone: String!
+  secondPhone: String!
+  email: String!
+  countryCode: Countries!
+  currencyCode: String!
+  currencyCode2: String!
+  lang: String!
+  lang2: String!
+  createdBy: String! = ""
+  tenantId: String! = ""
+  status: ModelStatus! = ENABLED
+  isDeleted: Boolean = false
+}
+
+input IdNameInput {
+  id: String!
+  name: NameInput!
+}
+
+input LocationInput {
+  latitude: String!
+  longitude: String!
+}
+
+enum TenantType {
+  SHARED
+  DEDICATED
+}
+
+input UserInput {
+  firstName: NameInput!
+  lastName: NameInput!
+  prefix: NamePrefix
+  type: UserType!
+  profileImg: String
+  education: UserEducationInput
+  bio: String
+  email: String!
+  phone: UserPhoneInput
+  password: String
+  nationality: Countries
+  saudiCommissionNumber: String
+  local: String
+  activationCode: String
+  active: Boolean! = false
+  specialities: [UserSpecialityInput!]! = []
+  branchId: String
+  organizations: [UserOrganizationInput!]! = []
+  licenses: [UserLicenseInput!]
+  metadata: UserMetadataInput
+  tenantId: String = ""
+  createdBy: String = ""
+  organization: CreateOrganizationInput
+  status: ModelStatus! = ENABLED
+  isDeleted: Boolean! = false
+}
+
+input UserEducationInput {
+  level: IdNameInput!
+  sublevel: IdNameInput
+}
+
+input UserPhoneInput {
+  primary: String!
+  secondary: String!
+}
+
+input UserSpecialityInput {
+  id: String!
+  subspecialities: [String!]!
+}
+
+input UserOrganizationInput {
+  organizationId: String!
+  organizationName: NameInput!
+  roles: [String!]!
+  branches: [String!]!
+  defaultBranch: String! = ""
+  platforms: [UserPlatformInput!]! = []
+}
+
+input UserPlatformInput {
+  id: String!
+  name: String!
+  price: Float!
+  insuranceCompanyId: String!
+  insuranceClassId: String!
+  workingHours: UserWorkingHoursInput
+}
+
+input UserWorkingHoursInput {
+  slotMinutes: Float!
+  weekDays: UserWorkingWeekDaysInput!
+}
+
+input UserWorkingWeekDaysInput {
+  sat: [Boolean!]!
+  sun: [Boolean!]!
+  mon: [Boolean!]!
+  tue: [Boolean!]!
+  wed: [Boolean!]!
+  thu: [Boolean!]!
+  fri: [Boolean!]!
+}
+
+input UserLicenseInput {
+  standardName: String!
+  value: String!
+  attachments: [String!]!
+}
+
+input UserMetadataInput {
+  accounting: UserAccountingMetadataInput
+}
+
+input UserAccountingMetadataInput {
+  accountId: String!
+  costCenterId: String
+}
+
+input PartialUserInput {
+  firstName: NameInput
+  lastName: NameInput
+  prefix: NamePrefix
+  type: UserType
+  profileImg: String
+  education: UserEducationInput
+  bio: String
+  email: String
+  phone: UserPhoneInput
+  password: String
+  nationality: Countries
+  saudiCommissionNumber: String
+  local: String
+  activationCode: String
+  active: Boolean
+  specialities: [UserSpecialityInput!]
+  licenses: [UserLicenseInput!]
+  metadata: UserMetadataInput
+  branchId: String
+  status: ModelStatus
+}
+
+input PatientInput {
+  globalId: String
+  firstName: NameInput!
+  secondName: NameInput!
+  thirdName: NameInput!
+  lastName: NameInput!
+  dob: String
+  gender: Gender!
+  personalId: [PersonalIdInput!]
+  mrn: String!
+  address: String!
+  state: String!
+  cellPhone: String!
+  homePhone: String
+  workPhone: String
+  workPhoneExt: String
+  nationality: String!
+  email: String!
+  profileImg: String
+  preferredLanguage: Language!
+  cards: [PatientCardInput!]!
+  patientMedicalSummary: PatientMedicalSummaryInput
+  hairType: String
+  skinType: String
+  weight: Float
+  height: Float
+  createdFrom: PatientCreationSource
+  branchId: String!
+  tenantId: String = ""
+  createdBy: String = ""
+  status: ActivityStatus! = ACTIVE
+}
+
+input PersonalIdInput {
+  type: IdType!
+  issuingCountry: Countries!
+  number: String!
+}
+
+input PatientCardInput {
+  cardNumber: String
+  insuranceCompany: IdNameInput
+  insuranceCompanyClass: IdNameInput
+  relationship: NameInput
+  status: ModelStatus! = ENABLED
+  expiryDate: String
+  createdBy: String = ""
+}
+
+input PatientMedicalSummaryInput {
+  medicalHistorySummary: String!
+  visitSummary: VisitSummaryInput
+  allergies: [AllergyInput!]
+  activeMedications: [ActiveMedicationInput!]
+  chronicIllnesses: [ChronicIllnessInput!]
+  medicalImages: [MedicalImageInput!]
+}
+
+input VisitSummaryInput {
+  visitSummary: String!
+  createdBy: String! = ""
+  createdDate: String!
+  isDeleted: Boolean! = false
+}
+
+input AllergyInput {
+  allergyId: String
+  allergyName: String
+  allergyType: String
+  reaction: String
+  severity: AllergySeverity
+  allergyDate: String
+  notes: String
+}
+
+input ActiveMedicationInput {
+  procedureId: String
+  medicationName: String
+  imageUrl: String
+  dosage: String
+  frequency: String
+  notes: String
+  for: String
+  quantity: Float
+  medicationForm: String
+}
+
+input ChronicIllnessInput {
+  diagnosisId: String
+  diagnosisName: String
+  diagnosisDate: String
+}
+
+input MedicalImageInput {
+  imageUrl: String!
+  notes: String
+  type: MedicalImageType!
+}
+
+input UpdatePatientInput {
+  firstName: PartialNameInput
+  secondName: PartialNameInput
+  thirdName: PartialNameInput
+  lastName: PartialNameInput
+  dob: String
+  gender: Gender
+  personalId: [PersonalIdInput!]
+  mrn: String
+  address: String
+  state: String
+  cellPhone: String
+  homePhone: String
+  workPhone: String
+  workPhoneExt: String
+  nationality: String
+  email: String
+  profileImg: String
+  preferredLanguage: Language
+  cards: [PatientCardInput!]
+  patientMedicalSummary: PartialPatientMedicalSummaryInput
+  hairType: String
+  skinType: String
+  weight: Float
+  height: Float
+  branchId: String
+  status: ActivityStatus
+}
+
+input PartialNameInput {
+  lang: String
+  lang2: String
+}
+
+input PartialPatientMedicalSummaryInput {
+  medicalHistorySummary: String
+  visitSummary: PartialVisitSummaryInput
+  allergies: [AllergyInput!]
+  activeMedications: [ActiveMedicationInput!]
+  chronicIllnesses: [ChronicIllnessInput!]
+  medicalImages: [MedicalImageInput!]
+}
+
+input PartialVisitSummaryInput {
+  visitSummary: String
+  createdDate: String
+  isDeleted: Boolean
+}
+
+input VitalsInput {
+  patientId: String!
+  temperature: Float
+  weight: Float
+  bloodPressure: VitalsBloodPressureInput
+  respiratoryRate: Float
+  pulseRate: Float
+  oxygenLevel: Float
+  tenantId: String! = ""
+  createdBy: String! = ""
+  preauthStatus: VitalsPreauthStatus
+  isDeleted: Boolean! = false
+}
+
+input VitalsBloodPressureInput {
+  systolic: Float!
+  diastolic: Float!
+}
+
+input UpdateVitalsInput {
+  patientId: String!
+  temperature: Float
+  weight: Float
+  bloodPressure: UpdateVitalsBloodPressureInput
+  respiratoryRate: Float
+  pulseRate: Float
+  oxygenLevel: Float
+  preauthStatus: VitalsPreauthStatus
+  isDeleted: Boolean
+}
+
+input UpdateVitalsBloodPressureInput {
+  systolic: Float
+  diastolic: Float
+}
+
+input CreateSchedulerColumnInput {
+  columnName: NameInput!
+  associatedProcedure: [ColumnAssociatedProcedureInput!]!
+  teamId: String
+  teamIds: [String!]
+  procedureTypeIds: [String!]
+  providerId: String!
+  facilityId: String!
+  timeInterval: Int!
+  satDay: Boolean!
+  sunDay: Boolean!
+  monDay: Boolean!
+  tueDay: Boolean!
+  wedDay: Boolean!
+  thuDay: Boolean!
+  friDay: Boolean!
+  defaultOrder: Int!
+  branchId: String!
+  createdBy: String! = ""
+  tenantId: String! = ""
+  isDeleted: Boolean! = false
+}
+
+input ColumnAssociatedProcedureInput {
+  procedureId: String!
+  quantity: Int!
+  knowledgeBase: NameInput!
+}
+
+input EntryInput {
+  clientEntryNumber: Float
+  procedures: [EntryProcedureInput!]!
+  discount: Float! = 0
+  totalPatientAmount: Float
+  totalCompanyAmount: Float
+  paidAmount: Float
+  facilityId: String!
+  patient: EntryPatientInput!
+  providerId: String!
+  branchId: String!
+  schedulerColumnId: String!
+  storeId: String
+  scheduledDate: String!
+  checkInDate: String
+  closedDate: String
+  visitTypeId: String!
+  visitMinutes: Float!
+  telemedicine: Boolean
+  teleMedicineLink: String!
+  issuedFrom: EntryIssuePoint!
+  paymentMethodId: String
+  currency: Currency!
+
+  # automatically add credit transaction when set to true
+  markAsPaid: Boolean!
+  requirements: [EntryRequirementInput!]
+  attachments: EntryAttachmentsInput
+  associatedOffers: [EntryAssociatedOffersInput!]
+  confirmed: Boolean! = true
+  labResultPrinted: Boolean! = false
+  callStatus: EntryCallStatus! = NEW
+  createdBy: String = ""
+  status: ModelStatus! = ENABLED
+  tenantId: String = ""
+  isDeleted: Boolean
+}
+
+input EntryProcedureInput {
+  patientProcedureData: PatientProcedureDataInput
+  parentEntryProcedureId: String
+  parentProcedureId: String
+  requestedFromEntryId: String
+  procedureId: String!
+  procedureSection: ProcedureSection
+  storeId: String
+  requirements: [EntryProcedureRequirementInput!]
+  associatedProcedures: [EntryAssociatedProcedureInput!]
+  associatedOffers: [EntryProcedureAssociatedOffersInput!]
+  machineResponseStatus: String
+  parentHealthRecordId: String
+  attachmentId: String
+  requirementId: String
+  companyId: String!
+  companyClassId: String!
+  attachedMedicalNotes: [String!]!
+  patientAmount: Float!
+  patientVat: Float! = 0
+  companyAmount: Float!
+  companyVat: Float! = 0
+  discount: Float! = 0
+  quantity: Float!
+  unitId: String
+  orthancAccessionNumber: String
+  signed: Boolean
+  assignedTo: TeamAssignmentInput
+  branchId: String!
+  createdBy: String = ""
+  status: ModelStatus! = ENABLED
+  tenantId: String = ""
+  isDeleted: Boolean = false
+}
+
+input PatientProcedureDataInput {
+  patientProcedureId: String!
+  healthRecordId: String
+  diagnosisGroupId: String
+}
+
+input EntryProcedureRequirementInput {
+  requirementId: String!
+  name: String!
+  machineResponseStatus: EntryProcedureMachineResponseStatus!
+  attachmentIds: [String!]
+  hasNewMachineResponse: Boolean!
+  isDeleted: Boolean! = false
+}
+
+input EntryAssociatedProcedureInput {
+  procedureId: String!
+  quantity: String!
+  storeId: String!
+}
+
+input EntryProcedureAssociatedOffersInput {
+  offerId: String!
+  procedureQuantity: Int!
+}
+
+input TeamAssignmentInput {
+  teamId: String!
+  memberAssignment: [TeamMemberAssignmentInput!]!
+}
+
+input TeamMemberAssignmentInput {
+  teamMemberId: String!
+  userId: String!
+  incentiveAmount: Float
+}
+
+input EntryPatientInput {
+  id: String!
+  firstName: NameInput!
+  secondName: NameInput!
+  thirdName: NameInput!
+  lastName: NameInput!
+}
+
+input EntryRequirementInput {
+  requirementId: String!
+  name: String!
+  machineResponseStatus: EntryProcedureMachineResponseStatus!
+  attachmentIds: [String!]
+  hasNewMachineResponse: Boolean!
+  isDeleted: Boolean! = false
+}
+
+input EntryAttachmentsInput {
+  notes: String
+  urls: [String!]
+}
+
+input EntryAssociatedOffersInput {
+  offerId: String!
+  offerQuantity: Int!
+}
+
+input UpdateEntryInput {
+  procedures: [UpdateEntryProcedureInput_!]
+  totalPatientAmount: Float
+  totalCompanyAmount: Float
+  facility: PartialIdNameInput
+  patient: EntryPatientInput
+  providerId: String
+  branchId: String
+  schedulerColumnId: String
+  scheduledDate: String
+  checkInDate: String
+  closedDate: String
+  visitTypeId: String
+  visitMinutes: Float
+  teleMedicineLink: String
+  issuedFrom: EntryIssuePoint
+  paymentMethodId: String
+
+  # whether to refund the amount difference (if any)
+  refund: Boolean
+
+  # the payment method to process the refund in (must be specified if refund is true
+  refundPaymentMethodId: String
+  currency: Currency
+  requirements: [EntryRequirementInput!]
+  attachments: EntryAttachmentsInput
+  labResultPrinted: Boolean
+  callStatus: EntryCallStatus
+  status: ModelStatus
+  isDeleted: Boolean
+}
+
+input UpdateEntryProcedureInput_ {
+  patientProcedureData: PatientProcedureDataInput
+  parentEntryProcedureId: String
+  parentProcedureId: String
+  requestedFromEntryId: String
+  procedureId: String!
+  procedureSection: ProcedureSection
+  storeId: String
+  requirements: [EntryProcedureRequirementInput!]
+  associatedProcedures: [EntryAssociatedProcedureInput!]
+  associatedOffers: [EntryProcedureAssociatedOffersInput!]
+  machineResponseStatus: String
+  parentHealthRecordId: String
+  attachmentId: String
+  requirementId: String
+  companyId: String!
+  companyClassId: String!
+  attachedMedicalNotes: [String!]!
+  patientAmount: Float!
+  patientVat: Float! = 0
+  companyAmount: Float!
+  companyVat: Float! = 0
+  discount: Float! = 0
+  quantity: Float!
+  unitId: String
+  orthancAccessionNumber: String
+  signed: Boolean
+  assignedTo: TeamAssignmentInput
+  branchId: String!
+  createdBy: String = ""
+  status: ModelStatus! = ENABLED
+  tenantId: String = ""
+  isDeleted: Boolean = false
+  _id: String
+}
+
+input PartialIdNameInput {
+  id: String
+  name: PartialNameInput
+}
+
+input PartialEntryProcedureInput {
+  doctorRequestRef: DoctorRequestRefInput
+  requestedFromEntryId: String
+  procedure: IdNameInput
+  procedureType: IdNameInput
+  batchNumber: String
+  requirements: [EntryProcedureRequirementInput!]
+  machineResponseStatus: String
+  parentHealthRecordId: String
+  attachmentId: String
+  requirementId: String
+  companyId: String
+  companyClassId: String
+  attachedMedicalNotes: [String!]
+  patientAmount: Float
+  companyAmount: Float
+  discount: Float
+  quantity: Float
+  unitId: String
+  orthancAccessionNumber: String
+  signed: Boolean
+  branchId: String
+  status: ModelStatus
+  isDeleted: Boolean
+}
+
+input DoctorRequestRefInput {
+  healthRecordId: String!
+  diagnosisId: String!
+  diagnosisProcedureId: String!
+  attachmentId: String
+  procedureType: ProcedureSection
+}
+
+input UpdateEntryProcedureInput {
+  entryProcedureId: String!
+  procedure: PartialEntryProcedureInput!
+}
+
+input VisitTypeInput {
+  visitTypeName: NameInput!
+  timeslot: Float!
+  branchId: String!
+  tenantId: String! = ""
+  createdBy: String! = ""
+  status: ModelStatus! = ENABLED
+  isDeleted: Boolean! = false
+}
+
+input SpecialityInput {
+  name: NameInput!
+  subspecialities: [String!]!
+  createdBy: String! = ""
+  status: ModelStatus! = ENABLED
+  isDeleted: Boolean! = false
+}
+
+input SubspecialityInput {
+  name: NameInput!
+  createdBy: String! = ""
+  status: ModelStatus! = ENABLED
+  isDeleted: Boolean! = false
+}
+
+input FacilityInput {
+  facilityName: NameInput!
+  branchId: String!
+  tenantId: String! = ""
+  createdBy: String! = ""
+  status: String! = "ENABLED"
+  isDeleted: Boolean! = false
+}
+
+input RequestInput {
+  sourceId: String!
+  sourceType: RequestSourceType!
+  procedures: [RequestProcedureInput!]!
+  patient: RequestPatientInput!
+  providerId: String!
+  branchId: String!
+  visitTypeId: String
+  checkInDate: String
+  visitMinutes: Float
+  teleMedicineLink: String
+  approvalStatus: RequestApprovalStatus!
+  tenantId: String! = ""
+  createdBy: String! = ""
+  status: RequestStatus! = PENDING
+  isDeleted: Boolean! = false
+}
+
+input RequestProcedureInput {
+  patientProcedureId: String
+  doctorRequestRef: DoctorRequestRefInput
+  requestedFromEntryId: String
+  destination: RequestDestination!
+  procedureId: String!
+  quantity: Float!
+  patientAmount: Float
+  approval: RequestApprovalInput
+  diagnosis: RequestDiagnosisInput
+  createdBy: String! = ""
+  status: ModelStatus! = ENABLED
+  isDeleted: Boolean! = false
+}
+
+input RequestApprovalInput {
+  approvalSource: RequestApprovalSource!
+  approvalRefId: String
+  approvalStatus: RequestApprovalStatus!
+  rejectionReason: String
+}
+
+input RequestDiagnosisInput {
+  diagnosisId: String!
+  diagnosisName: NameInput!
+  diagnosisCode: RequestDiagnosisCodeInput!
+}
+
+input RequestDiagnosisCodeInput {
+  standardName: String!
+  code: String!
+}
+
+input RequestPatientInput {
+  id: String!
+  firstName: NameInput!
+  secondName: NameInput!
+  thirdName: NameInput!
+  lastName: NameInput!
+}
+
+input PartialRequestInput {
+  sourceId: String
+  sourceType: RequestSourceType
+  procedures: [RequestProcedureInput!]
+  patient: RequestPatientInput
+  providerId: String
+  branchId: String
+  visitTypeId: String
+  checkInDate: String
+  visitMinutes: Float
+  teleMedicineLink: String
+  approvalStatus: RequestApprovalStatus!
+  status: RequestStatus
+  isDeleted: Boolean
+}
+
+input UpdateRequestProcedureInput {
+  procedureId: String!
+  procedure: RequestProcedureInput!
+}
+
+input TransactionInput {
+  source: TransactionSource!
+  referenceId: String
+  expenseCategoryId: String!
+  transactionAmount: Float!
+  currency: Currency!
+  merchantId: String
+  transactionDate: String!
+  tax: Float!
+  comments: String!
+  paymentMethodId: String!
+  transactionType: TransactionType!
+  attachments: [String!]
+  issuers: [TransactionIssuerInput!]!
+  issuedFrom: TransactionIssuerType!
+  createdFrom: TransactionCreationSource
+  isVerified: Boolean
+  tenantId: String! = ""
+  createdBy: String! = ""
+  branchId: String!
+  status: TransactionStatus! = VERIFIED
+  isDeleted: Boolean! = false
+}
+
+input TransactionIssuerInput {
+  issuerId: String!
+  amount: Float!
+}
+
+input UpdateTransactionInput {
+  source: TransactionSource
+  referenceId: String
+  expenseCategoryId: String
+  transactionAmount: Float
+  currency: Currency
+  merchantId: String
+  transactionDate: String
+  tax: Float
+  comments: String
+  paymentMethodId: String
+  transactionType: TransactionType
+  issuers: [TransactionIssuerInput!]!
+  issuedFrom: TransactionIssuerType
+  status: ModelStatus
+  isDeleted: Boolean
+}
+
+input ExpenseCategoryInput {
+  icon: String!
+  expenseCategory: NameInput!
+  tenantId: String! = ""
+  status: ModelStatus! = ENABLED
+  isDeleted: Boolean! = false
+}
+
+input UpdateExpenseCategoryInput {
+  icon: String
+  expenseCategory: PartialNameInput
+  status: ModelStatus
+  isDeleted: Boolean
+}
+
+input MerchantInput {
+  name: NameInput!
+  tenantId: String! = ""
+  status: ModelStatus! = ENABLED
+  isDeleted: Boolean! = false
+}
+
+input UpdateMerchantInput {
+  name: PartialNameInput
+  status: ModelStatus
+  isDeleted: Boolean
+}
+
+input ProfessionInput {
+  name: NameInput!
+  tenantId: String! = ""
+  status: ModelStatus! = ENABLED
+  isDeleted: Boolean! = false
+}
+
+input UpdateProfessionInput {
+  name: NameInput
+  status: ModelStatus
+  isDeleted: Boolean
+}
+
+input TeamInput {
+  name: NameInput!
+  members: [TeamMemberInput!]!
+  tenantId: String! = ""
+  status: ModelStatus! = ENABLED
+  isDeleted: Boolean! = false
+}
+
+input TeamMemberInput {
+  _id: String
+  userId: String
+  professionId: String!
+  mainProvider: Boolean
+}
+
+input UpdateTeamInput {
+  name: NameInput
+  members: [TeamMemberInput!]
+  status: ModelStatus
+  isDeleted: Boolean
+}
+
+input ProcedureIncentiveInput {
+  teamId: String!
+  teamMemberId: String!
+  procedures: [ProcedureIncentiveItemInput!]!
+  tenantId: String! = ""
+  status: ModelStatus! = ENABLED
+  isDeleted: Boolean! = false
+}
+
+input ProcedureIncentiveItemInput {
+  procedureId: String!
+  value: Float!
+  calculationBasis: IncentiveCalculationBasis!
+}
+
+input UpdateProcedureIncentivesInput {
+  teamId: String!
+  memberProcedureIncentives: [MemberProcedureIncentives!]!
+  tenantId: String! = ""
+  status: ModelStatus! = ENABLED
+  isDeleted: Boolean! = false
+}
+
+input MemberProcedureIncentives {
+  teamMemberId: String!
+  procedures: [ProcedureIncentiveItemInput!]!
+}
+
+input ExternalAccountInput {
+  accountNumber: String!
+  name: String!
+  tenantId: String! = ""
+  createdBy: String! = ""
+  isDeleted: Boolean! = false
+}
+
+input UpdateExternalAccountInput {
+  accountNumber: String
+  name: String
+  isDeleted: Boolean
+}
+
+input ExternalCostCenterInput {
+  externalId: String!
+  name: String!
+  tenantId: String! = ""
+  createdBy: String! = ""
+  isDeleted: Boolean! = false
+}
+
+input UpdateExternalCostCenterInput {
+  externalId: String
+  name: String
+  isDeleted: Boolean
+}
+
+input OfferInput {
+  title: String!
+  offerType: OfferType!
+  background: OfferBackgroundInput!
+  elements: [OfferElementInput!]!
+  variables: OfferVariablesInput!
+  associatedProductIds: [String!]!
+  loyaltyProgramPoints: Float
+  isActive: Boolean!
+  tenantId: String! = ""
+  createdBy: String! = ""
+  isDeleted: String! = "false"
+}
+
+input OfferBackgroundInput {
+  type: OfferBackgroundType!
+  value: String!
+}
+
+input OfferElementInput {
+  type: OfferElementType!
+  content: String!
+  position: OfferElementPositionInput!
+  style: OfferElementStyleInput
+  height: Float
+  width: Float
+}
+
+input OfferElementPositionInput {
+  x: Float!
+  y: Float!
+}
+
+input OfferElementStyleInput {
+  fontSize: Float
+  fontWeight: String
+  fontColor: String
+  fontFamily: String
+  textAlign: OfferElementTextAlignment
+}
+
+input OfferVariablesInput {
+  title: String
+  description: String
+  buyProduct: OfferProductInput
+  buyQuantity: Float
+  getFreeProduct: OfferProductInput
+  getFreeQuantity: Float
+  startDate: String
+  endDate: String
+  product: OfferProductInput
+  discountPercentage: Float
+  minPurchaseAmount: Float
+  categoryIds: [String!]
+  discountAmount: Float
+  currency: String
+  bundleProducts: [OfferProductInput!]
+  originalTotalPrice: Float
+  bundlePrice: Float
+  pointsPerAmount: Float
+  amountPerPoint: Float
+  minPointsToRedeem: Float
+  redemptionRatio: Float
+  productIds: [String!]
+  giftProducts: [OfferProductInput!]
+  comboProducts: [OfferProductInput!]
+  isLimitedTime: Boolean
+}
+
+input OfferProductInput {
+  id: String!
+  sellPrice: Float!
+}
+
+input UpdateOfferInput {
+  title: String!
+  offerType: OfferType!
+  background: OfferBackgroundInput!
+  elements: [OfferElementInput!]!
+  variables: OfferVariablesInput!
+  associatedProductIds: [String!]!
+  loyaltyProgramPoints: Float
+  isActive: Boolean!
+  isDeleted: String! = "false"
+}
+
+input BranchSettingsInput {
+  branchId: String!
+  accountingSystem: AccountingSystem
+  quickbooks: BranchQuickbooksSettingsInput
+  pointsPerUnitCurrency: Float
+  monetaryDecimalPlaces: Float
+  tenantId: String! = ""
+}
+
+input BranchQuickbooksSettingsInput {
+  companyId: String!
+}
+
+input CompanyPolicyInput {
+  insuranceCompanyId: String!
+  insuranceClassId: String!
+  procedureId: String!
+  procedureName: NameInput!
+  patientAmount: Float!
+  companyAmount: Float!
+  tags: [CompanyPolicyTagInput!]
+  approvalNeeded: Boolean!
+  tenantId: String! = ""
+  createdBy: String = ""
+  status: ModelStatus! = ENABLED
+  isDeleted: Boolean! = false
+}
+
+input CompanyPolicyTagInput {
+  tagName: String!
+  value: String!
+}
+
+input InsuranceCompanyInput {
+  name: NameInput!
+  email: String!
+  phone1: String!
+  phone2: String!
+  website: String!
+  branchId: String!
+  logoUrl: String!
+  insuranceCompanyClasses: [InsuranceCompanyClassInput!]!
+  cash: Boolean! = false
+  metadata: InsuranceCompanyMetadataInput
+  tenantId: String! = ""
+  createdBy: String! = ""
+  status: String! = "ENABLED"
+  isDeleted: Boolean! = false
+}
+
+input InsuranceCompanyClassInput {
+  companyClassName: NameInput!
+  branchId: String!
+  createdBy: String = ""
+  status: String! = "ENABLED"
+  isDeleted: Boolean! = false
+}
+
+input InsuranceCompanyMetadataInput {
+  accountId: String
+}
+
+input PreAuthRequestInput {
+  patientId: String!
+  patientCardId: String!
+  items: [PreAuthItemInput!]!
+  supportingInfo: PreAuthSupportingInfoInput!
+  tenantId: String! = ""
+  createdBy: String! = ""
+}
+
+input PreAuthItemInput {
+  procedureId: String!
+  quantity: Float!
+  unitPrice: Float!
+  unitTax: Float!
+  refs: [PreAuthItemRefInput!]!
+}
+
+input PreAuthItemRefInput {
+  entry: PreAuthItemEntryRefInput!
+  healthRecord: PreAuthItemHealthRecordRefInput!
+}
+
+input PreAuthItemEntryRefInput {
+  entryId: String!
+  entryProcedureId: String!
+}
+
+input PreAuthItemHealthRecordRefInput {
+  healthRecordId: String!
+  patientProcedureId: String!
+}
+
+input PreAuthSupportingInfoInput {
+  primaryDiagnosis: PreAuthDiagnosisInput!
+  secondaryDiagnoses: [PreAuthDiagnosisInput!]!
+  patientProcedures: [PreauthProcedureInput!]!
+  vitals: PreAuthVitalsInput!
+}
+
+input PreAuthDiagnosisInput {
+  patientDiagnosisId: String!
+  diagnosisId: String!
+  description: String!
+  updatePreauth: Boolean!
+}
+
+input PreauthProcedureInput {
+  patientProcedureId: String!
+  procedureId: String!
+  procedureSection: String!
+  attachments: [PreauthProcedureAttachmentInput!]!
+  updatePreauth: Boolean!
+}
+
+input PreauthProcedureAttachmentInput {
+  result: TemplateInput!
+  urls: [String!]!
+}
+
+input TemplateInput {
+  title: String!
+  type: TemplateType!
+  requirements: [String!]
+  container: String
+  price: Float
+  description: String!
+  privacy: TemplatePrivacyType!
+  parents: [String!]!
+  patientId: String
+  specialties: [String!]
+  sections: [TemplateSectionInput!]!
+  createdBy: String = ""
+  tenantId: String = ""
+  filledBy: String
+  isDeleted: Boolean! = false
+}
+
+input TemplateSectionInput {
+  name: String!
+  inputs: [TemplateInputInput!]!
+}
+
+input TemplateInputInput {
+  globalInput: String
+  id: String
+  type: TemplateInpType!
+  label: String!
+  unit: TemplateInputUnitInput
+  props: PropsObjectInput!
+  formula: TemplateInputFormulaInput
+  criticalEnd: Float
+  criticalContinue: Float
+  normalRange: [NormalRangeInput!]
+}
+
+input TemplateInputUnitInput {
+  id: String!
+  abbreviation: String!
+}
+
+input PropsObjectInput {
+  description: String
+  defaultValue: String
+  data: [String!]
+  colspan: Float
+  fixedDecimalScale: Boolean
+  precision: Float
+  required: Boolean
+  decimalScale: Boolean
+  value: String
+  placeholder: String
+  durationValues: [DurationValueInput!]
+  rows: [[TemplateInputInput!]!]
+}
+
+input DurationValueInput {
+  dummyField: String
+  startDate: String!
+  value: String!
+}
+
+input TemplateInputFormulaInput {
+  equation: String
+  variables: [String!]
+}
+
+input NormalRangeInput {
+  gender: Gender
+  ageMin: Float
+  ageMax: Float
+  normalRange: [Float!]
+  normalValues: [String!]
+}
+
+input PreAuthVitalsInput {
+  vitalsId: String!
+  weight: Float
+  height: Float
+  temperature: Float
+  pulseRate: Float
+  oxygenLevel: Float
+  respiratoryRate: Float
+  bloodPressure: PreAuthVitalsBloodPressureInput
+  updatePreauth: Boolean!
+}
+
+input PreAuthVitalsBloodPressureInput {
+  diastolic: Float!
+  systolic: Float!
+}
+
+input CommunicationRequestInput {
+  message: String!
+  attachments: [CommunicationRequestAttachmentInput!]
+  ref: CommunicationRequestRefInput!
+  previousCommunicationId: String
+  tenantId: String! = ""
+  createdBy: String! = ""
+  isDeleted: String! = "false"
+}
+
+input CommunicationRequestAttachmentInput {
+  title: String!
+  url: String!
+}
+
+input CommunicationRequestRefInput {
+  refId: String!
+  refType: CommunicationRequestRefType!
+}
+
+input UpdateUserPlatformInput {
+  price: Float
+  insuranceCompanyId: String
+  insuranceClassId: String
+  workingHours: UserWorkingHoursInput
+}
+
+input RoleInput {
+  name: NameInput!
+  description: NameInput!
+  permissionModules: [RolePermissionModuleInput!]!
+  tenantId: String! = ""
+  isDeleted: Boolean! = false
+}
+
+input RolePermissionModuleInput {
+  id: String!
+  permissions: [String!]!
+}
+
+input UpdateRoleInput {
+  name: NameInput
+  description: NameInput
+  permissionModules: [RolePermissionModuleInput!]!
+  isDeleted: Boolean! = false
+}
+
+input PermissionModuleInput {
+  name: NameInput!
+  description: NameInput!
+  permissions: [PermissionInput!]!
+}
+
+input PermissionInput {
+  id: String!
+  name: NameInput!
+  description: NameInput!
+  section: String!
+  dependencies: [PermissionDependencyInput!]!
+}
+
+input PermissionDependencyInput {
+  module: String!
+  permission: String!
+}
+
+input UserSettingsInput {
+  userId: String!
+  professionId: String!
+  freeFollowUpDays: Int!
+  appointmentMaxDaysInAdvance: Int
+  followUpFees: [UserFollowUpFeeInput!]
+  discountLimit: Float
+  procedureDiscountLimits: [ProcedureDiscountLimitInput!]
+  invoiceDiscountLimit: DiscountLimitInput
+  allowedProcedures: [String!]
+  nphies: UserNphiesSettingsInput
+  tenantId: String! = ""
+  isDeleted: Boolean! = false
+}
+
+input UserFollowUpFeeInput {
+  daysAfter: Float!
+  percentage: Float!
+}
+
+input ProcedureDiscountLimitInput {
+  procedureId: String!
+  limit: DiscountLimitInput!
+}
+
+input DiscountLimitInput {
+  limitAmount: Float
+  limitPercentage: Float
+}
+
+input UserNphiesSettingsInput {
+  license: String!
+  qualificationCode: String!
+}
+
+input UpdateUserSettingsInput {
+  professionId: String
+  freeFollowUpDays: Int
+  appointmentMaxDaysInAdvance: Int
+  followUpFees: [UserFollowUpFeeInput!]
+  discountLimit: Float
+  procedureDiscountLimits: [ProcedureDiscountLimitInput!]
+  invoiceDiscountLimit: DiscountLimitInput
+  allowedProcedures: [String!]
+  tenantId: String! = ""
+  isDeleted: Boolean! = false
+}
+
+input InputHealthRecord {
+  patientId: String!
+  providerId: String!
+  entryId: String!
+  attachments: [AttachmentInput!]!
+  visitData: HealthRecordSummaryInput
+  diagnosisGroupIds: [String!]! = []
+  tenantId: String! = ""
+  createdBy: String = ""
+  status: ModelStatus! = ENABLED
+  isDeleted: Boolean = false
+}
+
+input AttachmentInput {
+  _id: String
+  procedureId: String
+  entryProcedureId: String
+  orderId: String
+  objectResult: AttachmentTemplateInput
+  attachmentSource: String
+  objectType: AttachmentObjectType!
+  parentId: String
+  parentName: String
+  note: String!
+  signed: Boolean! = false
+}
+
+input AttachmentTemplateInput {
+  title: String!
+  type: TemplateType!
+  requirements: [String!]
+  container: String
+  price: Float
+  description: String!
+  privacy: TemplatePrivacyType!
+  parents: [String!]!
+  patientId: String
+  specialties: [String!]
+  sections: [TemplateSectionInput!]!
+  createdBy: String = ""
+  tenantId: String = ""
+  filledBy: String
+  isDeleted: Boolean! = false
+  _id: String
+}
+
+input HealthRecordSummaryInput {
+  chiefComplaint: String!
+  historyOfPresentIllness: String!
+  medicalHistory: String!
+  familyHistory: String!
+  drugHistory: String!
+  allergies: String!
+  surgeryHistory: String!
+  examinations: String!
+  caseSummary: String!
+  planAndAssessment: String!
+  caseDiagnosis: String!
+}
+
+input PartialInputHealthRecord {
+  status: ModelStatus
+  isDeleted: Boolean
+  patientId: String
+  providerId: String
+  entryId: String
+  attachments: [AttachmentInput!]
+  visitData: PartialHealthRecordSummaryInput
+  diagnosisGroupIds: [String!]
+}
+
+input PartialHealthRecordSummaryInput {
+  chiefComplaint: String
+  historyOfPresentIllness: String
+  medicalHistory: String
+  familyHistory: String
+  drugHistory: String
+  allergies: String
+  surgeryHistory: String
+  examinations: String
+  caseSummary: String
+  planAndAssessment: String
+  caseDiagnosis: String
+}
+
+input PartialAttachmentInput {
+  _id: String
+  procedureId: String
+  entryProcedureId: String
+  orderId: String
+  objectResult: AttachmentTemplateInput
+  attachmentSource: String
+  objectType: AttachmentObjectType
+  parentId: String
+  parentName: String
+  note: String
+  signed: Boolean = false
+}
+
+input UpdateHealthRecordAttachmentInput {
+  attachmentId: String!
+  attachment: PartialAttachmentInput!
+}
+
+input PatientProcedureInput {
+  patientId: String!
+  procedureId: String!
+  name: NameInput!
+  procedureSection: ProcedureSection!
+  note: String
+  code: [ProcedureCodeInput!]!
+  labTest: PatientLabTestInput
+  medicalService: PatientMedicalServiceInput
+  dentalService: PatientDentalServiceInput
+  medication: PatientMedicationInput
+  requestGroupId: String
+  patientAmount: Float
+  companyAmount: Float
+  healthRecordId: String
+  diagnosisGroupId: String
+  attachments: [PatientProcedureAttachmentInput!]
+  tenantId: String! = ""
+  branchId: String!
+  createdBy: String! = ""
+  preauthStatus: PatientProcedurePreauthStatus
+  status: PatientProcedureStatus! = PENDING_PAYMENT
+  isDeleted: Boolean! = false
+}
+
+input ProcedureCodeInput {
+  standardName: String!
+  code: String!
+}
+
+input PatientLabTestInput {
+  sendDate: String
+  serviceProviders: [String!]
+  diagnosisId: String
+  metadata: LabTestMetadataInput
+}
+
+input LabTestMetadataInput {
+  sampleCollected: LabTestOperationMetadataInput
+  resultEntered: LabTestOperationMetadataInput
+  resultConfirmed: LabTestOperationMetadataInput
+  printed: LabTestOperationMetadataInput
+}
+
+input LabTestOperationMetadataInput {
+  by: String!
+  at: String!
+}
+
+input PatientMedicalServiceInput {
+  sendDate: String
+  serviceProviders: [String!]
+  diagnosisId: String
+  patientAgreed: Boolean
+}
+
+input PatientDentalServiceInput {
+  toothDetails: ToothDetailsInput
+  softTissue: [SoftTissueInput!]
+  medicalIssue: [MedicalIssueInput!]
+  periodontalScore: PeriodontalScoreInput
+  patientAgreed: Boolean
+}
+
+input ToothDetailsInput {
+  toothNumber: Int!
+  diagnosisId: String!
+  date: String!
+  inClinic: Boolean!
+  missing: Boolean
+  issues: [ToothIssue!]
+  positions: [ToothPosition!]
+  color: String
+  apical: Boolean
+  probingDepth: [ToothProbingDepthInput!]
+  gingivalMargin: [ToothGingivalMarginInput!]
+  furcation: Float
+  mobility: Float
+  fracture: ToothFractureDetailsInput
+  crown: CrownDetailsInput
+  material: String
+  quality: String
+  detail: String
+  endodontic: ToothEndodonticAssessmentInput
+}
+
+input ToothProbingDepthInput {
+  position: ToothPosition!
+  depth: Float!
+}
+
+input ToothGingivalMarginInput {
+  position: ToothPosition!
+  margin: Float!
+}
+
+input ToothFractureDetailsInput {
+  position: FracturePosition!
+  direction: FractureDirection!
+}
+
+input CrownDetailsInput {
+  crownType: ToothCrownType
+  base: ToothBase
+  implant: ToothImplant
+}
+
+input ToothEndodonticAssessmentInput {
+  cold: String
+  percussion: String
+  palpation: String
+  heat: String
+  electricity: String
+}
+
+input SoftTissueInput {
+  position: SoftTissuePosition!
+  description: String!
+}
+
+input MedicalIssueInput {
+  diagnosis: IdNameInput!
+  note: String
+}
+
+input PeriodontalScoreInput {
+  incisal: PeriodontalScoreValueInput!
+  buccal: PeriodontalScoreValueInput!
+  palatal: PeriodontalScoreValueInput!
+  lingual: PeriodontalScoreValueInput!
+  cervicalLingual: PeriodontalScoreValueInput!
+  mesioBuccalCusp: PeriodontalScoreValueInput!
+  distoBuccalCusp: PeriodontalScoreValueInput!
+  mesioPalatalCusp: PeriodontalScoreValueInput!
+  distoPalatalCusp: PeriodontalScoreValueInput!
+  buccalCusp: PeriodontalScoreValueInput!
+  palatalCusp: PeriodontalScoreValueInput!
+  lingualCusp: PeriodontalScoreValueInput!
+  buccalSurface: PeriodontalScoreValueInput!
+  palatalSurface: PeriodontalScoreValueInput!
+  lingualSurface: PeriodontalScoreValueInput!
+  mesioLingualCusp: PeriodontalScoreValueInput!
+  distoLingualCusp: PeriodontalScoreValueInput!
+  class4Mesial: PeriodontalScoreValueInput!
+  class4Distal: PeriodontalScoreValueInput!
+}
+
+input PeriodontalScoreValueInput {
+  score: Float!
+  furcationInvolvement: Boolean!
+}
+
+input PatientMedicationInput {
+  sig: SigInput!
+  totalQuantity: TotalQuantityInput!
+  pharmacies: [PharmacyInput!]!
+  sendDate: String
+  dosage: String
+  frequency: String
+  startDate: String
+  endDate: String
+  discontinueWhen: String
+  isItStopped: Boolean
+  doctorPrescribed: DoctorInfoInput
+  doctorTimeSuggestions: String
+  documentationOnly: Boolean
+  noteToPharmacy: String
+  sendToPharmacyAt: String
+  noteToPatient: String
+  patientId: String!
+  parentName: String
+  diagnosisId: String!
+}
+
+input SigInput {
+  quantity: Float!
+  form: String!
+  frequency: Float
+  timeUnit: String!
+  time: String!
+  days: Float!
+}
+
+input TotalQuantityInput {
+  quantity: Float!
+  form: String!
+  refills: Float!
+}
+
+input PharmacyInput {
+  organizationId: String!
+  organizationName: NameInput!
+}
+
+input DoctorInfoInput {
+  doctorId: String!
+  doctorName: String!
+}
+
+input PatientProcedureAttachmentInput {
+  _id: String
+  containerIds: [String!]
+  result: TemplateInput
+  urls: [String!]
+  notes: String
+  signed: Boolean
+  seen: Boolean
+}
+
+input UpdatePatientProcedureInput {
+  patientProcedureId: String!
+  patientProcedure: PartialPatientProcedureInput!
+}
+
+input PartialPatientProcedureInput {
+  note: String
+  code: [ProcedureCodeInput!]
+  labTest: PatientLabTestInput
+  medicalService: PatientMedicalServiceInput
+  dentalService: PatientDentalServiceInput
+  medication: PatientMedicationInput
+  requestGroupId: String
+  patientAmount: Float
+  companyAmount: Float
+  attachments: [PatientProcedureAttachmentInput!]
+  metadata: LabTestMetadataInput
+  addToRequest: Boolean
+  preauthStatus: PatientProcedurePreauthStatus
+  isDeleted: Boolean
+}
+
+input UpdatePatientProcedureDataInput {
+  patientId: String!
+  procedureId: String!
+  name: NameInput!
+  procedureSection: ProcedureSection!
+  note: String
+  code: [ProcedureCodeInput!]!
+  labTest: PatientLabTestInput
+  medicalService: PatientMedicalServiceInput
+  dentalService: PatientDentalServiceInput
+  medication: PatientMedicationInput
+  requestGroupId: String
+  patientAmount: Float
+  companyAmount: Float
+  healthRecordId: String
+  diagnosisGroupId: String
+  tenantId: String! = ""
+  branchId: String!
+  createdBy: String! = ""
+  preauthStatus: PatientProcedurePreauthStatus
+  status: PatientProcedureStatus! = PENDING_PAYMENT
+  isDeleted: Boolean! = false
+}
+
+input PatientDiagnosisInput {
+  diagnosisGroupId: String!
+  patientId: String!
+  healthRecordId: String!
+  diagnosisId: String!
+  name: NameInput!
+  dentalDetails: PatientDiagnosisDentalDetailsInput
+  code: [DiagnosisCodeInput!]
+  diagnosisDescription: String
+  diagnosisDate: String
+  enteredBy: String
+  enteredDate: String
+  providerId: String
+  providerName: NameInput
+  note: String
+  providerTimeSuggestion: String
+  tenantId: String! = ""
+  branchId: String!
+  createdBy: String! = ""
+  preauthStatus: PatientProcedurePreauthStatus
+  status: ModelStatus! = ENABLED
+  isDeleted: Boolean! = false
+}
+
+input PatientDiagnosisDentalDetailsInput {
+  toothDetails: ToothDetailsInput
+  softTissue: [SoftTissueInput!]
+  medicalIssue: [MedicalIssueInput!]
+  periodontalScore: PeriodontalScoreInput
+}
+
+input DiagnosisCodeInput {
+  standardName: String!
+  code: String!
+}
+
+input UpdatePatientDiagnosisInput {
+  patientDiagnosisId: String!
+  patientDiagnosis: PartialPatientDiagnosisInput!
+}
+
+input PartialPatientDiagnosisInput {
+  dentalDetails: PatientDiagnosisDentalDetailsInput
+  code: [DiagnosisCodeInput!]
+  diagnosisDescription: String
+  diagnosisDate: String
+  enteredBy: String
+  enteredDate: String
+  note: String
+  providerTimeSuggestions: String
+  preauthStatus: PatientProcedurePreauthStatus
+  isDeleted: Boolean
+}
+
+input TreatmentPlanInput {
+  patientId: String!
+  healthRecordId: String!
+  title: String!
+  description: String
+  agreed: Boolean!
+  phases: [TreatmentPhaseInput!]!
+  tenantId: String! = ""
+  createdBy: String! = ""
+  status: ModelStatus! = ENABLED
+  isDeleted: Boolean! = false
+}
+
+input TreatmentPhaseInput {
+  _id: String
+  title: String!
+  startDate: String
+  agreed: Boolean!
+  procedures: [TreatmentProcedureInput!]!
+}
+
+input TreatmentProcedureInput {
+  _id: String
+  patientProcedureId: String!
+  agreed: Boolean!
+}
+
+input UpdateTreatmentPlanInput {
+  title: String
+  description: String
+  agreed: Boolean
+  phases: [TreatmentPhaseInput!]
+  isDeleted: Boolean
+}
+
+input ProcedureInput {
+  globalId: String
+  serviceOrProduct: ServiceOrProduct!
+  procedureKnowledgebase: String!
+  procedureName: NameInput!
+  procedureNameDescription: NameInput!
+  code: [ProcedureCodeInput!]!
+  associatedProcedures: [AssociatedProcedureInput!]
+  requirements: [String!]
+  procedureCategory: IdNameInput!
+  procedureTypeId: String!
+  procedureSection: ProcedureSection!
+  procedureSubsection: ProcedureSubsection
+  isGeneric: Boolean
+  shortListChronicMedication: Boolean
+  branchId: String!
+  status: ModelStatus! = ENABLED
+  beforeProcedureKnowledgebase: String!
+  afterProcedureKnowledgebase: String!
+  teamRequired: Boolean
+  reportTemplateId: String
+  knowledgebase: String!
+  suggestedPrice: SuggestedPriceInput!
+  manufacturerId: String
+  labelIds: [String!]
+  supplierIds: [String!]
+  genericId: String
+  units: [UnitInput!]
+  sellPrice: Float
+  costPrice: Float
+  barcode: String
+  refillLimitAlarm: Float
+  expiryAlarmDays: Float
+  productImage: String
+  loyaltyProgramPoints: Float
+  receptionStoreId: String
+  metadata: ProcedureMetadataInput
+  isDeleted: Boolean! = false
+  tenantId: String! = ""
+  createdBy: String! = ""
+}
+
+input AssociatedProcedureInput {
+  procedureId: String!
+  quantity: Float!
+  defaultStoreId: String
+}
+
+input SuggestedPriceInput {
+  countryCode: String!
+  currency: String!
+  price: Float!
+}
+
+input UnitInput {
+  unitId: String!
+  name: NameInput!
+  quantity: Float!
+  defaultQuantity: Float!
+  isBaseUnit: Boolean!
+  discountPercentage: Float!
+  unitPrice: Float!
+  weight: Float!
+}
+
+input ProcedureMetadataInput {
+  accounting: ProcedureAccountingMetadataInput
+}
+
+input ProcedureAccountingMetadataInput {
+  accountId: String!
+  costCenterId: String
+}
+
+input PartialProcedureInput {
+  globalId: String
+  serviceOrProduct: ServiceOrProduct
+  procedureId: String
+  procedureKnowledgebase: String
+  procedureName: PartialNameInput
+  procedureNameDescription: PartialNameInput
+  code: [ProcedureCodeInput!]
+  associatedProcedures: [AssociatedProcedureInput!]
+  requirements: [String!]
+  procedureCategory: PartialIdNameInput
+  procedureTypeId: String
+  procedureType: PartialIdNameInput
+  procedureSection: ProcedureSection
+  procedureSubsection: ProcedureSubsection
+  isGeneric: Boolean
+  shortListChronicMedication: Boolean
+  branchId: String
+  status: ModelStatus
+  beforeProcedureKnowledgebase: String
+  afterProcedureKnowledgebase: String
+  teamRequired: Boolean
+  reportTemplateId: String
+  knowledgebase: String
+  suggestedPrice: PartialSuggestedPriceInput
+  manufacturerId: String
+  labelIds: [String!]
+  supplierIds: [String!]
+  genericId: String
+  units: [UnitInput!]
+  sellPrice: Float
+  costPrice: Float
+  barcode: String
+  refillLimitAlarm: Float
+  expiryAlarmDays: Float
+  productImage: String
+  loyaltyProgramPoints: Float
+  receptionStoreId: String
+  metadata: ProcedureMetadataInput
+  isDeleted: Boolean
+}
+
+input PartialSuggestedPriceInput {
+  countryCode: String
+  currency: String
+  price: Float
+}
+
+input RequirementInput {
+  name: NameInput!
+  type: RequirementType!
+  tenantId: String! = ""
+  status: ModelStatus! = ENABLED
+  isDeleted: Boolean! = false
+}
+
+input UpdateRequirementInput {
+  name: NameInput
+  type: RequirementType
+  status: ModelStatus
+  isDeleted: Boolean
+}
+
+input ReportTemplateInput {
+  name: NameInput!
+  sections: [ReportTemplateSectionInput!]!
+  tenantId: String! = ""
+  createdBy: String! = ""
+  status: ModelStatus! = ENABLED
+  isDeleted: Boolean! = false
+}
+
+input ReportTemplateSectionInput {
+  title: String!
+  display: ReportTemplateSectionLayout!
+  tables: [ReportTemplateTableInput!]!
+}
+
+input ReportTemplateTableInput {
+  name: String!
+  columns: [String!]!
+  rows: [[String!]!]!
+  flexGrow: String!
+}
+
+input UpdateReportTemplateInput {
+  name: NameInput!
+  sections: [PartialReportTemplateSectionInput!]!
+  isDeleted: Boolean! = false
+}
+
+input PartialReportTemplateSectionInput {
+  title: String
+  display: ReportTemplateSectionLayout!
+  tables: [PartialReportTemplateTableInput!]
+}
+
+input PartialReportTemplateTableInput {
+  name: String
+  columns: [String!]
+  rows: [[String!]!]
+  flexGrow: String
+  _id: String
+}
+
+input ProcedureTypeInput {
+  procedureTypeName: NameInput!
+  tenantId: String! = ""
+  createdBy: String! = ""
+  status: ModelStatus! = ENABLED
+  isDeleted: Boolean! = false
+}
+
+input DiagnosisInput {
+  name: NameInput!
+  description: NameInput!
+  code: [DiagnosisCodeInput!]!
+  diagnosisSection: DiagnosisSection!
+  diagnosisSubsection: DiagnosisSubsection
+  tenantId: String! = ""
+  createdBy: String! = ""
+  status: ModelStatus! = ENABLED
+  isDeleted: Boolean! = false
+}
+
+input VisionPrescriptionInput {
+  patientId: String!
+  healthRecordId: String!
+  od: EyePrescriptionInput!
+  os: EyePrescriptionInput!
+  lensType: String!
+  tenantId: String! = ""
+  createdBy: String! = ""
+  isDeleted: Boolean! = false
+}
+
+input EyePrescriptionInput {
+  dis: VisionMetricsInput!
+  near: VisionMetricsInput!
+}
+
+input VisionMetricsInput {
+  sph: String!
+  cyl: String!
+  axis: String!
+  va: String!
+}
+
+input UpdateVisionPrescriptionInput {
+  od: EyePrescriptionInput
+  os: EyePrescriptionInput
+  lensType: String
+}
+
+input UserInvitationInput {
+  email: String!
+  organizationName: NameInput!
+  branchIds: [String!]!
+  defaultBranch: String!
+  isValid: Boolean! = true
+  tenantId: String! = ""
+  createdBy: String! = ""
+  isDeleted: Boolean! = false
+}
+
+input WhatsappMessageInput {
+  recipient: String!
+  broadcast: String!
+  templateName: String!
+  parameters: [WhatsappTemplateParamter!]!
+}
+
+input WhatsappTemplateParamter {
+  name: String!
+  value: String!
+}
+
+input ManufacturerInput {
+  name: String!
+  contact: ManufacturerContactInput!
+  address: String!
+  productsManufactured: [String!]!
+  tenantId: String! = ""
+  createdBy: String! = ""
+  isDeleted: Boolean! = false
+}
+
+input ManufacturerContactInput {
+  name: String!
+  email: String!
+  phone: String!
+}
+
+input SupplierInput {
+  name: NameInput!
+  contact: SupplierContactInput!
+  address: NameInput!
+  proceduresSupplied: [String!]!
+  tenantId: String! = ""
+  createdBy: String! = ""
+  status: ModelStatus! = ENABLED
+  isDeleted: Boolean! = false
+}
+
+input SupplierContactInput {
+  name: NameInput!
+  email: String!
+  phone: String!
+}
+
+input LabelInput {
+  name: String!
+  color: String!
+  urgencyLevel: LabelUrgencyLevel!
+  description: String!
+  tenantId: String! = ""
+  createdBy: String! = ""
+  isDeleted: Boolean! = false
+}
+
+input MeasurementUnitInput {
+  name: String!
+  abbreviation: String!
+  description: String!
+  type: MeasurementUnitType!
+  tenantId: String! = ""
+  createdBy: String! = ""
+  isDeleted: Boolean! = false
+}
+
+input PurchaseOrderInput {
+  storeId: String!
+  orderDate: String!
+  expectedDeliveryDate: String
+  supplierId: String!
+  items: [PurchaseOrderItemInput!]!
+  subTotal: Float!
+  totalDiscount: Float!
+  totalPrice: Float!
+  note: String!
+  tenantId: String! = ""
+  branchId: String!
+  createdBy: String! = ""
+  status: PurchaseOrderStatus! = ORDERED
+  isDeleted: Boolean! = false
+}
+
+input PurchaseOrderItemInput {
+  productId: String!
+  quantity: Float!
+  unitPrice: Float!
+  totalPrice: Float!
+  bonusQuantity: Float!
+  discount: Float!
+  sellPrice: Float!
+  batchNumber: String
+  expiryDate: String
+  updatePrice: Boolean!
+  isDeleted: Boolean! = false
+}
+
+input PartialPurchaseOrderInput {
+  storeId: String
+  orderDate: String
+  expectedDeliveryDate: String
+  supplierId: String
+  items: [PurchaseOrderItemInput!]
+  subTotal: Float
+  totalDiscount: Float
+  paidAmount: Float
+  totalPrice: Float
+  note: String
+  isDeleted: Boolean
+}
+
+input StoreInput {
+  name: NameInput!
+  address: StoreAddressInput!
+  contact: StoreContactInput!
+  operationalHours: WeekWorkingHoursInput!
+  staff: [String!]!
+  tenantId: String! = ""
+  branchId: String!
+  isDeleted: Boolean! = false
+}
+
+input StoreAddressInput {
+  street: String!
+  city: String!
+  state: String!
+  country: String!
+  zipCode: String!
+}
+
+input StoreContactInput {
+  phone: String!
+  email: String!
+}
+
+input WeekWorkingHoursInput {
+  sat: TimeIntervalInput!
+  sun: TimeIntervalInput!
+  mon: TimeIntervalInput!
+  tue: TimeIntervalInput!
+  wed: TimeIntervalInput!
+  thu: TimeIntervalInput!
+  fri: TimeIntervalInput!
+}
+
+input TimeIntervalInput {
+  from: String!
+  to: String!
+}
+
+input InventoryUpdateOrderInput {
+  label: String!
+  storeId: String!
+  tenantId: String! = ""
+  createdBy: String! = ""
+  status: InventoryUpdateOrderStatus! = PENDING
+  isDeleted: Boolean! = false
+}
+
+input InventoryUpdateOrderItemInput {
+  productId: String!
+  batchNumber: String!
+  expiryDate: String!
+  quantity: ItemChangeInput!
+  costPrice: ItemChangeInput!
+  sellPrice: ItemChangeInput!
+  isDeleted: Boolean! = false
+}
+
+input ItemChangeInput {
+  old: Float!
+  new: Float!
+}
+
+input StockTransferOrderInput {
+  sourceStoreId: String!
+  destinationStoreId: String!
+  items: [StockTransferOrderItemInput!]!
+  tenantId: String! = ""
+  branchId: String!
+  createdBy: String! = ""
+  status: StockTransferOrderStatus! = NEW
+  isDeleted: Boolean! = false
+}
+
+input StockTransferOrderItemInput {
+  productId: String!
+  batchNumber: String!
+  quantity: Int!
+}
+
+input UpdateStockTransferOrderInput {
+  destinationStoreId: String
+  items: [StockTransferOrderItemInput!]
+  isDeleted: Boolean
+}
+
+input InventoryIssueInput {
+  storeId: String!
+  label: String!
+  type: InventoryIssueType!
+  items: [InventoryIssueItemInput!]!
+  tenantId: String! = ""
+  createdBy: String! = ""
+  status: InventoryIssueStatus! = NEW
+  isDeleted: Boolean! = false
+}
+
+input InventoryIssueItemInput {
+  productId: String!
+  batchNumber: String!
+  quantity: Float!
+}
+
+input UpdateInventoryIssueInput {
+  storeId: String
+  label: String
+  type: InventoryIssueType
+  items: [InventoryIssueItemInput!]
+  isDeleted: Boolean
+}
+
+input LostSaleInput {
+  productId: String!
+  quantity: Float!
+  unitPrice: Float!
+  totalPrice: Float!
+  entryId: String
+  patientId: String
+  tenantId: String! = ""
+  userId: String! = ""
+  isDeleted: Boolean! = false
+}
+
+input PaymentSessionInput {
+  source: PaymentSessionSourceInput!
+  items: [ItemInput!]!
+  tenantId: String! = ""
+  branchId: String
+}
+
+input PaymentSessionSourceInput {
+  type: String!
+  id: String!
+}
+
+input ItemInput {
+  item: ItemDetailsInput!
+  quantity: Float!
+}
+
+input ItemDetailsInput {
+  name: String!
+  description: String
+  decimalUnitPrice: Float!
+}
+
+enum ChatGPTPromptTemplate {
+  CLINICAL_SUMMARY_BRAINSTORMING
+  CLINICAL_SUMMARY_BRAINSTORMING_IOS
+  CLINICAL_SUMMARY_BRAINSTORMING_V2
+  CLINICAL_SUMMARY_BRAINSTORMING_V2_IOS
+  CLINICAL_SUMMARY_BUILDER
+  CLINICAL_SUMMARY_BUILDER_IOS
+  CLINICAL_SUMMARY_COMPANION
+  CLINICAL_SUMMARY_COMPANION_IOS
+  CLINICAL_SUMMARY_COMPANION_V2
+  CLINICAL_SUMMARY_COMPANION_V2_IOS
+  DERMA_ASSISTANT_COMPANION_V3
+  DERMA_ASSISTANT_COMPANION_V3_IOS
+  DERMA_ASSISTANT_COMPANION_V4
+  DERMA_ASSISTANT_COMPANION_V4_IOS
+  DIFFERENTIAL_DIAGNOSIS_V2
+  DIFFERENTIAL_DIAGNOSIS_V2_IOS
+  DIFFERENTIAL_DIAGNOSIS_V3
+  DIFFERENTIAL_DIAGNOSIS_V3_IOS
+  DRUG_ASSISTANT_BRAINSTORMING_V3
+  DRUG_ASSISTANT_BRAINSTORMING_V3_IOS
+  DRUG_ASSISTANT_BRAINSTORMING_V4
+  DRUG_ASSISTANT_BRAINSTORMING_V4_IOS
+  DRUG_ASSISTANT_COMPANION_V3
+  DRUG_ASSISTANT_COMPANION_V3_IOS
+  DRUG_ASSISTANT_COMPANION_V4
+  DRUG_ASSISTANT_COMPANION_V4_IOS
+  LAB_RESULT_INTERPRETER
+  LAB_RESULT_INTERPRETER_IOS
+  LAB_RESULT_INTERPRETER_V2
+  LAB_RESULT_INTERPRETER_V2_IOS
+  LAB_WHAT_TO_ORDER_COMPANION_V2
+  LAB_WHAT_TO_ORDER_COMPANION_V2_IOS
+  MEDICAL_EXAMINATION_V2
+  MEDICAL_EXAMINATION_V2_IOS
+  MEDICAL_HISTORY_V2
+  MEDICAL_HISTORY_V2_IOS
+  MEDICAL_HISTORY_V3
+  MEDICAL_HISTORY_V3_IOS
+  NARRATIVE_EXAMINATION
+  NARRATIVE_EXAMINATION_IOS
+  NARRATIVE_HISTORY
+  NARRATIVE_HISTORY_IOS
+  NARRATIVE_HISTORY_V2
+  NARRATIVE_HISTORY_V2_IOS
+  PATIENT_ENGAGEMENT_BRAINSTORMING
+  PATIENT_ENGAGEMENT_BRAINSTORMING_IOS
+  PATIENT_ENGAGEMENT_BRAINSTORMING_V2
+  PATIENT_ENGAGEMENT_BRAINSTORMING_V2_IOS
+  PATIENT_ENGAGEMENT_COMPANION
+  PATIENT_ENGAGEMENT_COMPANION_IOS
+  PATIENT_ENGAGEMENT_COMPANION_V2
+  PATIENT_ENGAGEMENT_COMPANION_V2_IOS
+  RADIOLOGY_ASSISTANT_COMPANION
+  RADIOLOGY_ASSISTANT_COMPANION_IOS
+  RADIOLOGY_ASSISTANT_COMPANION_V2
+  RADIOLOGY_ASSISTANT_COMPANION_V2_IOS
+  SUM_TWO_NUMBERS
+  SUM_TWO_NUMBERS_IOS
+}
+
+input AssistantMessageParameterInput {
+  name: String!
+  value: String!
+}
+
+input MedmindCaseInput {
+  caseId: String
+  patient: PatientInput
+  entry: MedmindCaseEntryInput
+  healthRecord: MedmindCaseHealthRecordInput
+  prompt: MedmindCasePromptInput
+}
+
+input MedmindCaseEntryInput {
+  clientEntryNumber: Float
+  procedures: [EntryProcedureInput!]!
+  discount: Float! = 0
+  totalPatientAmount: Float
+  totalCompanyAmount: Float
+  paidAmount: Float
+  facilityId: String!
+  providerId: String!
+  branchId: String!
+  schedulerColumnId: String!
+  storeId: String
+  scheduledDate: String!
+  checkInDate: String
+  closedDate: String
+  visitTypeId: String!
+  visitMinutes: Float!
+  telemedicine: Boolean
+  teleMedicineLink: String!
+  issuedFrom: EntryIssuePoint!
+  paymentMethodId: String
+  currency: Currency!
+
+  # automatically add credit transaction when set to true
+  markAsPaid: Boolean!
+  requirements: [EntryRequirementInput!]
+  attachments: EntryAttachmentsInput
+  associatedOffers: [EntryAssociatedOffersInput!]
+  confirmed: Boolean! = true
+  labResultPrinted: Boolean! = false
+  callStatus: EntryCallStatus! = NEW
+  createdBy: String = ""
+  status: ModelStatus! = ENABLED
+  tenantId: String = ""
+  isDeleted: Boolean
+}
+
+input MedmindCaseHealthRecordInput {
+  providerId: String!
+  attachments: [AttachmentInput!]!
+  visitData: HealthRecordSummaryInput
+  diagnosisGroupIds: [String!]! = []
+  tenantId: String! = ""
+  createdBy: String = ""
+  status: ModelStatus! = ENABLED
+  isDeleted: Boolean = false
+}
+
+input MedmindCasePromptInput {
+  template: ChatGPTPromptTemplate!
+  messageParameters: [AssistantMessageParameterInput!]!
+  imageUrls: [String!]
+}
+
+input MedmindCaseUserFeedbackInput {
+  template: String!
+  caseId: String!
+  isUseful: Boolean!
+  comments: String!
+  tenantId: String! = ""
+  createdBy: String! = ""
+  isDeleted: Boolean! = false
+}
+
+input SeedingConfigInput {
+  country: String!
+  primaryLanguage: String!
+  secondaryLanguage: String!
+  organizationType: String!
+  userId: String
+}
+
+input PatientLabContainerInput {
+  patientId: String!
+  entryId: String!
+  tenantId: String! = ""
+  branchId: String!
+  createdBy: String! = ""
+  isDeleted: Boolean! = false
+}
+
+input MachineResponseInput {
+  containerId: Int!
+  responses: [InnerResponseInput!]!
+  used: Boolean! = false
+  tenantId: String! = ""
+  branchId: String!
+  createdBy: String! = ""
+  status: String! = "PENDING_COLLECTION"
+  isDeleted: Boolean! = false
+}
+
+input InnerResponseInput {
+  globalInputId: String!
+  value: String!
+}
+
+input UpdateMachineResponseInput {
+  used: Boolean
+  status: String
+  isDeleted: Boolean
+}
+
+type Subscription {
+  watchEntries(
+    token: String!
+    entryIds: [String!]
+    branchesIds: [String!]
+    providersIds: [String!]
+    facilitiesIds: [String!]
+    storeIds: [String!]
+    patientIds: [String!]
+    callStatus: EntryCallStatus
+    startDate: String!
+    isPaid: Boolean
+    issuedFrom: EntryIssuePoint
+    creatorIds: [String!]
+    pageNumber: Int!
+    pageSize: Int!
+    entryNumbers: [String!]
+    labResultPrinted: Boolean
+    procedureSections: [ProcedureSection!]
+    procedureIds: [String!]
+  ): [Entry!]!
+  watchRequests(
+    token: String!
+    branchIds: [String!]!
+    destinations: [RequestDestination!]
+    startDate: String!
+    endDate: String!
+  ): Request!
+  streamCompanyPolicies(token: String!): CompanyPolicyStreamChunk!
+  chatWithAssistant(
+    token: String!
+    patientId: String
+    template: ChatGPTPromptTemplate!
+    messageParameters: [AssistantMessageParameterInput!]!
+    imageUrls: [String!]
+  ): String!
+  watchMachineResponses(token: String!, containerIds: [Int!]!): MachineResponse!
+}

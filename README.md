@@ -8,6 +8,7 @@ VS Code extension to extract GraphQL queries from files and generate client-side
 - Generate typescript types from gql scheam  
 - Generate apis function from gql scheam  
 - User can create `gql-extract.config.json` file to using some futures
+- Handle recursive types with configurable recursion depth
 
 ## Usage
 
@@ -31,6 +32,8 @@ You can create `gql-extract.config.json` file in the root of your project to:
 - choose where the apis function must be saved.
 - set the apis option `"apollo"` to create apis functions.
 - set apollo fetchPolicy `"fetchPolicy"`, the default value is "no-cache".
+- set recursion depth with `"recursionDepth"` (default is 5)
+- set type-specific recursion depths with `"typeRecursionMap"` for handling specific recursive types
 
 I'll add other apis option soon, inshallah.
 
@@ -42,8 +45,15 @@ Example for config file:
   "typesFolderName": "FOLDER_NAME",
   "apisFolderName": "FOLDER_NAME if you set the apis option",
   "apis": "apollo",
-  "fetchPolicy": "no-cache"
+  "fetchPolicy": "no-cache",
+  "recursionDepth": 3,
+  "typeRecursionMap": {
+    "TemplateObject": 2,
+    "NestedType": 4
+  }
 }
 ```
+
+In this example, most recursive types will be traversed to a depth of 3, but TemplateObject will be limited to 2 levels and NestedType will go to 4 levels deep.
 
 **Enjoy!**
