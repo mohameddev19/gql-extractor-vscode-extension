@@ -2,6 +2,12 @@
 
 ## Version 0.3.5 (2024-06-30)
 
+**Fix Error:**
+
+* Fix recursion query max depth error.
+
+## Version 0.3.5 (2024-06-30)
+
 **New Features:**
 - Added support for handling recursive types with configurable recursion depth
 - New configuration options:

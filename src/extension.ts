@@ -476,7 +476,8 @@ function astToQueryConvertor(subField: any){
     for (let subFieldSubs of subField.subFields) {
       // Check if the field has a subFields set
       if (subFieldSubs.subFields && subFieldSubs.subFields.length > 0) {
-        query += astToQueryConvertor(subFieldSubs);
+				const subFieldsFiltered = subFieldSubs.subFields.filter((subField: any)=> !subField.isMaxDepth);
+        query += astToQueryConvertor(subFieldsFiltered);
       } else {
 				// Append tab space
 				for(let i = 0; i < subFieldRootState; i++){
@@ -680,6 +681,7 @@ function subFieldsExtractor(
 		if (newPath.filter((path: string)=> path === field.name.value).length >= maxDepth) {
 			return {
 				...field,
+				isMaxDepth: true,
 				fieldName: field.name.value,
 				subFields: []
 			};
@@ -841,7 +843,8 @@ function defineQuery(astField: any, operationType: "Mutation" | "Query" ): strin
 		// Append the opening curly brace to the query
 		query += "{ ";
     // => Loop through the fields
-    for (let subField of astField.queryFields.subFields) {
+		const subFieldsFiltered = astField.queryFields.subFields.filter((subField: any)=> !subField.isMaxDepth);
+    for (let subField of subFieldsFiltered) {
 			// Append new lin
 			query += `\n`;
       query += astToQueryConvertor(subField);
